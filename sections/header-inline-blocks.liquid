@@ -178,14 +178,14 @@
 {%- endcapture -%}
 <hdt-sticky-header sticky-type="{{ section.settings.sticky_type }}" prefix="header" class="hdt-main-header hdt-header-{{ section.settings.header_layout }} hdt-header-fullwidth-{{ section.settings.header_fullwidth }} hdt-header-tranparent-{{ section.settings.header_transparent }} hdt-menu-{{ section.settings.menu_type }} hdt-header-sticky-{{ section.settings.sticky_type }}{% if section.settings.sticky_glass %} hdt-header-sticky--glass{% endif %} is-sticky" color-scheme="{{ section.settings.header_colors }}">
   <div class="hdt-container{% if section.settings.header_fullwidth %}-full hdt-px-15{% endif %}">
-    <div data-header-height class="hdt-flex hdt-align-center hdt-spacing-15 md:hdt-px-15 hdt-px-10">
-      {%- if section.settings.header_layout == "logo_left" -%}
+    <div data-header-height class="hdt-flex hdt-align-center hdt-spacing-15 md:hdt-px-15 hdt-px-10"{% if section.settings.header_layout == "logo_left_flex" %} style="flex-wrap: nowrap !important;"{% endif %}>
+      {%- if section.settings.header_layout == "logo_left" or section.settings.header_layout == "logo_left_flex" -%}
         <div class="lg:hdt-hidden md:hdt-custom-col-4 hdt-custom-col-3">
           <button aria-controls="menu_mobile" class="hdt-push-menu-btn hdt-menu-bar hdt-flex hdt-justify-center hdt-align-center" aria-label="push-menu">
             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="16" viewBox="0 0 30 16" fill="currentColor"><rect width="30" height="1.5"></rect><rect y="7" width="20" height="1.5"></rect><rect y="14" width="30" height="1.5"></rect></svg>
           </button>
         </div>
-        <div class="{% if section.settings.menu_position == "start" and section.settings.menu_type == "default" %}lg:hdt-custom-col-auto {% else %}lg:hdt-custom-col-2{% endif %} md:hdt-custom-col-4 hdt-custom-col-6 xs:hdt-text-center hdt-flex hdt-align-center hdt-justify-start hdt-col-logo">
+        <div class="{% if section.settings.header_layout == "logo_left_flex" %}lg:hdt-custom-col-auto{% elsif section.settings.menu_position == "start" and section.settings.menu_type == "default" %}lg:hdt-custom-col-auto {% else %}lg:hdt-custom-col-2{% endif %} md:hdt-custom-col-4 hdt-custom-col-6 xs:hdt-text-center hdt-flex hdt-align-center hdt-justify-start hdt-col-logo"{% if section.settings.header_layout == "logo_left_flex" %} style="flex-shrink: 0; min-width: max-content;"{% endif %}>
           {%- if section.settings.menu_type == "sidebar" and section.settings.menu_position == "start" -%}
             <button aria-controls="menu_mobile" class="hdt-push-menu-btn hdt-menu-bar lg:hdt-flex hdt-hidden hdt-justify-center hdt-align-center" aria-label="push-menu">
               <svg xmlns="http://www.w3.org/2000/svg" width="30" height="16" viewBox="0 0 30 16" fill="currentColor"><rect width="30" height="1.5"></rect><rect y="7" width="20" height="1.5"></rect><rect y="14" width="30" height="1.5"></rect></svg>
@@ -198,7 +198,7 @@
             </button>
           {%- endif -%}
         </div>
-        <div class="hdt-header-col lg:hdt-custom-col-8 lg:hdt-block hdt-hidden">
+        <div class="hdt-header-col {% if section.settings.header_layout == 'logo_left_flex' %}lg:hdt-block hdt-hidden{% else %}lg:hdt-custom-col-8 lg:hdt-block hdt-hidden{% endif %}"{% if section.settings.header_layout == "logo_left_flex" %} style="flex: 1 1 auto; overflow: hidden; min-width: 0;"{% endif %}>
           {% # theme-check-disable NestedSnippet %}
             {%- if section.settings.menu_type != "sidebar" -%}
               <nav class="hdt-navigation hdt-text-{{ section.settings.menu_position }} hdt-menu-uppercase-{{ section.settings.text_transform }} hdt-nav-arrow_{{ section.settings.dropdown_arrow }}">
@@ -282,7 +282,7 @@
             {%- endif -%}
           {% # theme-check-enable NestedSnippet %}
         </div>
-        <div class="{% if section.settings.menu_position == "end" and section.settings.menu_type == "default" %}lg:hdt-custom-col-auto {% else %}lg:hdt-custom-col-2 {% endif %} md:hdt-custom-col-4 hdt-custom-col-3 hdt-search_{{ section.settings.search_type }}">
+        <div class="{% if section.settings.header_layout == "logo_left_flex" %}lg:hdt-custom-col-auto{% elsif section.settings.menu_position == "end" and section.settings.menu_type == "default" %}lg:hdt-custom-col-auto {% else %}lg:hdt-custom-col-2 {% endif %} md:hdt-custom-col-4 hdt-custom-col-3 hdt-search_{{ section.settings.search_type }}"{% if section.settings.header_layout == "logo_left_flex" %} style="flex-shrink: 0;"{% endif %}>
           {%- render 'header_group_icons' -%}
         </div>
       {%- else -%}
@@ -433,6 +433,10 @@
         {
           "value": "logo_left",
           "label": "t:sections.header.settings.header_layout.logo_left"
+        },
+        {
+          "value": "logo_left_flex",
+          "label": "Logo left (Flex)"
         },
         {
           "value": "logo_center",
