@@ -1,0 +1,895 @@
+{{ 'shipping.css' | asset_url | stylesheet_tag }}
+{%- style -%}
+  {% render 'spacing-vars', box: section %}
+  #{{ section.id }} .hdt-tabs-head{
+    --tab-border-width: {{ section.settings.border_width }}px;
+  }
+  #{{ section.id }} .hdt-tabs-head {
+    margin-bottom: var(--tabs-head-spacing);
+  }
+
+  #{{ section.id }} .hdt-tabs-head {
+    {%- if section.settings.ffamily != '' -%}
+      font-family: var({{ section.settings.ffamily }});
+    {%- endif -%}
+  }
+  
+  {%- if section.settings.tabs_head_spacing > 30 -%}
+    #{{ section.id }} .hdt-tabs-head {
+      --tabs-head-spacing: 30px;
+    }
+    @media(min-width:1150px){
+      #{{ section.id }} .hdt-tabs-head{
+        --tabs-head-spacing: {{ section.settings.tabs_head_spacing }}px;
+      }
+    }
+  {%- else -%}
+    #{{ section.id }} .hdt-tabs-head{ 
+      --tabs-head-spacing: {{ section.settings.tabs_head_spacing }}px;
+    }
+  {%- endif -%}
+  {%- if section.settings.spacing_tabs_items > 30 -%}
+    #{{ section.id }} .hdt-tabs-head .hdt-tabs-slider{
+      --slide-spacing: 30px;
+      gap: 30px;
+    }
+    @media(min-width:1150px){
+      #{{ section.id }} .hdt-tabs-head .hdt-tabs-slider{
+        --slide-spacing: {{ section.settings.spacing_tabs_items }}px;
+        gap: {{ section.settings.spacing_tabs_items }}px;
+      }
+    }
+  {%- else -%}
+    #{{ section.id }} .hdt-tabs-head .hdt-tabs-slider{
+      --slide-spacing: {{ section.settings.spacing_tabs_items }}px;
+      gap: {{ section.settings.spacing_tabs_items }}px;
+    }
+  {%- endif -%}
+{%- endstyle -%}
+{% stylesheet %}
+.hdt-tabs-main-qty-a-cat .hdt-tabs-item-title {
+  width: 144px;
+  border-radius: 12px;
+  padding: 12px;
+  & .hdt-tab-title-text,
+  & .hdt-truncate {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  & .hdt-tab-item-image {
+    margin-bottom: 12px;
+    outline: 1px solid transparent;
+    border-radius: 8px;
+    transition: opacity .3s, outline .3s, border-radius .3s;
+  }
+  & img,
+  & svg {
+    border-radius: 8px;
+    background-color: rgb(var(--color-background) / .5);
+  }
+  &[aria-current="true"] {
+    background-color: rgb(var(--hdt-btn-bg));
+    color: rgb(var(--hdt-btn-color));
+    border: 1px solid #C1D0DB;
+  }
+  &[aria-current="false"] {
+    background-color: transparent;
+    border: 1px solid transparent;
+    color: rgb(var(--color-foreground)) !important;
+    .hdt-tab-item-image {
+      outline: 1px solid #C1D0DB;
+    }
+  }
+}
+.hdt-tabs-main-qty-a-cat .hdt-tabs-head {
+  position: relative;
+  z-index: 1;
+  & .hdt-tabs-list .hdt-slider__slide {
+    flex: 0 0 auto;
+  }
+}
+.hdt-tabs-qty-a-cat__content {
+  background-color: rgb(var(--color-background2));
+  padding-inline: 20px;
+  padding-bottom: 30px;
+  border-radius: 0 0 20px 20px;
+  position: relative;
+  & .hdt-tab-item {
+    z-index: 1;
+    position: relative;
+  }
+  &:after {
+    content: "";
+    position: absolute;
+    background-color: rgb(var(--color-background2));
+    top: -130px;
+    height: 200px;
+    inset-inline: 0;
+    z-index: 0;
+    border-radius: 20px 20px 0 0;
+  }
+  
+  & .hdt-cat-featured-image {
+    & img,
+    & svg {
+      border-radius: 20px;
+      background-color: #fff;
+    }
+  }
+  & .hdt-cat-title {
+    margin-block-end: 20px;
+  }
+}
+@media(max-width: 1149px) {
+  .hdt-tabs-qty-a-cat__content .hdt-block-text p br {
+    display: none;
+  }
+}
+@media(min-width: 768px) and (max-width: 1149px) {
+  .hdt-tabs-qty-a-cat__content {
+    & .hdt-cat-featured-image {
+      max-width: 35%;
+    }
+    & .hdt-cat-info {
+      max-width: 75%;
+      flex: 1;
+    }
+  }
+}
+@media(min-width: 1150px){
+  .hdt-tabs-main-qty-a-cat{
+    max-width: 83.3333333%;
+    margin-inline: auto;
+  }
+  .hdt-tabs-qty-a-cat__content {
+    padding-inline: 40px;
+    padding-bottom: 40px;
+    & .hdt-tab-item>.hdt-row-flex {
+      gap: 60px;
+    }
+    & .hdt-cat-featured-image {
+      max-width: 40%;
+    }
+    & .hdt-cat-info {
+      max-width: 60%;
+      flex: 1;
+    }
+  }
+}
+{% endstylesheet %}
+{% liquid
+  #Section layout
+  assign sizes  = '(min-width: 1150px) ' | append: settings.page_width | append: 'px,(min-width: 750px) calc(100vw - 60px), calc(100vw - 30px)'
+
+  case section.settings.section_layout 
+    when 'container'
+      assign parent = 'hdt-container'
+      assign child  = 'hdt-section-spacing hdt-s-gradient hdt-relative' | append: ' hdt-section-spacing-' | append: section.id
+    when 'wrapper_container'
+      assign parent = 'hdt-section-spacing hdt-s-gradient hdt-relative' | append: ' hdt-section-spacing-' | append: section.id
+      assign child  = 'hdt-container'
+    when 'full_width'
+      assign parent = 'hdt-container-full hdt-section-spacing hdt-s-gradient hdt-relative' | append: ' hdt-section-spacing-' | append: section.id
+      assign child  = ''
+      assign sizes  = '100vw'
+  endcase
+%}
+
+{%- capture css -%}
+  {%- if section.settings.tab_item_size == "custom" -%}
+    --text-custom-lg: {{ section.settings.font_size_text_lg }}px; --text-custom-mb: {{ section.settings.font_size_text }}px; --text-ls: {{ section.settings.letter_spacing_text }}px;
+  {%- endif -%}
+{%- endcapture -%}
+<div id="{{ section.id }}" class="{{ parent }} {% if section.settings.hdt_background_parallax %} hdt-animate--parallax-bg {% endif %}" {%- if section.settings.colors_by_section %} color-scheme="{{ section.settings.color_scheme }}" style="--background-opacity: {{ section.settings.background_opacity }};"{%- endif %} hdt-reveal="fade-in">
+  <div class="{{ child }}">
+    {% comment %} hdt-animate--parallax {% endcomment %}
+    {%- if section.settings.section_background != blank -%}
+      {% liquid
+        assign image = section.settings.section_background
+      %}
+      {{ image | image_url: width: image.width | image_tag: width: image.width, height: image.height, sizes: sizes, widths: '200,300,400,500,600,700,800,900,1000,1100,1200,1300,1400,1500,1600,1700,1800,1900,2000', loading: 'lazy', class: 'hdt-section-background hdt-absolute hdt-top-0 hdt-left-0 hdt-w-full hdt-h-full hdt-pe-none hdt-object-cover hdt-object-center'  }}
+    {%- endif -%}
+    <div class="hdt-container-heading">
+      {%- content_for "block", type: "section-heading", id: "custom-section-heading" -%}
+    </div>
+    {% capture content_default %}
+      {% content_for 'blocks' %}
+    {% endcapture %}
+    {%- assign content_active_first_tab = content_default | replace_first: ' tab-item', ' tab-item tab-selected' -%}
+    {%- assign contents = content_active_first_tab | split: '<!-- _tab-item.liquid -->' -%}
+    <div id="{{ section.id }}" class="hdt-tabs-main-qty-a-cat">
+      <div class="hdt-tabs-head hdt-flex hdt-flex-col">
+        <div class="hdt-tabs-head-bottom hdt-flex hdt-flex-col hdt-align-{{ section.settings.tabs_list_pos }}">
+          <hdt-tab id="Scroller-{{ section.id }}" class="hdt-tab hdt-tabs-list hdt-{{ section.blocks.size | at_most: 5 }}tab-item hdt-flex hdt-row-grid--modify hdt-justify-center" aria-controls="{{ section.id }}-content">
+            <hdt-slider id="Slider-{{ section.id }}" class="hdt-tabs-slider hdt-flex md:hdt-justify-center hdt-oh hdt-slider hdt-slider__dots_outline hdt-slides-auto" config='{ "id": "Slider-{{ section.id }}", "navUI": false, "dotUI": true }' hdt-reveal="slide-in" timeline>
+              <div class="hdt-slider__viewport hdt-relative">
+                <div class="hdt-slider__container">
+                  {%- assign tab_item_size = section.settings.tab_item_size -%}
+                  {%- assign uppercase = section.settings.uppercase -%}
+                  {%- assign font_weight = section.settings.font_weight -%}
+                  {%- for block in section.blocks -%}
+                    <div class="hdt-slider__slide">
+                      <button class="hdt-tabs-item-title hdt-relative hdt-text-{{ tab_item_size }} {%- if uppercase %} hdt-uppercase {%- endif %} hdt-font-{{ font_weight }}" aria-current="{{ forloop.first | json }}" style="--ratio-percent: 100%; {%- if css != blank %} {{ css }}{% endif %}">
+                        {{ contents[forloop.index] | split: '<!-- title -->' | first }}
+                      </button>
+                    </div>
+                  {%- endfor -%}
+                </div>
+              </div>
+            </hdt-slider>
+          </hdt-tab>
+        </div>
+      </div>
+      <div id="{{ section.id }}-content" class="hdt-tabs-qty-a-cat__content">
+        {%- for block in section.blocks -%}
+          {{ contents[forloop.index] | split: '<!-- title -->' | last }}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% schema %}
+{
+  "name": "Product Catalog & QA",
+  "tag": "section",
+  "class": "hdt-section hdt-tabs-qty-a-cat",
+  "disabled_on": {
+    "groups": ["header", "footer", "custom.system"]
+  },
+  "blocks": [
+    {
+      "type": "_tab-qty-a-cat"
+    }
+  ],
+  "settings": [
+    {
+      "type": "header",
+      "content": "Options for tabs list"
+    },
+    {
+      "type": "select",
+      "id": "tabs_list_pos",
+      "label": "Tabs list position",
+      "options": [
+        {
+          "value": "start",
+          "label": "Start"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "end",
+          "label": "End"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "tab_item_size",
+      "options": [
+        {
+          "value": "--",
+          "label": "Default"
+        },
+        {
+          "value": "xs",
+          "label": "Extra Small"
+        },
+        {
+          "value": "sm",
+          "label": "Small"
+        },
+        {
+          "value": "base",
+          "label": "Medium"
+        },
+        {
+          "value": "lg",
+          "label": "Large"
+        },
+        {
+          "value": "xl",
+          "label": "Extra Large"
+        },
+        {
+          "value": "2xl",
+          "label": "2 Extra Large"
+        },
+        {
+          "value": "4xl",
+          "label": "4 Extra Large"
+        }
+      ],
+      "label": "t:sections.tabs_collections.settings.tab_item_size.label",
+      "default": "lg"
+    },
+    {
+      "type": "checkbox",
+      "id": "uppercase",
+      "label": "Uppercase"
+    },
+    {
+      "type": "select",
+      "id": "ffamily",
+      "options": [
+        {
+          "value": "",
+          "label": "Default"
+        },
+        {
+          "value": "--f_family_1",
+          "label": "Font Family #1"
+        },
+        {
+          "value": "--f_family_2",
+          "label": "Font Family #2"
+        },
+        {
+          "value": "--f_family_3",
+          "label": "Font Family #3"
+        },
+        {
+          "value": "--f_family_4",
+          "label": "Font Family #4 (Custom)"
+        },
+        {
+          "value": "--f_family_5",
+          "label": "Font Family #5 (Custom)"
+        }
+      ],
+      "label": "Font family",
+      "default": ""
+    },
+    {
+      "type": "select",
+      "id": "font_weight",
+      "label": "Font weight",
+      "options": [
+        {
+          "value": "light",
+          "label": "Light"
+        },
+        {
+          "value": "normal",
+          "label": "Normal"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "semibold",
+          "label": "Semibold"
+        },
+        {
+          "value": "bold",
+          "label": "Bold"
+        }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "range",
+      "id": "spacing_tabs_items",
+      "min": 0,
+      "max": 90,
+      "step": 1,
+      "label": "Spacing between tabs items",
+      "unit": "px",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "tabs_head_spacing",
+      "min": 1,
+      "max": 100,
+      "step": 1,
+      "label": "Distance between tabs heading and content tabs",
+      "info": "This spacing is also used for the distance from tabs list to content",
+      "default": 30
+    },
+    {
+      "type": "header",
+      "content": "t:settings_schema.layout.name"
+    },
+    {
+      "type": "checkbox",
+      "id": "colors_by_section",
+      "label": "t:sections.all.colors.display_colors_by_section"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "visible_if": "{{ section.settings.colors_by_section }}"
+    },
+    {
+      "type": "range",
+      "id": "background_opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "label": "t:sections.all.background.opacity",
+      "default": 0,
+      "visible_if": "{{ section.settings.colors_by_section }}"
+    },
+    {
+      "type": "select",
+      "id": "section_layout",
+      "label": "t:sections.all.section_layout.width.label",
+      "options": [
+        {
+          "value": "container",
+          "label": "t:sections.all.section_layout.width.container"
+        },
+        {
+          "value": "wrapper_container",
+          "label": "t:sections.all.section_layout.width.wrapper_container"
+        },
+        {
+          "value": "full_width",
+          "label": "t:sections.all.section_layout.width.full_width"
+        }
+      ],
+      "default": "container"
+    },
+    {
+      "type": "image_picker",
+      "id": "section_background",
+      "label": "t:sections.all.background.image"
+    },
+    {
+      "type": "checkbox",
+      "id": "hdt_background_parallax",
+      "label": "Using parallax for background",
+      "visible_if": "{{ section.settings.section_background != blank }}",
+      "default": false,
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_spacing"
+    },
+    {
+      "type": "text",
+      "id": "mg",
+      "label": "Margin",
+      "info": "Margin top, margin right, margin bottom, margin left. If you not use to blank",
+      "default": ",,50px,",
+      "placeholder": ",,50px,"
+    },
+    {
+      "type": "text",
+      "id": "mg_mb",
+      "label": "Margin (Mobile)",
+      "default": ",,30px,",
+      "placeholder": ",,50px,",
+      "visible_if": "{{ section.settings.mg != blank }}"
+    },
+    {
+      "type": "text",
+      "id": "pd",
+      "label": "Padding",
+      "info": "Padding top, padding right, padding bottom, padding left. If you not use to blank",
+      "placeholder": "50px,,50px,"
+    },
+    {
+      "type": "text",
+      "id": "pd_mb",
+      "label": "Padding (Mobile)",
+      "placeholder": ",,50px,",
+      "visible_if": "{{ section.settings.pd != blank }}"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Catalog & QA",
+      "category": "t:sections_categories.05_section.name",
+      "settings": {
+        "tabs_list_pos": "center",
+        "tab_item_size": "lg",
+        "font_weight": "medium",
+        "spacing_tabs_items": 20,
+        "tabs_head_spacing": 50,
+        "colors_by_section": true,
+        "color_scheme": "scheme-d591fde1-80af-4928-a188-0839f40595e8",
+        "background_opacity": 1,
+        "section_layout": "wrapper_container",
+        "mg": ",,50px,",
+        "mg_mb": ",,30px,",
+        "pd": "110px,,110px",
+        "pd_mb": "80px,,80px"
+      },
+      "blocks": [
+        {
+          "type": "_tab-qty-a-cat",
+          "settings": {
+            "title": "T-Shirts",
+            "content_align": "center",
+            "align_center": false,
+            "icon_size": "large",
+            "col_dk": "2",
+            "col_tb": "2",
+            "col_mb": "1"
+          },
+          "blocks": [
+            {
+              "type": "_shipping",
+              "settings": {
+                "icon_themes": "car"
+              },
+              "blocks": [
+                {
+                  "type": "heading",
+                  "settings": {
+                    "heading": "<p>Feather-Soft Feel</p>",
+                    "font_weight": "medium",
+                    "heading_size": "h_custom",
+                    "font_size_heading_lg": 22,
+                    "font_size_heading": 18
+                  }
+                },
+                {
+                  "type": "spacer",
+                  "settings": {
+                    "space_lg": 4,
+                    "space_md": 4,
+                    "space": 4
+                  }
+                },
+                {
+                  "type": "text",
+                  "settings": {
+                    "text": "<p>Smooth, breathable fabric that <br/>feels gentle on your skin from <br/>morning to night.</p>",
+                    "hidden_br_mobile": true,
+                    "text_size": "lg",
+                    "text_color": "hdt-text-secondary",
+                    "font_size_text_lg": 16
+                  }
+                }
+              ]
+            },
+            {
+              "type": "_shipping",
+              "settings": {
+                "icon_themes": "truck"
+              },
+              "blocks": [
+                {
+                  "type": "heading",
+                  "settings": {
+                    "heading": "<p>Built to Last</p>",
+                    "font_weight": "medium",
+                    "heading_size": "h_custom",
+                    "font_size_heading_lg": 22,
+                    "font_size_heading": 18
+                  }
+                },
+                {
+                  "type": "spacer",
+                  "settings": {
+                    "space_lg": 4,
+                    "space_md": 4,
+                    "space": 4
+                  }
+                },
+                {
+                  "type": "text",
+                  "settings": {
+                    "text": "<p>Durable stitching and quality <br/>fabric designed for everyday <br/>wear.</p>",
+                    "hidden_br_mobile": true,
+                    "text_size": "lg",
+                    "text_color": "hdt-text-secondary",
+                    "font_size_text_lg": 16,
+                    "font_size_text": 14
+                  }
+                }
+              ]
+            },
+            {
+              "type": "_shipping",
+              "name": "t:sections.shipping.shipping_item.name",
+              "settings": {
+                "icon_themes": "diamond"
+              },
+              "blocks": [
+                {
+                  "type": "heading",
+                  "settings": {
+                    "heading": "<p>Precision Tailoring</p>",
+                    "font_weight": "medium",
+                    "heading_size": "h_custom",
+                    "text_color": "hdt-s-text",
+                    "font_size_heading_lg": 22,
+                    "font_size_heading": 18
+                  }
+                },
+                {
+                  "type": "spacer",
+                  "settings": {
+                    "space_lg": 4,
+                    "space_md": 4,
+                    "space": 4
+                  }
+                },
+                {
+                  "type": "text",
+                  "settings": {
+                    "text": "<p>Carefully cut and finished for a <br/>clean, modern silhouette.</p>",
+                    "hidden_br_mobile": true,
+                    "text_size": "lg",
+                    "text_color": "hdt-text-secondary",
+                    "font_size_text_lg": 16
+                  }
+                }
+              ]
+            },
+            {
+              "type": "_shipping",
+              "name": "t:sections.shipping.shipping_item.name",
+              "settings": {
+                "icon_themes": "door-lock"
+              },
+              "blocks": [
+                {
+                  "type": "heading",
+                  "settings": {
+                    "heading": "<p>Vibrant Print Quality</p>",
+                    "font_weight": "medium",
+                    "heading_size": "h_custom",
+                    "font_size_heading_lg": 22,
+                    "font_size_heading": 18
+                  }
+                },
+                {
+                  "type": "spacer",
+                  "settings": {
+                    "space_lg": 4,
+                    "space_md": 4,
+                    "space": 4
+                  }
+                },
+                {
+                  "type": "text",
+                  "settings": {
+                    "text": "<p>High-definition prints with rich colors that stay bold over time.</p>",
+                    "hidden_br_mobile": true,
+                    "text_size": "lg",
+                    "text_color": "hdt-text-secondary",
+                    "font_size_text_lg": 16
+                  }
+                }
+              ]
+            },
+            {
+              "type": "heading",
+              "static": true,
+              "id": "cat-title",
+              "settings": {
+                "heading": "<p>We have</p>",
+                "font_weight": "medium",
+                "heading_size": "h_custom",
+                "font_size_heading_lg": 40,
+                "font_size_heading": 32
+              }
+            }
+          ]
+        },
+        {
+          "type": "_tab-qty-a-cat",
+          "settings": {
+            "title": "Hoodies",
+            "content_align": "center",
+            "align_center": false,
+            "icon_size": "large",
+            "col_dk": "2",
+            "col_tb": "2",
+            "col_mb": "1"
+          },
+          "blocks": [
+            {
+              "type": "_shipping",
+              "settings": {
+                "icon_themes": "car"
+              },
+              "blocks": [
+                {
+                  "type": "heading",
+                  "settings": {
+                    "heading": "<p>Feather-Soft Feel</p>",
+                    "font_weight": "medium",
+                    "heading_size": "h_custom",
+                    "font_size_heading_lg": 22,
+                    "font_size_heading": 18
+                  }
+                },
+                {
+                  "type": "spacer",
+                  "settings": {
+                    "space_lg": 4,
+                    "space_md": 4,
+                    "space": 4
+                  }
+                },
+                {
+                  "type": "text",
+                  "settings": {
+                    "text": "<p>Smooth, breathable fabric that <br/>feels gentle on your skin from <br/>morning to night.</p>",
+                    "hidden_br_mobile": true,
+                    "text_size": "lg",
+                    "text_color": "hdt-text-secondary",
+                    "font_size_text_lg": 16
+                  }
+                }
+              ]
+            },
+            {
+              "type": "_shipping",
+              "settings": {
+                "icon_themes": "truck"
+              },
+              "blocks": [
+                {
+                  "type": "heading",
+                  "settings": {
+                    "heading": "<p>Built to Last</p>",
+                    "font_weight": "medium",
+                    "heading_size": "h_custom",
+                    "font_size_heading_lg": 22,
+                    "font_size_heading": 18
+                  }
+                },
+                {
+                  "type": "spacer",
+                  "settings": {
+                    "space_lg": 4,
+                    "space_md": 4,
+                    "space": 4
+                  }
+                },
+                {
+                  "type": "text",
+                  "settings": {
+                    "text": "<p>Durable stitching and quality <br/>fabric designed for everyday <br/>wear.</p>",
+                    "hidden_br_mobile": true,
+                    "text_size": "lg",
+                    "text_color": "hdt-text-secondary",
+                    "font_size_text_lg": 16,
+                    "font_size_text": 14
+                  }
+                }
+              ]
+            },
+            {
+              "type": "_shipping",
+              "name": "t:sections.shipping.shipping_item.name",
+              "settings": {
+                "icon_themes": "diamond"
+              },
+              "blocks": [
+                {
+                  "type": "heading",
+                  "settings": {
+                    "heading": "<p>Precision Tailoring</p>",
+                    "font_weight": "medium",
+                    "heading_size": "h_custom",
+                    "text_color": "hdt-s-text",
+                    "font_size_heading_lg": 22,
+                    "font_size_heading": 18
+                  }
+                },
+                {
+                  "type": "spacer",
+                  "settings": {
+                    "space_lg": 4,
+                    "space_md": 4,
+                    "space": 4
+                  }
+                },
+                {
+                  "type": "text",
+                  "settings": {
+                    "text": "<p>Carefully cut and finished for a <br/>clean, modern silhouette.</p>",
+                    "hidden_br_mobile": true,
+                    "text_size": "lg",
+                    "text_color": "hdt-text-secondary",
+                    "font_size_text_lg": 16
+                  }
+                }
+              ]
+            },
+            {
+              "type": "_shipping",
+              "name": "t:sections.shipping.shipping_item.name",
+              "settings": {
+                "icon_themes": "door-lock"
+              },
+              "blocks": [
+                {
+                  "type": "heading",
+                  "settings": {
+                    "heading": "<p>Vibrant Print Quality</p>",
+                    "font_weight": "medium",
+                    "heading_size": "h_custom",
+                    "font_size_heading_lg": 22,
+                    "font_size_heading": 18
+                  }
+                },
+                {
+                  "type": "spacer",
+                  "settings": {
+                    "space_lg": 4,
+                    "space_md": 4,
+                    "space": 4
+                  }
+                },
+                {
+                  "type": "text",
+                  "settings": {
+                    "text": "<p>High-definition prints with rich colors that stay bold over time.</p>",
+                    "hidden_br_mobile": true,
+                    "text_size": "lg",
+                    "text_color": "hdt-text-secondary",
+                    "font_size_text_lg": 16
+                  }
+                }
+              ]
+            },
+            {
+              "type": "heading",
+              "static": true,
+              "id": "cat-title",
+              "settings": {
+                "heading": "<p>We have</p>",
+                "font_weight": "medium",
+                "heading_size": "h_custom",
+                "font_size_heading_lg": 40,
+                "font_size_heading": 32
+              }
+            }
+          ]
+        },
+        {
+          "type": "section-heading",
+          "static": true,
+          "id": "custom-section-heading",
+          "settings": {
+            "design_heading": "1",
+            "horizontal": false,
+            "alignment": "center",
+            "heading_gap": 15,
+            "margin_bottom": 30
+          },
+          "blocks": [
+            {
+              "type": "_heading_section",
+              "settings": {
+                "heading": "Crafted for Everyday Comfort",
+                "heading_size": "h2",
+                "text_color": "hdt-s-text",
+                "font_size_heading_lg": 50,
+                "font_size_heading": 24
+              }
+            },
+            {
+              "type": "_sub_heading_section",
+              "settings": {
+                "text": "<p>Discover apparel and accessories designed with premium materials, <br/>thoughtful details, and standout prints.</p>",
+                "hidden_br_mobile": true,
+                "text_size": "base",
+                "text_color": "hdt-text-secondary"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

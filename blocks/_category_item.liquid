@@ -1,0 +1,119 @@
+{% liquid
+  assign collection = block.settings.collection
+  assign image = block.settings.image | default: collection.featured_image
+  assign title = block.settings.title | default: collection.title | default: 'Category'
+  assign url = block.settings.url | default: collection.url 
+  assign img_effect = section.settings.img_effect
+  assign b_effect = section.settings.b_effect
+%}
+{% stylesheet %}
+  .hdt-collection-card{
+    .hdt-card-inner{
+      border-radius: var(--radius-collection-card);
+      --card-color: var(--color-foreground);
+      &:hover{
+        --card-color: var(--color-accent);
+      }
+    }
+    .hdt-action-wrap{
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 2rem;
+      z-index: 2;
+    }
+    .hdt-card-title{
+      font-size: clamp(1.6rem, 3vw, 2rem);
+      font-weight: var(--font-medium);
+      line-height: 1.2;
+      color: rgb(var(--card-color));
+      transition: .25s;
+    }
+    .hdt-card-navigation{
+      width: clamp(3rem,3vw,4rem);
+      height: clamp(3rem,3vw,4rem);
+      border-radius: var(--radius-full);
+      border: 1px solid rgb(var(--card-color)/ 0.2);
+      backdrop-filter: blur(6.5px);
+      background-color: rgb(var(--card-color)/ 0.1);
+      color: rgb(var(--card-color));
+      transition: .25s;
+      flex: 0 0 auto;
+    }
+    /* .hdt-card-media{
+      background: linear-gradient(0deg, #FAFBFA, #FAFBFA), linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.1) 100%);
+    } */
+  }
+{% endstylesheet %}
+<div class="hdt-card-inner hdt-relative hdt-oh"{% if block.settings.colors_by_block %} color-scheme="{{ block.settings.color_scheme }}"{% endif %}>
+  <div class="hdt-eff-{{ b_effect }} hdt-eff-img-{{ img_effect }} hdt-oh hdt-relative" calc-nav>
+    <a href="{{ url }}" class="hdt-card-media hdt-ratio hdt-oh" style="--aspect-ratioapt-md:{{ image.aspect_ratio | default: 1 }};--aspect-ratioapt:{{ image.aspect_ratio | default: 1 }}">
+      {%- if image != blank -%}
+        {{ image | image_url: width: image.width, height: image.height | image_tag: width: image.width, height: image.height, widths: '100,150,200,250,300,350,400,450,500', loading: 'lazy', class: 'hdt-obj-eff' }}
+      {%- else -%}
+        {{ 'hero-apparel-3' | placeholder_svg_tag: 'hdt-placeholder-svg hdt-obj-eff' }}
+      {%- endif -%}
+    </a>
+  </div>
+  <div class="hdt-action-wrap hdt-pe-none">
+    <h3 class="hdt-card-title hdt-line-clamp">{{ title }}</h3>
+    <div class="hdt-card-navigation hdt-flex hdt-align-center hdt-justify-center">
+      <svg class="hdt-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12.025 4.94165L17.0834 9.99998L12.025 15.0583" stroke="currentColor" stroke-width="1.25" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M2.91669 10H16.9417" stroke="currentColor" stroke-width="1.25" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>        
+    </div>
+  </div>
+</div>
+{% schema %}
+  {
+    "name": "Category",
+    "class": "hdt-slider__slide hdt-collection-card",
+    "settings": [
+      {
+        "type": "collection",
+        "id": "collection",
+        "label": "Collection"
+      },
+      {
+        "type": "header",
+        "content": "Options replace collection"
+      },
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title"
+      },
+      {
+        "type": "url",
+        "id": "url",
+        "label": "Link"
+      },
+      {
+        "type": "checkbox",
+        "id": "colors_by_block",
+        "label": "t:sections.all.colors.display_colors_by_block"
+      },
+      {
+        "type": "color_scheme",
+        "id": "color_scheme",
+        "label": "t:sections.all.colors.label",
+        "visible_if": "{{ block.settings.colors_by_block }}"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Category"
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,83 @@
+{% doc %}
+  This is a custom block for displaying mobile menu categories.
+  @param {string} collection_des - The design for the collection.
+  @param {boolean} show_count - Whether to display the product count for the collection.
+  @param {string} count_label -
+  @param {string} content_position - The position of the content within the collection item.
+  @param {string} content_size - The size of the content within the collection item.
+  @param {string} content_weight - The weight of the content within the collection item.
+
+  @example
+  {% render 'mobile_categories_item', collection_des: '1', show_count: true, count_label: 'products', content_position: 'center', content_size: 'base', content_weight: 'medium' %}
+{% enddoc %}
+<!-- _menu_mobile_categories_item.liquid -->
+{%- liquid
+  assign hdt_svg_image = block.settings.hdt_collection_list_svg
+  assign svg_width = block.settings.svg_width
+  assign svg_width_mb = block.settings.svg_width_mb
+-%}
+{%- liquid
+  assign class = "hdt-slider__slide"
+  if section.settings.layout_mode == 'grid'
+    assign class = "hdt-col"
+  endif
+  #render 'collection-item', block: block, hdt_svg_image: hdt_svg_image, svg_width: svg_width, svg_width_mb: svg_width_mb, collection: collections[block.settings.collection], class: class, sizes: sizes, current: 1
+-%}
+{%- liquid
+  assign collection = closest.collection
+  assign image = collection.featured_image | default: collection.metafields.theme.featured_image_collection.value | default: collection.products.first.featured_image
+-%}
+<div class="hdt-collection-item hdt-collection-style{{ collection_des }} {{ class }}" {{ block.shopify_attributes }} item-selector>
+  <div class="hdt-collection-inner hdt-relative hdt-oh hdt-grid" timeline hdt-reveal="slide-in">
+    <div class="hdt-collection-img hdt-relative" style="--aspect-ratioapt: {{ image.aspect_ratio | default: 1.2 }};">
+      {% if collection_des == "9" %}
+        <span class="hdt-count">{{ collection.all_products_count | default: 0 }}</span> 
+      {% endif %}
+      <span class="hdt-ratio" calc-nav>
+        {%- if hdt_svg_image != blank -%}
+         <span class="hdt-svg-img-collection-list" style="--w-image-svg:{{ svg_width }}px;--w-image-svg-mb:{{ svg_width_mb }}px;">{{ hdt_svg_image }}</span> 
+        {%- else -%}
+          {%- if image != blank -%}
+            {{ image | image_url: width: image.width | image_tag: loading: 'lazy', width: image.width, height: image.height, class: 'hdt-obj-eff' , sizes: 'auto', widths: "360,400,600" }}
+          {%- else -%}
+            {{ 'collection-apparel-1' | placeholder_svg_tag: 'hdt-placeholder-svg hdt-obj-eff' }}  
+          {%- endif -%}
+        {%- endif -%}
+      </span>
+      <a data-pr-href class="hdt-full-width-link"  aria-label="link" href="{{ collection.url }}"></a>
+    </div>
+    {%- if collection.title != blank and collection_des != "15" -%}
+      <div class="hdt-collection-content hdt-absolute hdt-place-self-{{ content_position }}">
+        <div class="hdt-collection-wrapper hdt-flex hdt-flex-col hdt-justify-center hdt-align-center">
+          <a data-pr-href class="hdt-full-width-link"  aria-label="link" href="{{ collection.url }}"></a>
+          <a class="hdt-collection-title hdt-truncate hdt-inline-flex hdt-align-center hdt-justify-center hdt-text-{{ content_size }} hdt-font-{{ content_weight }}" href="{{ collection.url }}">
+            <span class="hdt-collection-title-text hdt-truncate">{{ collection.title }}</span>
+            {% if collection_des == "10" %} <span class="hdt-count">{{ collection.all_products_count | default: 0 }}</span> {% endif %}
+            {% if collection_des == "11" %} <span class="hdt-count"> ({{ collection.all_products_count | default: 0 }}) </span> {% endif %}
+          </a>
+          {%- if show_count  -%}
+            <a class="hdt-collection-count {% if content_size == "sm" %}hdt-text-sm{% else %}hdt-text-base{% endif %} hdt-inline-flex hdt-align-center hdt-justify-center" href="{{ collection.url }}">
+              <span class="hdt-count">{{ collection.all_products_count | default: 0 }}</span> <span class="hdt-text">{{ count_label }}</span>
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endif -%}
+    {% if collection.title != blank and collection_des == "15" %}
+      <div class="hdt-collection-content hdt-absolute hdt-place-self-{{ content_position }}">
+        <div class="hdt-collection-wrapper hdt-flex hdt-flex-col hdt-justify-center hdt-align-center">
+          <span class="hdt-collection-title-text hdt-truncate">{{ collection.title }}</span>
+          <a class="hdt-collection-title hdt-truncate hdt-inline-flex hdt-align-center hdt-justify-center hdt-text-{{ content_size }} hdt-font-{{ content_weight }}" href="{{ collection.url }}">{{ 'sections.featured_collection_2.shop_now' | t }}</a>
+        </div>
+      </div>
+    {% endif %}
+  </div> 
+</div>
+{% schema %}
+{
+  "name": "t:sections.collections-list.blocks.collection_item",
+  "tag": null,
+  "settings": [
+  ]
+}
+{% endschema %}

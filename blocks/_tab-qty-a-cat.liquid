@@ -1,0 +1,307 @@
+<!-- _tab-item.liquid -->
+<span class="hdt-tab-item-image hdt-oh hdt-ratio">
+{%- if block.settings.featured_image != blank -%}
+  {{ block.settings.featured_image | image_url: width: 120 | image_tag: loading: 'lazy', class: 'hdt-w-full hdt-h-full hdt-object-cover' }}
+{%- else -%}
+  {{ 'collection-apparel-1' | placeholder_svg_tag: 'hdt-placeholder-svg hdt-w-full' }}
+{%- endif -%}
+</span>
+<span class="hdt-tab-title-text hdt-truncate hdt-relative">
+  {{ block.settings.title | default: 'Title Tab' }}
+</span>
+<!-- title -->
+
+{% liquid
+  assign section_layout         = block.settings.section_layout
+  assign col_dk                 = block.settings.col_dk
+  assign col_tb                 = block.settings.col_tb
+  assign col_mb                 = block.settings.col_mb
+  assign carousel_mobile        = block.settings.carousel_mobile
+  if carousel_mobile
+    assign col_mb = 1
+  endif
+  assign dot_color              = block.settings.dot_color
+  assign dot_rounded            = block.settings.dot_rounded
+  assign icon_size              = block.settings.icon_size
+  assign icon_design            = block.settings.icon_design
+  assign content_align          = block.settings.content_align
+  assign center_vertical        = block.settings.align_center
+  assign space_padding          = block.settings.space_padding
+  assign use_border             = block.settings.use_border
+  assign icon_color             = block.settings.icon_color
+%}
+
+{% if carousel_mobile %}
+  {% liquid
+    assign carousel_class = ' sm:hdt-scroll-snap hdt-snap-x sm:hdt-snap-grid'
+  %}
+  {%- capture shipping_dots -%}
+    <div class="hdt-icon-box__scrollsnap-dots hdt-scrollsnap-dots hdt-shipping-dots hdt-text-center hdt-flex md:hdt-hidden {{ dot_color }} hdt-dot-rounded-{{ dot_rounded }}">
+      {%- for item in block.blocks -%}
+        <button class="hdt-shipping-dot hdt-scrollsnap-dot__link hdt-scrollsnap-dot" aria-label="scrollsnap-dot"></button> 
+      {%- endfor -%}
+    </div>
+  {%- endcapture -%}
+{% endif %}
+<div id="tab-{{ section.id }}-{{ block.blocks | map: "id" | first }}" class="hdt-tab-item" tab-item {{ block.shopify_attributes }}>
+  <div class="hdt-row-flex hdt-flex-wrap hdt-flex-cols-1 md:hdt-flex-cols-2 hdt-align-center">
+    <div class="hdt-col hdt-cat-featured-image">
+      {%- if block.settings.featured_image != blank -%}
+        {{ block.settings.featured_image | image_url: width: 800 | image_tag: loading: 'lazy', class: 'hdt-w-full hdt-h-full hdt-object-cover' }}
+      {%- else -%}
+        {{ 'collection-apparel-1' | placeholder_svg_tag: 'hdt-placeholder-svg hdt-w-full' }}
+      {%- endif -%}
+    </div>
+    <div class="hdt-col hdt-cat-info">
+      <div class="hdt-cat-info-inner">
+        <div class="hdt-cat-title hdt-text-center">
+          {% content_for 'block', type: 'heading', id: 'cat-title' %}
+        </div>
+        <div class="hdt-shipping">
+          <hdt-scrollsnap class="hdt-content-inner {{ icon_color }} hdt-content-align-{{ content_align }}{% if center_vertical %} hdt-center-content{% endif %} hdt-icon-{{ icon_design }} hdt-icon-size-{{ icon_size }} hdt-space-padding-{{ space_padding }}{% if use_border %} hdt-use-border{% endif %}">
+            <div id="Scroller-{{ section.id }}" class="hdt-row-grid hdt-row-grid--modify hdt-grid-cols-{{ col_mb }} md:hdt-grid-cols-{{ col_tb }} lg:hdt-grid-cols-{{ col_dk }}{{ carousel_class }}">
+              {% content_for 'blocks' %}
+            </div>
+            {{ shipping_dots }}
+          </hdt-scrollsnap>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% schema %}
+{
+  "name": "Item tab",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Item title"
+    },
+    {
+      "type": "image_picker",
+      "id": "featured_image",
+      "label": "Featured image"
+    },
+    {
+      "type": "header",
+      "content": "Icon box options"
+    },
+    {
+      "type": "select",
+      "id": "content_align",
+      "label": "t:sections.icon-box.settings.content_align.label",
+      "options": [
+        {
+          "value": "left",
+          "label": "t:settings_schema.global.settings.text_alignment.left"
+        },
+        {
+          "value": "center",
+          "label": "t:settings_schema.global.settings.text_alignment.center"
+        },
+        {
+          "value": "right",
+          "label": "t:settings_schema.global.settings.text_alignment.right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "checkbox",
+      "id": "align_center",
+      "label": "t:sections.shipping.settings.content_align_vertical_center",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "icon_design",
+      "label": "t:sections.shipping.settings.icon_design.label",
+      "options": [
+        {
+          "value": "default",
+          "label": "t:default"
+        },
+        {
+          "value": "circle",
+          "label": "t:sections.shipping.settings.icon_design.options.circle"
+        }
+      ],
+      "default": "default"
+    },
+    {
+      "type": "checkbox",
+      "id": "space_padding",
+      "label": "Space padding 2",
+      "default": false,
+      "visible_if": "{{ section.settings.use_border == true }}"
+    },
+    {
+      "type": "select",
+      "id": "icon_size",
+      "label": "t:sections.shipping.settings.icon_size.label",
+      "options": [
+        {
+          "value": "none",
+          "label": "t:sections.shipping.settings.icon_size.options.none"
+        },
+        {
+          "value": "small",
+          "label": "t:size.sm"
+        },
+        {
+          "value": "medium",
+          "label": "t:settings_schema.typography.settings.font_size.base"
+        },
+        {
+          "value": "large",
+          "label": "t:size.lg"
+        },
+        {
+          "value": "xlarge",
+          "label": "Extra large"
+        }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "select",
+      "id": "icon_color",
+      "label": "t:sections.shipping.settings.icon_color.label",
+      "options": [
+        {
+          "value": "",
+          "label": "t:default"
+        },
+        {
+          "value": "hdt-icon-secondary",
+          "label": "t:settings_schema.colors.secondary"
+        },
+        {
+          "value": "hdt-icon-tertiary",
+          "label": "t:settings_schema.colors.tertiary"
+        },
+        {
+          "value": "hdt-icon-accent",
+          "label": "t:settings_schema.colors.accent"
+
+        }
+      ],
+      "default": ""
+    },
+    {
+      "type": "checkbox",
+      "id": "use_border",
+      "label": "t:sections.shipping.settings.use_border.label",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "col_dk",
+      "label": "t:sections.all.items_row.desktop",
+      "options": [
+        {
+          "value": "1", 
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        },
+        {
+          "value": "3",
+          "label": "3"
+        }
+      ],
+      "default": "3"
+    },
+    {
+      "type": "select",
+      "id": "col_tb",
+      "label": "t:sections.all.items_row.tablet",
+      "options": [
+        {
+          "value": "1", 
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        },
+        {
+          "value": "3",
+          "label": "3"
+        }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "select",
+      "id": "col_mb",
+      "label": "t:sections.all.items_row.mobile",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        }
+      ],
+      "default": "1",
+      "visible_if": "{{ block.settings.carousel_mobile == false }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "carousel_mobile",
+      "label": "t:blocks.carousel.settings.carousel_on_mobile",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "dot_color",
+      "label": "t:blocks.carousel.settings.dots_color",
+      "options": [
+        {
+          "value": "",
+          "label": "t:default"
+        },
+        {
+          "value": "hdt-dot-secondary",
+          "label": "t:settings_schema.colors.secondary"
+        },
+        {
+          "value": "hdt-dot-tertiary",
+          "label": "t:settings_schema.colors.tertiary"
+        },
+        {
+          "value": "hdt-dot-accent",
+          "label": "t:settings_schema.colors.accent"
+
+        }
+      ],
+      "default": "",
+      "visible_if": "{{ block.settings.carousel_mobile == true }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "dot_rounded",
+      "label": "t:blocks.carousel.settings.dots_rounded",
+      "default": false,
+      "visible_if": "{{ block.settings.carousel_mobile == true }}"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "_shipping"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Item tab"
+    }
+  ]
+}
+{% endschema %}

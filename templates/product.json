@@ -1,0 +1,402 @@
+{
+  "sections": {
+    "main-product": {
+      "type": "main-product",
+      "blocks": {
+        "group_product_9RYttB": {
+          "type": "_group-product",
+          "settings": {
+            "colors_by_block": false,
+            "color_scheme": ""
+          },
+          "blocks": {
+            "product_title_ehRqkq": {
+              "type": "_product-title",
+              "settings": {
+                "txt_tr_pr": "uppercase",
+                "tag": "h2",
+                "heading_size": "h_custom",
+                "font_size_heading_lg": 26,
+                "font_size_heading": 20,
+                "font_weight": "normal",
+                "letter_spacing_heading": 2
+              },
+              "blocks": {}
+            },
+            "product_price_9JizTC": {
+              "type": "_product-price",
+              "settings": {
+                "label_onsale_style": "none"
+              },
+              "blocks": {}
+            },
+            "fabric_details_block": {
+              "type": "_product-fabric-details",
+              "settings": {
+                "heading": "Fabric Details",
+                "shirt_default": "Organza",
+                "trouser_default": "Raw Silk",
+                "dupatta_default": "Organza",
+                "color_default": "Tea Pink"
+              },
+              "blocks": {}
+            },
+            "product_variant_picker_WMmDTM": {
+              "type": "_product-variant-picker",
+              "settings": {
+                "color_picker_type": "color_rounded",
+                "color_size": "medium",
+                "picker_type": "rectangle",
+                "size_chart_source": "page",
+                "size_chart_page": "size-chart"
+              },
+              "blocks": {}
+            },
+            "product_buy_button_aPmAbD": {
+              "type": "_product-buy-button",
+              "settings": {
+                "show_quantity_selector": true,
+                "show_dynamic_checkout": true,
+                "show_gift_card_recipient": false,
+                "show_wishlist": true,
+                "show_compare": false,
+                "ani": "none",
+                "time": 6,
+                "btn_transform": "hdt-uppercase",
+                "btn_style": "hdt-btn-outline",
+                "btn_fullwidth": true
+              },
+              "blocks": {}
+            },
+            "group_accordion_product": {
+              "type": "_group_product_accordion",
+              "settings": {
+                "open": false,
+                "accordion_des": "3",
+                "spacing": 0
+              },
+              "blocks": {
+                "accordion_description": {
+                  "type": "_accordion_des_item",
+                  "settings": {
+                    "title": "DESCRIPTION",
+                    "icon": "none"
+                  }
+                },
+                "accordion_details": {
+                  "type": "_accordion_adt_item",
+                  "settings": {
+                    "title": "DETAILS",
+                    "icon": "none"
+                  }
+                },
+                "accordion_delivery": {
+                  "type": "_accordion_html_item",
+                  "settings": {
+                    "title": "DELIVERY TIME",
+                    "icon": "none",
+                    "content": "<p><strong>Shipment Processing Time:</strong><br>All orders are processed after confirmation. Delivery timelines may vary during sale periods, festive seasons, or new collection launches.</p><ol><li>Local Shipping (Pakistan).</li><li>Unstitched Dresses: Delivered within 5 - 7 working days.</li><li>Stitched Dresses: Dispatched in 10 - 12 working days.</li><li>Ready-to-Wear (Pret): Delivered within 7 - 10 working days.</li></ol><p><strong>International Shipping</strong></p><ol><li>Unstitched Dresses: Delivered within 10 - 15 working days.</li><li>Stitched Dresses: Delivered within 10 – 20 working days.</li><li>Ready-to-Wear (Pret): Delivered within 10 - 18 working days.</li></ol><p><strong>Delivery timelines begin once the order has been successfully confirmed.</strong></p>"
+                  }
+                },
+                "accordion_care": {
+                  "type": "_accordion_html_item",
+                  "settings": {
+                    "title": "CARE GUIDE",
+                    "icon": "none",
+                    "content": "<ol><li>Dry clean recommended.</li><li>Do not use bleach or strong stain removers.</li><li>Iron on medium heat.</li><li>Avoid high heat.</li><li>Do not use harsh chemicals.</li><li>Hand wash only</li><li>Hand wash gently if needed.</li><li>Do not twist or squeeze.</li><li>Air dry in a cool, shaded place.</li></ol><p><strong>Note:</strong><br>Actual colors may look slightly different due to lighting and photography. Some accessories or embellishments shown in photos are for styling only and are not included with the outfit.</p>"
+                  }
+                },
+                "accordion_disclaimer": {
+                  "type": "_accordion_html_item",
+                  "settings": {
+                    "title": "DISCLAIMER",
+                    "icon": "none",
+                    "content": "<p>We do our best to show our products clearly, but please note that colors, fabric texture, and size may vary slightly due to screen settings and production.</p><p>For exact details about size, fabric, and care, please check the product description. If you need urgent delivery, contact our customer support before placing your order.</p><p><strong>Stitched items:</strong> Include the stitched outfit with trousers and any accessories mentioned. <strong>Unstitched items:</strong> Only include the fabric as described, no accessories are included.</p>"
+                  }
+                }
+              },
+              "block_order": [
+                "accordion_description",
+                "accordion_details",
+                "accordion_delivery",
+                "accordion_care",
+                "accordion_disclaimer"
+              ]
+            }
+          },
+          "block_order": [
+            "product_title_ehRqkq",
+            "product_price_9JizTC",
+            "fabric_details_block",
+            "product_variant_picker_WMmDTM",
+            "product_buy_button_aPmAbD",
+            "group_accordion_product"
+          ]
+        },
+        "main-product-sidebar": {
+          "type": "_product_sidebar",
+          "static": true,
+          "settings": {
+            "color_scheme": "",
+            "space": 50,
+            "last_order": false
+          },
+          "blocks": {}
+        },
+        "main-product-medias": {
+          "type": "_product-medias",
+          "static": true,
+          "settings": {
+            "media_box_size": 55,
+            "desktop_media_layout": "thumbnail_left",
+            "media_size": "medium",
+            "mobile_media_layout": "thumbnails",
+            "show_first_media": false,
+            "use_select_varaint_change_media": true,
+            "enable_media_autoplay": false,
+            "enable_video_looping": false,
+            "enable_thumb_efect": true,
+            "image_ratio": "adapt_image",
+            "image_size": true,
+            "image_zoom": "zoom_lightbox",
+            "enable_lightbox_icon": false,
+            "image_zoom_type": "external",
+            "zoom_level": 2,
+            "max_zoom_lightbox": 3,
+            "navUI": true,
+            "nav_style": "outline",
+            "nav_shape": "rounded",
+            "nav_size": "small",
+            "nav_hide_mobile": true
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "group_product_9RYttB"
+      ],
+      "settings": {
+        "product_list_fbt": [],
+        "sticky_atc": false,
+        "hdt_layout_atc_mob": "hdt_layout_atc_mob_default",
+        "hdt_show_sticky_atc": "hdt_show_always",
+        "btn_transform": "hdt-uppercase",
+        "btn_style": "hdt-btn-solid",
+        "colors_by_section": false,
+        "color_scheme": "",
+        "background_opacity": 1,
+        "fullwidth": false,
+        "mg": "",
+        "mg_mb": "",
+        "pd": "30px,,60px,",
+        "pd_mb": "22px,,45px,"
+      }
+    },
+    "tabs": {
+      "type": "main-product-tabs",
+      "disabled": true,
+      "blocks": {
+        "tab_des_tKqkJj": {
+          "type": "tab_des",
+          "settings": {
+            "title": "Description"
+          }
+        },
+        "tab_add_HXf3yk": {
+          "type": "tab_add",
+          "settings": {
+            "title": "Additional Information"
+          }
+        },
+        "tab_html_7dKb7L": {
+          "type": "tab_html",
+          "settings": {
+            "title": "Custom tab",
+            "content": "",
+            "page": "wash-care"
+          }
+        }
+      },
+      "block_order": [
+        "tab_des_tKqkJj",
+        "tab_add_HXf3yk",
+        "tab_html_7dKb7L"
+      ],
+      "settings": {
+        "tabs_design": "tab",
+        "enable_first_tab": false,
+        "full_width": false,
+        "colors_by_section": true,
+        "color_scheme": "scheme-c9476b69-abc7-454f-a946-2d5a9f5f3a37",
+        "background_opacity": 1,
+        "mg": "",
+        "mg_mb": "",
+        "pd": "60px,,60px,",
+        "pd_mb": "30px,,30px,"
+      }
+    },
+    "sidebar": {
+      "type": "sidebar-product",
+      "disabled": true,
+      "settings": {
+        "color_scheme": "",
+        "space": 50
+      }
+    },
+    "related-products": {
+      "type": "related-products",
+      "blocks": {
+        "pr-heading": {
+          "type": "section-heading",
+          "static": true,
+          "settings": {
+            "design_heading": "1",
+            "horizontal": false,
+            "alignment": "center",
+            "heading_gap": 18,
+            "margin_bottom": 30
+          },
+          "blocks": {
+            "heading_section_nLFWkr": {
+              "type": "_heading_section",
+              "settings": {
+                "heading": "You may also like",
+                "line_height": "",
+                "heading_size": "h5",
+                "text_color": "hdt-s-text",
+                "font_size_heading_lg": 50,
+                "font_size_heading": 24,
+                "letter_spacing_heading": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "heading_section_nLFWkr"
+          ]
+        }
+      },
+      "settings": {
+        "product_des": "1",
+        "image_ratio": "portrait",
+        "image_size": true,
+        "show_vendor": false,
+        "display_type": "4",
+        "pr_border": "none",
+        "limit": 10,
+        "col_dk": "4",
+        "col_tb": "3",
+        "col_mb": "2",
+        "space_items": "x",
+        "loop": false,
+        "autoplay": 0,
+        "pauseOnHover": false,
+        "navUI": true,
+        "nav_position": "default",
+        "nav_visible": "hover",
+        "nav_style": "outline",
+        "nav_shape": "rounded",
+        "nav_size": "small",
+        "nav_hide_mobile": false,
+        "dotUI": false,
+        "pag_style": "default",
+        "pag_rounded": false,
+        "pag_space": 10,
+        "pag_mgt": 10,
+        "only_show_mobile": false,
+        "pag_hide_mobile": false,
+        "colors_by_section": false,
+        "color_scheme": "",
+        "background_opacity": 0,
+        "section_layout": "container",
+        "hdt_background_parallax": false,
+        "mg": "",
+        "mg_mb": "",
+        "pd": "75px,,75px,",
+        "pd_mb": "37px,,37px,"
+      }
+    },
+    "recently-products": {
+      "type": "recently-products",
+      "disabled": true,
+      "blocks": {
+        "pr-heading": {
+          "type": "section-heading",
+          "static": true,
+          "settings": {
+            "design_heading": "1",
+            "horizontal": false,
+            "alignment": "center",
+            "heading_gap": 18,
+            "margin_bottom": 30
+          },
+          "blocks": {
+            "heading_section_JdADpx": {
+              "type": "_heading_section",
+              "settings": {
+                "heading": "Recently viewed products",
+                "line_height": "",
+                "heading_size": "h5",
+                "text_color": "hdt-s-text",
+                "font_size_heading_lg": 50,
+                "font_size_heading": 24,
+                "letter_spacing_heading": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "heading_section_JdADpx"
+          ]
+        }
+      },
+      "settings": {
+        "product_des": "1",
+        "image_ratio": "portrait",
+        "image_size": true,
+        "show_vendor": false,
+        "pr_border": "none",
+        "sort_by": "new_to_old",
+        "availability": "show",
+        "limit": 10,
+        "col_dk": "4",
+        "col_tb": "3",
+        "col_mb": "2",
+        "space_items": "x",
+        "loop": false,
+        "autoplay": 0,
+        "pauseOnHover": false,
+        "navUI": true,
+        "nav_position": "default",
+        "nav_visible": "hover",
+        "nav_style": "outline",
+        "nav_shape": "rounded",
+        "nav_size": "small",
+        "nav_hide_mobile": false,
+        "dotUI": false,
+        "pag_style": "default",
+        "pag_rounded": false,
+        "pag_space": 10,
+        "pag_mgt": 10,
+        "only_show_mobile": false,
+        "pag_hide_mobile": false,
+        "colors_by_section": false,
+        "color_scheme": "",
+        "background_opacity": 0,
+        "section_layout": "container",
+        "hdt_background_parallax": false,
+        "mg": "",
+        "mg_mb": "",
+        "pd": ",,50px,",
+        "pd_mb": ",,40px,"
+      }
+    }
+  },
+  "order": [
+    "main-product",
+    "tabs",
+    "sidebar",
+    "related-products",
+    "recently-products"
+  ]
+}

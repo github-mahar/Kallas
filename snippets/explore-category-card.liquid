@@ -1,0 +1,39 @@
+<!-- snippets/explore-category-card.liquid -->
+{%- liquid
+  assign item_h_dk = item_h_dk | default: '350px'
+  assign item_h_mb = item_h_mb | default: '220px'
+  unless item_h_dk contains 'px'
+    assign item_h_dk = item_h_dk | append: 'px'
+  endunless
+  unless item_h_mb contains 'px'
+    assign item_h_mb = item_h_mb | append: 'px'
+  endunless
+
+  assign overlay_color = block.settings.overlay_color | default: section.settings.overlay_color
+-%}
+<div class="hdt-explore-category-item hdt-relative hdt-oh hdt-w-full hdt-group" style="--item-height-dk: {{ item_h_dk }}; --item-hover-height-dk: {{ hover_h_dk }}; --item-height-mb: {{ item_h_mb }};" {%- if block %} {{ block.shopify_attributes }}{% endif %}>
+  <a href="{{ collection_link | default: '#' }}" class="hdt-explore-category-inner hdt-relative hdt-block hdt-w-full hdt-h-full hdt-oh">
+    <div class="hdt-explore-category-media hdt-relative hdt-w-full hdt-h-full hdt-oh hdt-eff-{{ section.settings.b_effect | default: 'none' }} hdt-eff-img-{{ section.settings.img_effect | default: 'none' }}">
+      {%- if image != blank -%}
+        {{ image | image_url: width: image.width | image_tag: loading: 'lazy', width: image.width, height: image.height, class: 'hdt-explore-category-img hdt-w-full hdt-h-full hdt-object-cover hdt-obj-eff', sizes: sizes, widths: "360,400,600,800,1000,1200" }}
+      {%- elsif placeholder_svg != blank -%}
+        {{ placeholder_svg | placeholder_svg_tag: 'hdt-placeholder-svg hdt-w-full hdt-h-full hdt-object-cover hdt-obj-eff' }}
+      {%- else -%}
+        {{ 'collection-apparel-1' | placeholder_svg_tag: 'hdt-placeholder-svg hdt-w-full hdt-h-full hdt-object-cover hdt-obj-eff' }}
+      {%- endif -%}
+      {%- if overlay_color == blank -%}
+        <div class="hdt-explore-category-overlay hdt-absolute hdt-inset-0 hdt-pe-none"></div>
+      {%- endif -%}
+    </div>
+    <div class="hdt-explore-category-content" style="{% if overlay_color != blank %}background-color: {{ overlay_color }};{% endif %}">
+      <h5 class="hdt-explore-category-title hdt-truncate {% if section.settings.font_size == 'custom' %}is-custom-size{% else %}{{ section.settings.font_size | default: 'hdt-text-base' }}{% endif %} {%- if section.settings.color == 'hdt-text-custom-color' %} hdt-text-custom-color{% endif %} {{ section.settings.color | default: 'hdt-s-text' }}" {%- if section.settings.color == 'hdt-text-custom-color' %} style="--text-custom-color: {{ section.settings.text_custom_color | default: '#ffffff' }};"{%- endif %}>
+        <span>{{ title | default: collection.title | default: 'Category title' }}</span>
+      </h5>
+      {%- if show_count and collection != blank and collection.all_products_count != blank -%}
+        <p class="hdt-explore-category-count">
+          {{ collection.all_products_count }} {{ count_label | default: 'products' }}
+        </p>
+      {%- endif -%}
+    </div>
+  </a>
+</div>

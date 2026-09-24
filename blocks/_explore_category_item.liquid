@@ -1,0 +1,72 @@
+<!-- blocks/_explore_category_item.liquid -->
+{%- liquid
+  assign sizes = '(min-width: 1150px) ' | append: settings.page_width | append: 'px, (min-width: 750px) calc(100vw - 60px), calc(100vw - 30px)'
+  if section.settings.section_layout == 'full_width'
+    assign sizes = '100vw'
+  endif
+
+  assign max_h_dk = section.settings.max_height_dk | default: 420
+  assign min_h_dk = section.settings.min_height_dk | default: 250
+
+  assign total_items = section.blocks.size | default: 1
+  assign current_index = 1
+  for b in section.blocks
+    if b.id == block.id
+      assign current_index = forloop.index
+      break
+    endif
+  endfor
+
+  # Dynamic symmetrical wave height calculation
+  if section.settings.height_mode == 'wave' and total_items > 1
+    assign center_x2 = total_items | plus: 1
+    assign curr_x2 = current_index | times: 2
+    assign diff_x2 = curr_x2 | minus: center_x2 | abs
+    assign max_diff_x2 = total_items | minus: 1
+    assign h_diff = max_h_dk | minus: min_h_dk
+    assign h_added = h_diff | times: diff_x2 | divided_by: max_diff_x2
+    assign item_h_num = min_h_dk | plus: h_added | round
+    assign item_h_dk = item_h_num | append: 'px'
+  else
+    assign item_h_dk = max_h_dk | append: 'px'
+  endif
+
+  assign collection = block.settings.collection
+  assign image = block.settings.image | default: collection.metafields.theme.featured_image_collection.value | default: collection.featured_image | default: collection.image | default: collection.products.first.featured_image
+  assign title = block.settings.title | default: collection.title | default: 'Category title'
+  assign collection_link = block.settings.collection_link | default: collection.url
+
+  render 'explore-category-card', collection: collection, image: image, title: title, collection_link: collection_link, item_h_dk: item_h_dk, item_h_mb: section.settings.height_mb, show_count: section.settings.show_count, count_label: section.settings.count_label, sizes: sizes, block: block
+-%}
+
+{% schema %}
+{
+  "name": "Category Item",
+  "tag": null,
+  "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "t:settings_schema.cart.settings.cart_drawer.collection.label"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Custom Image",
+      "info": "Leave blank to use collection image"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Custom Title",
+      "info": "Leave blank to use collection title"
+    },
+    {
+      "type": "url",
+      "id": "collection_link",
+      "label": "Custom Link",
+      "info": "Leave blank to use collection URL"
+    }
+  ]
+}
+{% endschema %}

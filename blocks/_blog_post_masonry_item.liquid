@@ -1,0 +1,277 @@
+<!-- blocks/_blog_post_masonry_item.liquid -->
+{%- liquid
+  assign article = block.settings.article
+
+  if article != blank
+    assign card_image = article.image
+    assign card_title = article.title
+    assign card_excerpt = article.excerpt_or_content | strip_html | truncatewords: 18
+    assign card_author = article.author
+    assign card_date = article.published_at | date: "%b %d, %Y"
+    assign card_url = article.url
+    assign card_category = article.blog.title
+    assign card_tags = article.tags
+    assign card_comments = article.comments_count
+  else
+    assign card_image = nil
+    assign card_title = "Blog Post Title"
+    assign card_excerpt = "Target stiff muscles and screen-time tension with ergonomic relaxation."
+    assign card_author = "Admin"
+    assign card_date = "Nov 22, 2024"
+    assign card_url = "#"
+    assign card_category = "Wellness"
+    assign card_tags = nil
+    assign card_comments = 0
+  endif
+-%}
+
+<div class="hdt-banner_masonry__item hdt-blog-masonry-item" style="--item-column-span: {{ block.settings.col_w }}; --item-row-span: {{ block.settings.row_count }}; --item-column-span-tb: {{ block.settings.col_w_tb }}; --item-row-span-tb: {{ block.settings.row_count_tb }}; --item-column-span-mb: {{ block.settings.col_w_mb }}; --item-row-span-mb: {{ block.settings.row_count_mb }};" {{ block.shopify_attributes }}>
+  <div class="hdt-blog-masonry-card hdt-relative hdt-oh hdt-radius">
+    <div class="hdt-blog-masonry-card__img-wrap">
+      {%- if card_image != blank -%}
+        {{ card_image | image_url: width: card_image.width | image_tag: loading: 'lazy', width: card_image.width, height: card_image.height, class: 'hdt-blog-masonry-card__img hdt-obj-eff', sizes: '(min-width: 768px) 50vw, 100vw' }}
+      {%- else -%}
+        {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+        {{ 'blog-apparel-' | append: current | placeholder_svg_tag: 'hdt-blog-masonry-card__img hdt-placeholder-svg hdt-obj-eff' }}
+      {%- endif -%}
+    </div>
+
+    <a class="hdt-full-width-link" aria-label="{{ card_title | escape }}" href="{{ card_url }}"></a>
+
+    <div class="hdt-blog-masonry-card__overlay">
+      {%- if block.settings.show_category and card_category != blank -%}
+        <span class="hdt-blog-masonry-card__category">{{ card_category }}</span>
+      {%- endif -%}
+
+      {%- if block.settings.show_author or block.settings.show_date or block.settings.show_comment -%}
+        <div class="hdt-blog-masonry-card__meta text-xs hdt-font-normal">
+          {%- if block.settings.show_author and card_author != blank -%}
+            By <strong>{{ card_author }}</strong>
+          {%- endif -%}
+          {%- if block.settings.show_author and card_author != blank and block.settings.show_date and card_date != blank -%}
+            <span> on </span>
+          {%- endif -%}
+          {%- if block.settings.show_date and card_date != blank -%}
+            <span>{{ card_date }}</span>
+          {%- endif -%}
+          {%- if block.settings.show_comment -%}
+            <span> • {{ card_comments }} comments</span>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      <h5 class="hdt-blog-masonry-card__title">{{ card_title }}</h5>
+
+      <div class="hdt-blog-masonry-card__hover-content">
+        <div class="hdt-blog-masonry-card__hover-content-inner">
+          {%- if block.settings.show_tags and card_tags != blank -%}
+            <div class="hdt-blog-masonry-card__tags">
+              {%- for tag in card_tags -%}
+                <span class="hdt-blog-masonry-card__tag">{{ tag }}</span>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+
+          {%- if block.settings.show_content and card_excerpt != blank -%}
+            <p class="hdt-blog-masonry-card__excerpt">{{ card_excerpt }}</p>
+          {%- endif -%}
+          
+          {%- if block.settings.show_readmore -%}
+            <span class="hdt-blog-masonry-card__btn hdt-text-lg">
+              <span>Read more</span>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"><path d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"/></svg>
+            </span>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Blog Post Item",
+  "tag": null,
+  "settings": [
+    {
+      "type": "article",
+      "id": "article",
+      "label": "t:sections.main-blogs.article.name"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_category",
+      "label": "t:sections.main-blogs.article.infos.show_cate",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_content",
+      "label": "t:blocks.article_card.settings.show_content",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tags",
+      "label": "t:sections.main-blogs.article.infos.show_tags",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "label": "t:sections.main-blogs.article.infos.show_author",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_comment",
+      "label": "t:sections.feature-blog.settings.show_comment",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_readmore",
+      "label": "t:sections.feature-blog.settings.show_readmore",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_date",
+      "label": "t:sections.feature-blog.settings.show_date",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "t:sections.banner.settings.desktop"
+    },
+    {
+      "type": "select",
+      "id": "col_w",
+      "label": "t:sections.banner.blocks.common.col_w",
+      "options": [
+        {
+          "value": "2",
+          "label": "16.66%"
+        },
+        {
+          "value": "3",
+          "label": "25%"
+        },
+        {
+          "value": "4",
+          "label": "33.33%"
+        },
+        {
+          "value": "6",
+          "label": "50%"
+        },
+        {
+          "value": "8",
+          "label": "66.67%"
+        },
+        {
+          "value": "9",
+          "label": "75%"
+        },
+        {
+          "value": "12",
+          "label": "100%"
+        }
+      ],
+      "default": "4"
+    },
+    {
+      "type": "range",
+      "id": "row_count",
+      "label": "t:sections.banner.blocks.common.row_count",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "header",
+      "content": "t:sections.banner.settings.tablet"
+    },
+    {
+      "type": "select",
+      "id": "col_w_tb",
+      "label": "t:sections.banner.blocks.common.col_w",
+      "options": [
+        {
+          "value": "2",
+          "label": "16.66%"
+        },
+        {
+          "value": "3",
+          "label": "25%"
+        },
+        {
+          "value": "4",
+          "label": "33.33%"
+        },
+        {
+          "value": "6",
+          "label": "50%"
+        },
+        {
+          "value": "8",
+          "label": "66.67%"
+        },
+        {
+          "value": "9",
+          "label": "75%"
+        },
+        {
+          "value": "12",
+          "label": "100%"
+        }
+      ],
+      "default": "6"
+    },
+    {
+      "type": "range",
+      "id": "row_count_tb",
+      "label": "t:sections.banner.blocks.common.row_count",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "header",
+      "content": "t:sections.banner.settings.mobile"
+    },
+    {
+      "type": "select",
+      "id": "col_w_mb",
+      "label": "t:sections.banner.blocks.common.col_w",
+      "options": [
+        {
+          "value": "1",
+          "label": "50%"
+        },
+        {
+          "value": "2",
+          "label": "100%"
+        }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "range",
+      "id": "row_count_mb",
+      "label": "t:sections.banner.blocks.common.row_count",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 1
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blog Post Item"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,142 @@
+{% render 'gallery-item-card', block: block %}
+
+{% schema %}
+{
+  "name": "Gallery item",
+  "tag": null,
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "t:blocks.image.name"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "t:sections.all.images.ratio.label",
+      "options": [
+        {
+          "value": "adapt_image",
+          "label": "Adapt to image"
+        },
+        {
+          "value": "square",
+          "label": "Square"
+        },
+        {
+          "value": "portrait",
+          "label": "Portrait"
+        },
+        {
+          "value": "asos",
+          "label": "ASOS"
+        },
+        {
+          "value": "landscape",
+          "label": "Landscape"
+        },
+        {
+          "value": "custom-pr",
+          "label": "Custom"
+        }
+      ],
+      "default": "adapt_image"
+    },
+    {
+      "type": "checkbox",
+      "id": "image_size",
+      "label": "t:sections.all.images.size.cover",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "url",
+      "label": "URL"
+    },
+    {
+      "type": "checkbox",
+      "id": "open_in_new_tab",
+      "label": "t:blocks.banner_item.settings.banner_target",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "img_effect",
+      "label": "t:sections.all.image_effect.image_hover_eff.label",
+      "info": "t:sections.all.image_effect.image_hover_eff.info",
+      "default": "none",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "zoom",
+          "label": "Zoom"
+        },
+        {
+          "value": "rotate",
+          "label": "Rotate"
+        },
+        {
+          "value": "translateToTop",
+          "label": "Move to top"
+        },
+        {
+          "value": "translateToRight",
+          "label": "Move to right"
+        },
+        {
+          "value": "translateToBottom",
+          "label": "Move to bottom"
+        },
+        {
+          "value": "translateToLeft",
+          "label": "Move to left"
+        },
+        {
+          "value": "filter",
+          "label": "Filter"
+        },
+        {
+          "value": "bounceIn",
+          "label": "BounceIn"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "b_effect",
+      "label": "t:sections.all.image_effect.item_eff.label",
+      "default": "none",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "border-run",
+          "label": "Border run"
+        },
+        {
+          "value": "pervasive-circle",
+          "label": "Pervasive circle"
+        },
+        {
+          "value": "plus-zoom-overlay",
+          "label": "Plus zoom overlay"
+        },
+        {
+          "value": "overlay",
+          "label": "Overlay"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Gallery item"
+    }
+  ]
+}
+{% endschema %}

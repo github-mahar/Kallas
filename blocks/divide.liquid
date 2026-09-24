@@ -1,0 +1,91 @@
+{%- liquid
+  assign height = block.settings.height
+  assign width = block.settings.width
+  assign width_type = block.settings.width_type
+-%}
+{% liquid
+  assign effect = 'hdt-reveal="slide-in" timeline'
+  if section.id contains 'slideshow'
+    assign effect = 'reval'
+  endif   
+  if section.location contains 'footer' or section.location == 'header'
+    assign effect = ''
+  endif
+%}
+<div {{ effect }} id="{{ block.id }}" class="hdt-divide-block hdt-flex" {{ block.shopify_attributes }}>
+</div>
+{%- style -%}
+  #{{ block.id }}.hdt-divide-block {
+    height: {{ height }}px;
+    {%- if width_type == 'full' -%}
+      width: 100%;
+    {%- else -%}
+      width: {{ width }}px;
+    {%- endif -%}
+    background-color: {{ block.settings.hdt_color_divider }};
+  }
+{%- endstyle -%}
+
+
+{% schema %}
+  {
+    "name": "Divide",
+    "tag": "div",
+    "class": "hdt-divide-block-container",
+    "settings": [
+      {
+        "type": "header",
+        "content": "1. Divide Settings"
+      },
+      {
+        "type": "number",
+        "id": "height",
+        "label": "Height",
+        "default": 100,
+        "info": "The height of the divide block"
+      },
+      {
+        "type": "select",
+        "id": "width_type",
+        "label": "Width type",
+        "options": [
+          {
+            "value": "custom",
+            "label": "Custom width"
+          },
+          {
+            "value": "full",
+            "label": "Full width"
+          }
+        ],
+        "default": "custom"
+      },
+      {
+        "type": "number",
+        "id": "width",
+        "label": "Custom width",
+        "default": 1,
+        "info": "Custom width",
+        "visible_if": "{{ block.settings.width_type == 'custom' }}"
+      },
+      {
+        "type": "header",
+        "content": "2. Color Settings"
+      },
+      {
+        "type": "color",
+        "id": "hdt_color_divider",
+        "label": "Divider color",
+        "default": "#000",
+        "alpha": true,
+      }
+    ],
+    "presets": [
+      {
+        "name": "Divide",
+        "settings": {
+        }
+      }
+    ]
+  }
+{% endschema %}

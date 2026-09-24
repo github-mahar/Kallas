@@ -1,0 +1,63 @@
+<!-- blocks/_testimonial_item.liquid -->
+<div class="hdt-slider__slide hdt-testimonial-item testimonial-item{% if block.settings.enable_border %} hdt-item-active-card{% endif %}">
+ <div class="testimonial-inner">
+    {%- liquid
+       assign current_ter_des = section.settings.ter_des | default: "4"
+       case current_ter_des
+        when '3', '6'
+          render 'quote_2', block: block
+        when '4', '9'
+          render 'quote_3', block: block
+        else 
+          render 'quote_1', block: block
+       endcase
+    -%}
+ </div>
+</div>
+{% schema %}
+  {
+    "name": "Testimonial",
+    "tag": null,
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "image_avata",
+        "label": "Image"
+      },
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading"
+      },
+      {
+        "type": "richtext",
+        "id": "content",
+        "label": "Text",
+        "default": "<p>Add customer reviews and testimonials to showcase your store’s happy customers.</p>"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Author",
+        "default": "Author's name",
+      },
+      {
+        "type": "text",
+        "id": "pos",
+        "label": "Position"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_border",
+        "label": "Enable border / active card background",
+        "default": false,
+        "visible_if": "{{ section.settings.ter_des == '9' }}"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Testimonial Item"
+      }
+    ]
+  }
+{% endschema %}

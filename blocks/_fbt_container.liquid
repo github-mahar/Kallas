@@ -1,0 +1,216 @@
+<!-- blocks/_fbt_container.liquid -->
+{{ 'fbt.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  if settings.label_onsale_style == 'text'
+    assign save_badge_template = 'products.product.on_sale' | t
+  else
+    assign save_badge_template = 'products.product.save_percent_single_price' | t: percent: '[percent]'
+  endif
+  assign image_ratio = block.settings.image_ratio | default: 'square'
+  assign col_dk = block.settings.col_dk | default: '3'
+  assign col_tb = block.settings.col_tb | default: '3'
+  assign col_mb = block.settings.col_mb | default: '2'
+  assign fbt_item_count = 0
+-%}
+{%- style -%}
+  #Grid-{{ block.id }} {
+    --spacing-x: {{ settings.spacing_grid_horizontal | divided_by: 2 }}px;
+    --spacing-y: {{ settings.spacing_grid_vertical | divided_by: 2 }}px;
+  }
+  @media(min-width: 768px){
+    #Grid-{{ block.id }} {
+      --spacing-x: {{ settings.spacing_grid_horizontal | divided_by: 2 }}px;
+      --spacing-y: {{ settings.spacing_grid_vertical }}px;
+    }
+  }
+  @media(min-width: 1150px){
+    #Grid-{{ block.id }} {
+      --spacing-x: {{ settings.spacing_grid_horizontal }}px;
+      --spacing-y: {{ settings.spacing_grid_vertical }}px;
+    }
+  }
+{%- endstyle -%}
+<hdt-fbt-bundle class="hdt-fbt-bundle hdt-s-text hdt-block hdt-relative{% if block.settings.colors_by_block %} hdt-s-gradient{% endif %} hdt-fbt-layout-grid hdt-ratio--{{ image_ratio }}"{% if block.settings.colors_by_block %} color-scheme="{{ block.settings.color_scheme }}"{% endif %} data-save-badge-template="{{ save_badge_template }}" {{ block.shopify_attributes }}>
+
+  <div class="hdt-fbt-container-wrapper hdt-flex hdt-align-center hdt-justify-center">
+    {%- capture content_blocks -%}
+      {% content_for 'blocks' %}
+    {%- endcapture -%}
+
+    <div id="Grid-{{ block.id }}" class="hdt-fbt-products hdt-row-grid lg:hdt-grid-cols-{{ col_dk }} md:hdt-grid-cols-{{ col_tb }} hdt-grid-cols-{{ col_mb }} hdt-justify-center">
+      {{ content_blocks }}
+    </div>
+
+    <div class="hdt-fbt-equals hdt-s-text hdt-flex hdt-align-center hdt-justify-center">=</div>
+
+    <div class="hdt-fbt-total-circle hdt-flex hdt-flex-col-reverse hdt-align-center hdt-justify-center hdt-relative hdt-price-wrapp hdt-font-{{ settings.pr_price_weight }}">
+      {%- if settings.use_onsale_badge -%}
+        <span class="hdt-fbt-save-badge hdt-badge hdt-badge__on-sale hdt-font-normal" data-save-badge style="display: none;"></span>
+      {%- endif -%}
+      <div class="hdt-fbt-compare-price hdt-compare-at-price hdt-font-normal" data-compare-price hidden></div>
+      <div class="hdt-fbt-total-price hdt-price hdt-font-semibold" data-total-price></div>
+    </div>
+  </div>
+</hdt-fbt-bundle>
+
+
+{% schema %}
+{
+  "name": "FBT Bundle Container",
+  "tag": null,
+  "class": "hdt-fbt-container-block",
+  "settings": [
+    {
+      "type": "header",
+      "content": "1. Image Settings"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "options": [
+        {
+          "value": "adapt_image",
+          "label": "Adapt to image"
+        },
+        {
+          "value": "square",
+          "label": "Square"
+        },
+        {
+          "value": "portrait",
+          "label": "Portrait"
+        },
+        {
+          "value": "asos",
+          "label": "ASOS"
+        },
+        {
+          "value": "landscape",
+          "label": "Landscape"
+        },
+        {
+          "value": "custom-pr",
+          "label": "Custom"
+        }
+      ],
+      "label": "t:blocks.image.name_ratio",
+      "default": "square"
+    },
+    {
+      "type": "header",
+      "content": "2. Layout Settings"
+    },
+    {
+      "type": "select",
+      "id": "col_dk",
+      "label": "t:sections.all.items_row.desktop",
+      "default": "3",
+      "options": [
+        {
+          "label": "1",
+          "value": "1"
+        },
+        {
+          "label": "2",
+          "value": "2"
+        },
+        {
+          "label": "3",
+          "value": "3"
+        },
+        {
+          "label": "4",
+          "value": "4"
+        },
+        {
+          "label": "5",
+          "value": "5"
+        },
+        {
+          "label": "6",
+          "value": "6"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "col_tb",
+      "label": "t:sections.all.items_row.tablet",
+      "default": "3",
+      "options": [
+        {
+          "label": "1",
+          "value": "1"
+        },
+        {
+          "label": "2",
+          "value": "2"
+        },
+        {
+          "label": "3",
+          "value": "3"
+        },
+        {
+          "label": "4",
+          "value": "4"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "col_mb",
+      "label": "t:sections.all.items_row.mobile",
+      "default": "2",
+      "options": [
+        {
+          "label": "1",
+          "value": "1"
+        },
+        {
+          "label": "2",
+          "value": "2"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "3. Color Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "colors_by_block",
+      "label": "Display color by blocks",
+      "default": false
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:settings_schema.colors.settings.general.color_scheme",
+      "default": "scheme-1",
+      "visible_if": "{{ block.settings.colors_by_block }}"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "_fbt_item"
+    }
+  ],
+  "presets": [
+    {
+      "name": "FBT Bundle Container",
+      "blocks": [
+        {
+          "type": "_fbt_item"
+        },
+        {
+          "type": "_fbt_item"
+        },
+        {
+          "type": "_fbt_item"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

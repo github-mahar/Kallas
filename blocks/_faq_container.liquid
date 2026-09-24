@@ -1,0 +1,162 @@
+{%- style -%}
+  #faq-container-{{ block.id }} {
+    padding-top: {{ block.settings.padding_top }}px;
+    padding-bottom: {{ block.settings.padding_bottom }}px;
+    padding-left: {{ block.settings.padding_left }}px;
+    padding-right: {{ block.settings.padding_right }}px;
+    {%- if block.settings.height_mode == 'custom' -%}
+      height: {{ block.settings.custom_height_mb }}px;
+    {%- elsif block.settings.height_mode == 'auto' -%}
+      height: auto;
+    {%- else -%}
+      height: 100%;
+    {%- endif -%}
+  }
+  @media (min-width: 768px) {
+    #faq-container-{{ block.id }} {
+      {%- if block.settings.height_mode == 'custom' -%}
+        height: {{ block.settings.custom_height }}px;
+      {%- endif -%}
+    }
+  }
+  {%- if block.settings.height_mode == 'full' -%}
+    .hdt-column:has(#faq-container-{{ block.id }}) {
+      display: flex;
+      flex-direction: column;
+    }
+    .hdt-column:has(#faq-container-{{ block.id }}) > .hdt-column_inner {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+    #faq-container-{{ block.id }} {
+      flex-grow: 1;
+      width: 100%;
+    }
+  {%- endif -%}
+{%- endstyle -%}
+
+<div id="faq-container-{{ block.id }}" class="hdt-faq-container hdt-relative hdt-oh{% if block.settings.colors_by_block %} hdt-s-gradient{% endif %}" {% if block.settings.colors_by_block %}color-scheme="{{ block.settings.color_scheme }}"{% endif %} {{ block.shopify_attributes }}>
+  {% content_for "blocks" %}
+</div>
+
+{% schema %}
+{
+  "name": "FAQ Container",
+  "tag": null,
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "colors_by_block",
+      "label": "Display color by blocks",
+      "default": false
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color Scheme"
+    },
+    {
+      "type": "header",
+      "content": "Height Settings"
+    },
+    {
+      "type": "select",
+      "id": "height_mode",
+      "label": "Height mode",
+      "options": [
+        {
+          "value": "auto",
+          "label": "Auto (Fit Content)"
+        },
+        {
+          "value": "full",
+          "label": "100% (Stretch to column)"
+        },
+        {
+          "value": "custom",
+          "label": "Custom Height"
+        }
+      ],
+      "default": "auto"
+    },
+    {
+      "type": "range",
+      "id": "custom_height",
+      "label": "Custom Height (Desktop)",
+      "min": 100,
+      "max": 1000,
+      "step": 10,
+      "unit": "px",
+      "default": 400,
+      "visible_if": "{{ block.settings.height_mode == 'custom' }}"
+    },
+    {
+      "type": "range",
+      "id": "custom_height_mb",
+      "label": "Custom Height (Mobile)",
+      "min": 100,
+      "max": 800,
+      "step": 10,
+      "unit": "px",
+      "default": 300,
+      "visible_if": "{{ block.settings.height_mode == 'custom' }}"
+    },
+    {
+      "type": "header",
+      "content": "Padding Settings"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_left",
+      "label": "Padding Left",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_right",
+      "label": "Padding Right",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 20
+    }
+  ],
+  "blocks": [
+    {
+      "type": "_faq_item"
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ Container"
+    }
+  ]
+}
+{% endschema %}

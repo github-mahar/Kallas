@@ -1,0 +1,265 @@
+<!-- blocks/blog-card.liquid -->
+{% liquid
+  assign blog = block.settings.blog
+  assign articles = blog.articles
+  assign date = block.settings.date
+%}
+{% stylesheet %}
+  .hdt-articles-listing{
+    .hdt-article-inner{
+      display: grid;
+      grid-template-columns: min(22.5rem, 37%) auto;
+      gap: clamp(1.5rem, 3vw,3rem);
+      align-items: center;
+      padding: 1rem;
+      border-radius: var(--radius-blog-card);
+      background-color: rgb(var(--color-background,var(--color-base-background)));
+      border: 1px solid rgb(var(--color-line-border));
+    }
+    article + article{
+      margin-block-start: clamp(1.5rem , 4vw ,3rem);
+    }
+    .hdt-article-title{
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      margin-bottom: 1.6rem;
+      transition: 0.25s;
+      line-height: 1.2;
+      display: block;
+      &:hover{
+        color: rgb(var(--color-accent));
+      }
+    }
+    .hdt-article-media{
+      border-radius: var(--radius-blog-card);
+    }
+    .hdt-shop-owner{
+      background-color: rgb(var(--color-background2) / .5);
+      color: rgb(var(--color-foreground));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-product-media);
+      padding: 1rem;
+    }
+  }
+{% endstylesheet %}
+{%- if blog != blank and blog.articles_count > 0 -%}
+  <div class="hdt-articles-listing hdt-ratio-{{ block.settings.image_ratio }} hdt-text-start {% unless block.settings.image_size %} hdt-ratio--contain{% endunless %}" {%- if block.settings.colors_by_block %} color-scheme="{{ block.settings.color_scheme }}"{%- endif %}>
+    {%- for article in articles -%}
+      {% liquid
+        assign media = article.image 
+        assign title = article.title
+        assign author = article.author
+        assign published_at =  article.published_at | time_tag: format: date 
+        if date contains "%" 
+          assign published_at = article.published_at | time_tag: date
+        endif
+      %}
+      <article class="hdt-article">
+        <div class="hdt-article-inner">
+          <div class="hdt-block hdt-eff-{{ block.settings.b_effect }} hdt-eff-img-{{ block.settings.img_effect }} hdt-eff hdt-oh">
+            <a href="{{ article.url }}" class="hdt-article-media hdt-ratio hdt-oh" style="--aspect-ratioapt-md:{{ media.aspect_ratio }};--aspect-ratioapt:{{ media.aspect_ratio }}">
+              {%- if media != blank -%}
+                {{ media | image_url: width: media.within, height: media.height | image_tag: width: media.with, height: media.height, loading: 'lazy', widths: '100,200,300,400,500,600,700', class: 'hdt-object-cover hdt-obj-eff' }}
+              {%- else -%}
+                <span class="hdt-shop-owner hdt-absolute hdt-top-0 hdt-right-0">{{ shop.name }}</span>
+              {%- endif -%}
+            </a>
+          </div>
+          <div class="hdt-article-content">
+            <a href="{{ article.url }}" class="hdt-article-title hdt-font-medium hdt-s-text">{{ title }}</a>
+            <p class="hdt-article-author hdt-s-text2 hdt-text-sm hdt-capitalize">{{ 'blogs.article.by' | t }} <span class="hdt-s-text">{{ author | replace_first: 'ad clnt', 'admin' }}</span> {{ 'blogs.article.on' | t }} <span class="hdt-s-text">{{ published_at }}</span></p>
+          </div>
+        </div>
+      </article>
+    {%- endfor -%}
+  </div>
+{%- elsif request.design_mode -%}
+  {% comment %} 
+    Presets Admin  
+  {% endcomment %}
+  <div class="hdt-articles-listing hdt-ratio--landscape hdt-text-start {% unless block.settings.image_size %} hdt-ratio--contain{% endunless %}">
+    {%- for article in (1..3) -%}
+      {% liquid
+        assign media = article.image 
+        assign title = article.title | default: 'Article preview title'
+        assign author = article.author | default: 'Admin'
+        assign published_at =  'Sep 26, 2026'
+      %}
+      <article class="hdt-article">
+        <div class="hdt-article-inner">
+          <div class="hdt-block hdt-eff-{{ block.settings.b_effect }} hdt-eff-img-{{ block.settings.img_effect }} hdt-eff hdt-oh">
+            <a href="#" class="hdt-article-media hdt-ratio hdt-oh">
+              <span class="hdt-shop-owner hdt-absolute hdt-top-0 hdt-right-0">{{ shop.name }}</span>
+            </a>
+          </div>
+          <div class="hdt-article-content">
+            <a href="#" class="hdt-article-title hdt-font-medium hdt-s-text">{{ title }}</a>
+            <p class="hdt-article-author hdt-s-text2 hdt-text-sm hdt-capitalize">{{ 'blogs.article.by' | t }} <span class="hdt-s-text">{{ author | replace_first: 'ad clnt', 'admin' }}</span> {{ 'blogs.article.on' | t }} <span class="hdt-s-text">{{ published_at }}</span></p>
+          </div>
+        </div>
+      </article>
+    {%- endfor -%}
+  </div>
+{%- endif -%}
+{% schema %}
+  {
+    "name": "Blog card",
+    "tag": null,
+    "settings": [
+      {
+        "type": "blog",
+        "id": "blog",
+        "label": "Select blog"
+      },
+      {
+        "type": "select",
+        "id": "date",
+        "options": [
+          {
+            "value": "abbreviated_date",
+            "label": "t:blocks.article_card.settings.date.options.option_1"
+          },
+          {
+            "value": "basic",
+            "label": "t:blocks.article_card.settings.date.options.option_2"
+          },
+          {
+            "value": "date",
+            "label": "t:blocks.article_card.settings.date.options.option_3"
+          },
+          {
+            "value": "%b %d",
+            "label": "t:blocks.article_card.settings.date.options.option_4"
+          }
+        ],
+        "label": "t:blocks.article_card.settings.date.label",
+        "info": "t:blocks.article_card.settings.date.info",
+        "default": "abbreviated_date",
+      },
+      {
+        "type": "select",
+        "id": "image_ratio",
+        "options": [
+          {
+            "value": "-adapt_image",
+            "label": "t:sections.all.images.ratio.adapt_image.label"
+          },
+          {
+            "value": "-square",
+            "label": "t:sections.all.images.ratio.square.label"
+          },
+          {
+            "value": "-asos",
+            "label": "t:sections.all.images.ratio.asos.label"
+          },
+          {
+            "value": "-landscape",
+            "label": "t:sections.all.images.ratio.landscape.label"
+          },
+          {
+            "value": "4-3",
+            "label": "4:3"
+          }
+        ],
+        "label": "t:sections.all.images.ratio.label",
+        "default": "-adapt_image"
+      },
+      {
+        "type": "checkbox",
+        "id": "image_size",
+        "label": "t:sections.all.images.size.cover",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "img_effect",
+        "label": "t:sections.all.image_effect.image_hover_eff.label",
+        "info": "t:sections.all.image_effect.image_hover_eff.info",
+        "default": "none",
+        "options": [
+          {
+            "value": "none",
+            "label": "t:none"
+          },
+          {
+            "value": "zoom",
+            "label": "t:sections.all.image_effect.image_hover_eff.options.zoom"
+          },
+          {
+            "value": "rotate",
+            "label": "t:sections.all.image_effect.image_hover_eff.options.rotate"
+          },
+          {
+            "value": "translateToTop",
+            "label": "t:sections.all.image_effect.image_hover_eff.options.translateToTop"
+          },
+          {
+            "value": "translateToRight",
+            "label": "t:sections.all.image_effect.image_hover_eff.options.translateToRight"
+          },
+          {
+            "value": "translateToBottom",
+            "label": "t:sections.all.image_effect.image_hover_eff.options.translateToBottom"
+          },
+          {
+            "value": "translateToLeft",
+            "label": "t:sections.all.image_effect.image_hover_eff.options.translateToLeft"
+          },
+          {
+            "value": "filter",
+            "label": "t:sections.all.image_effect.image_hover_eff.options.filter"
+          },
+          {
+            "value": "bounceIn",
+            "label": "t:sections.all.image_effect.image_hover_eff.options.bounceIn"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "b_effect",
+        "label": "t:sections.all.image_effect.item_eff.label",
+        "default": "none",
+        "options": [
+          {
+            "value": "none",
+            "label": "t:none"
+          },
+          {
+            "value": "border-run",
+            "label": "t:sections.all.image_effect.item_eff.options.border_run"
+          },
+          {
+            "value": "pervasive-circle",
+            "label": "t:sections.all.image_effect.item_eff.options.pervasive_circle"
+          },
+          {
+            "value": "plus-zoom-overlay",
+            "label": "t:sections.all.image_effect.item_eff.options.plus_zoom_overlay"
+          },
+          {
+            "value": "overlay",
+            "label": "t:sections.all.image_effect.item_eff.options.overlay"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "colors_by_block",
+        "label": "t:sections.all.colors.display_colors_by_block"
+      },
+      {
+        "type": "color_scheme",
+        "id": "color_scheme",
+        "label": "t:sections.all.colors.label",
+        "visible_if": "{{ block.settings.colors_by_block }}"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Blog card"
+      }
+    ]
+  }
+{% endschema %}

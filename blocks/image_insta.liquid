@@ -1,0 +1,336 @@
+<!-- image_insta.liquid -->
+{% stylesheet %}
+  .hdt-block-insta-avatar {
+    width: 40px;
+    height: 40px;
+    & img, & svg, & a {
+      border-radius: 50px;
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .hdt-block-insta-thumb {
+    border: 1px solid rgb(var(--color-line-border));
+    background-color: #fff;
+  }
+  .hdt-block-insta-content {
+    padding: 20px;
+    gap: 20px;
+  }
+  .hdt-block-insta-user {
+    flex: 1;
+    margin-inline-start: -7px;
+  }
+  .hdt-block-insta-user__name {
+    font-size: 16px;
+    font-weight: 500;
+  }
+  .hdt-block-insta-user__name a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .hdt-block-insta-user__name a:hover {
+    text-decoration: underline;
+  }
+  .hdt-block-insta-icon a {
+    display: inline-flex;
+    color: inherit;
+  }
+  @media(max-width: 767px){
+    .hdt-block-insta-avatar {
+      width: 24px;
+      height: 24px;
+    }
+    .hdt-block-insta-content {
+      padding: 10px;
+    }
+    .hdt-block-insta-user__name {
+      font-size: 12px;
+    }
+    .hdt-block-insta-icon svg {
+      width: 24px;
+      height: 24px;
+    }
+  }
+{% endstylesheet %}
+<div class="hdt-block-image_{{ block.id }} hdt-block-insta-item hdt-ratio--{{ block.settings.image_ratio }} hdt-eff-{{ block.settings.b_effect }} hdt-eff-img-{{ block.settings.img_effect }} hdt-relative">
+  {%- style -%}
+    {%- if block.settings.custom_width == 'custom' -%}
+      .hdt-block-image_{{ block.id }}{
+        width:{{ block.settings.image_w_mb }}%;
+      }
+      @media(min-width:768px){
+        .hdt-block-image_{{ block.id }}{
+          width:100%;
+          max-width:{{ block.settings.image_w }}%;
+        }
+      }
+    {% else %}
+      .hdt-block-image_{{ block.id }}{
+        width:100%;
+        max-width:100%;
+      }
+    {%- endif -%}
+    {%- if section.settings.hdt_disable_zoom -%}
+      .hdt-block-image_{{ block.id }} .hdt-image-wrap img {
+        pointer-events: none;
+        cursor: default;
+      } 
+    {%- endif -%}
+    .hdt-block-image_{{ block.id }}::before,
+    .hdt-block-image_{{ block.id }}::after {
+      border-radius: inherit;
+    }
+    .hdt-block-image_{{ block.id }} {
+      border-radius: var(--radius);
+    }
+    .hdt-block-image_{{ block.id }} .hdt-image-wrap {
+      border-end-start-radius: 0px;
+      border-end-end-radius: 0px;
+    }
+    .hdt-block-image_{{ block.id }}::before,
+    .hdt-block-image_{{ block.id }}::after {
+      border-end-start-radius: 0px;
+      border-end-end-radius: 0px;
+    }
+    .hdt-block-image_{{ block.id }} .hdt-block-insta-thumb {
+      border-radius: var(--radius);
+    }
+  {%- endstyle -%}
+  <div class="hdt-block-insta-thumb">
+    {%- if block.settings.img != blank -%}
+      <div class="hdt-image-wrap hdt-ratio hdt-oh"{% if block.settings.image_ratio == 'adapt_image' %} style="--aspect-ratioapt:{{ block.settings.img.aspect_ratio | default: 1.777 }}"{% endif %}> 
+        {{ block.settings.img | image_url: width: block.settings.img.width | image_tag: loading: "lazy", width: block.settings.img.width, height: block.settings.img.height, class: "hdt-object-cover hdt-obj-eff", widths: '375,550,720,1100,1500,1780,1920,2000,2400,2600' }}
+      </div>
+    {%- else -%}
+      <div class="hdt-image-wrap hdt-ratio hdt-oh" style="--aspect-ratioapt:{{ block.settings.img.aspect_ratio | default: 1.2 }}">
+        {{ 'detailed-apparel-1' | placeholder_svg_tag: 'hdt-placeholder-svg hdt-svg-bg hdt-obj-eff' }} 
+      </div>
+    {%- endif -%}
+    <div class="hdt-block-insta-content hdt-flex hdt-justify-between hdt-align-center">
+      <div class="hdt-block-insta-avatar hdt-ratio">
+        {%- if block.settings.url != blank -%}
+          <a href="{{ block.settings.url }}"{% if block.settings.open_in_new_tab %} target="_blank" rel="noopener noreferrer"{% endif %} aria-label="{{ block.settings.user_name | default: 'Instagram' | escape }}">
+        {%- endif -%}
+        {%- if block.settings.avatar != blank -%}
+          {{ block.settings.avatar | image_url: width: 80 | image_tag: loading: "lazy", width: block.settings.avatar.width, height: block.settings.avatar.height, class: "hdt-object-cover" }}
+        {%- else -%}
+          <svg viewBox="0 0 100 100" aria-hidden="true" focusable="false" style="background-color: #5AB5A6;">
+            <path d="M 32 45 C 32 25 68 25 68 45 C 68 62 62 82 62 82 C 62 82 58 75 50 75 C 42 75 38 82 38 82 C 38 82 32 62 32 45 Z" fill="#8D4A3C" />
+            <rect x="44" y="45" width="12" height="30" fill="#F8DCCB" />
+            <circle cx="50" cy="45" r="18" fill="#F8DCCB" />
+            <path d="M 20 100 C 20 80 35 70 50 70 C 65 70 80 80 80 100 Z" fill="#145347" />
+            <path d="M 32 45 C 32 25 68 25 68 45 C 68 35 60 32 50 32 C 40 32 32 35 32 45 Z" fill="#8D4A3C" />
+          </svg>
+        {%- endif -%}
+        {%- if block.settings.url != blank -%}
+          </a>
+        {%- endif -%}
+      </div>
+      {%- if block.settings.user_name != blank -%}
+        <div class="hdt-block-insta-user">
+          <p class="hdt-block-insta-user__name">
+            {%- if block.settings.url != blank -%}
+              <a href="{{ block.settings.url }}"{% if block.settings.open_in_new_tab %} target="_blank" rel="noopener noreferrer"{% endif %}>{{ block.settings.user_name }}</a>
+            {%- else -%}
+              {{ block.settings.user_name }}
+            {%- endif -%}
+          </p>
+        </div>
+      {%- endif -%}
+      <div class="hdt-block-insta-icon">
+        {%- if block.settings.url != blank -%}
+          <a href="{{ block.settings.url }}"{% if block.settings.open_in_new_tab %} target="_blank" rel="noopener noreferrer"{% endif %} aria-label="{{ block.settings.user_name | default: 'Instagram' | escape }}">
+        {%- endif -%}
+        <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M13 7C11.8133 7 10.6533 7.35189 9.66658 8.01118C8.67988 8.67047 7.91085 9.60754 7.45672 10.7039C7.0026 11.8003 6.88378 13.0067 7.11529 14.1705C7.3468 15.3344 7.91824 16.4035 8.75736 17.2426C9.59647 18.0818 10.6656 18.6532 11.8295 18.8847C12.9933 19.1162 14.1997 18.9974 15.2961 18.5433C16.3925 18.0892 17.3295 17.3201 17.9888 16.3334C18.6481 15.3467 19 14.1867 19 13C18.9983 11.4092 18.3657 9.88405 17.2408 8.75919C16.116 7.63433 14.5908 7.00165 13 7ZM13 17C12.2089 17 11.4355 16.7654 10.7777 16.3259C10.1199 15.8864 9.60723 15.2616 9.30448 14.5307C9.00173 13.7998 8.92252 12.9956 9.07686 12.2196C9.2312 11.4437 9.61216 10.731 10.1716 10.1716C10.731 9.61216 11.4437 9.2312 12.2196 9.07686C12.9956 8.92252 13.7998 9.00173 14.5307 9.30448C15.2616 9.60723 15.8864 10.1199 16.3259 10.7777C16.7654 11.4355 17 12.2089 17 13C17 14.0609 16.5786 15.0783 15.8284 15.8284C15.0783 16.5786 14.0609 17 13 17ZM19 0H7C5.14409 0.00198528 3.36477 0.740121 2.05245 2.05245C0.740121 3.36477 0.00198528 5.14409 0 7V19C0.00198528 20.8559 0.740121 22.6352 2.05245 23.9476C3.36477 25.2599 5.14409 25.998 7 26H19C20.8559 25.998 22.6352 25.2599 23.9476 23.9476C25.2599 22.6352 25.998 20.8559 26 19V7C25.998 5.14409 25.2599 3.36477 23.9476 2.05245C22.6352 0.740121 20.8559 0.00198528 19 0ZM24 19C24 20.3261 23.4732 21.5979 22.5355 22.5355C21.5979 23.4732 20.3261 24 19 24H7C5.67392 24 4.40215 23.4732 3.46447 22.5355C2.52678 21.5979 2 20.3261 2 19V7C2 5.67392 2.52678 4.40215 3.46447 3.46447C4.40215 2.52678 5.67392 2 7 2H19C20.3261 2 21.5979 2.52678 22.5355 3.46447C23.4732 4.40215 24 5.67392 24 7V19ZM21 6.5C21 6.79667 20.912 7.08668 20.7472 7.33335C20.5824 7.58003 20.3481 7.77229 20.074 7.88582C19.7999 7.99935 19.4983 8.02906 19.2074 7.97118C18.9164 7.9133 18.6491 7.77044 18.4393 7.56066C18.2296 7.35088 18.0867 7.08361 18.0288 6.79264C17.9709 6.50166 18.0007 6.20006 18.1142 5.92597C18.2277 5.65189 18.42 5.41762 18.6666 5.2528C18.9133 5.08797 19.2033 5 19.5 5C19.8978 5 20.2794 5.15804 20.5607 5.43934C20.842 5.72064 21 6.10218 21 6.5Z" fill="#142D74"/>
+        </svg>
+        {%- if block.settings.url != blank -%}
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+{% schema %}
+{
+  "name": "Image Instagram",
+  "tag": null,
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "img",
+      "label": "t:blocks.image.name"
+    },
+    {
+      "type": "header",
+      "content": "Instagram content"
+    },
+    {
+      "type": "image_picker",
+      "id": "avatar",
+      "label": "Avatar"
+    },
+    {
+      "type": "text",
+      "id": "user_name",
+      "label": "User name",
+      "default": "@kalles_theme"
+    },
+    {
+      "type": "url",
+      "id": "url",
+      "label": "t:sections.tabs_collections.blocks.other_link.url"
+    },
+    {
+      "type": "checkbox",
+      "id": "open_in_new_tab",
+      "label": "t:blocks.banner_item.settings.banner_target",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "options": [
+        {
+          "value": "adapt_image",
+          "label": "t:sections.all.images.ratio.adapt_image.label"
+        },
+        {
+          "value": "square",
+          "label": "t:sections.all.images.ratio.square.label"
+        },
+        {
+          "value": "portrait",
+          "label": "t:sections.all.images.ratio.portrait.label"
+        },
+        {
+          "value": "asos",
+          "label": "t:sections.all.images.ratio.asos.label"
+        },
+        {
+          "value": "landscape",
+          "label": "t:sections.all.images.ratio.landscape.label"
+        }
+      ],
+      "label": "t:sections.all.images.ratio.label",
+      "default": "adapt_image"
+    },
+    {
+      "type": "select",
+      "id": "img_effect",
+      "label": "t:sections.all.image_effect.image_hover_eff.label",
+      "info": "t:sections.all.image_effect.image_hover_eff.info",
+      "default": "none",
+      "options": [
+        {
+          "value": "none",
+          "label": "t:none"
+        },
+        {
+          "value": "zoom",
+          "label": "t:sections.all.image_effect.image_hover_eff.options.zoom"
+        },
+        {
+          "value": "rotate",
+          "label": "t:sections.all.image_effect.image_hover_eff.options.rotate"
+        },
+        {
+          "value": "translateToTop",
+          "label": "t:sections.all.image_effect.image_hover_eff.options.translateToTop"
+        },
+        {
+          "value": "translateToRight",
+          "label": "t:sections.all.image_effect.image_hover_eff.options.translateToRight"
+        },
+        {
+          "value": "translateToBottom",
+          "label": "t:sections.all.image_effect.image_hover_eff.options.translateToBottom"
+        },
+        {
+          "value": "translateToLeft",
+          "label": "t:sections.all.image_effect.image_hover_eff.options.translateToLeft"
+        },
+        {
+          "value": "filter",
+          "label": "t:sections.all.image_effect.image_hover_eff.options.filter"
+        },
+        {
+          "value": "bounceIn",
+          "label": "t:sections.all.image_effect.image_hover_eff.options.bounceIn"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "b_effect",
+      "label": "t:sections.all.image_effect.item_eff.label",
+      "default": "none",
+      "options": [
+        {
+          "value": "none",
+          "label": "t:none"
+        },
+        {
+          "value": "border-run",
+          "label": "t:sections.all.image_effect.item_eff.options.border_run"
+        },
+        {
+          "value": "pervasive-circle",
+          "label": "t:sections.all.image_effect.item_eff.options.pervasive_circle"
+        },
+        {
+          "value": "plus-zoom-overlay",
+          "label": "t:sections.all.image_effect.item_eff.options.plus_zoom_overlay"
+        },
+        {
+          "value": "overlay",
+          "label": "t:sections.all.image_effect.item_eff.options.overlay"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "custom_width",
+      "label": "t:blocks.image.settings.custom_width.label",
+      "options": [
+        {
+          "value": "full",
+          "label": "t:size.full"
+        },
+        {
+          "value": "custom",
+          "label": "t:blocks.image.settings.custom_width.options.custom"
+        }
+      ],
+      "default": "full"
+    },
+    {
+      "type": "range",
+      "id": "image_w",
+      "min": 1,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "t:blocks.image.settings.image_w.label",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "image_w_mb",
+      "min": 1,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "t:blocks.image.settings.image_w_mb.label",
+      "default": 50
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image Instagram"
+    }
+  ]
+}
+{% endschema %} 

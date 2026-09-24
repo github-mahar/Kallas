@@ -1,0 +1,86 @@
+hdt-slideshow{
+  --max-w: 100vw;
+  &.hdt-container{
+    --max-w: 100%;
+  }
+}
+hdt-slideshow.hdt-slider .hdt-navigation{
+  z-index: 3;
+  width: calc(var(--max-w) - 40px);
+  --nav-width-visible-hv: calc(var(--max-w) - 40px);
+}
+.hdt-slideshow {
+  overflow: hidden;
+}
+.hdt-slideshow-pag-wrap {
+  position: absolute;
+  inset: 0;
+  margin-inline: auto;
+  pointer-events: none;
+  z-index: 3;
+}
+.hdt-slideshow-pag-wrap .hdt-pagination {
+  pointer-events: auto;
+}
+
+.hdt-slideshow .hdt-slider .hdt-pagination{
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: var(--margin-top);
+  margin: 0 auto;
+  margin-top: 0;
+  padding-inline-start: calc(var(--spacing-x) * .5);
+  padding-inline-end: calc(var(--spacing-x) * .5);
+  z-index: 3;
+  &.hdt-position-left{
+    justify-content: flex-start;
+  }
+  &.hdt-position-right{
+    justify-content: flex-end;
+  }
+  &.hdt-position-left-vertical{
+    inset-inline-start: max(1.5rem, (100% - var(--container-max-width)) / 2);
+    inset-inline-end: auto;
+    top: 50%;
+    bottom: auto;
+    transform: translateY(-50%);
+    margin: 0;
+    flex-direction: column;
+    gap: var(--space-between);
+    padding-inline-start: 0;
+    padding-inline-end: 0;
+    &.hdt-style-elessi {
+      --pag-w-active: 8px;
+      --pag-h-active: 30px;
+    }
+    @media (min-width: 768px) {
+      inset-inline-start: max(3rem, (100% - var(--container-max-width)) / 2);
+    }
+    @media (min-width: 1150px) {
+      inset-inline-start: max(5rem, (100% - var(--container-max-width)) / 2);
+    }
+  }
+  &.hdt-position-right-vertical{
+    inset-inline-start: auto;
+    inset-inline-end: max(1.5rem, (100% - var(--container-max-width)) / 2);
+    top: 50%;
+    bottom: auto;
+    transform: translateY(-50%);
+    margin: 0;
+    flex-direction: column;
+    gap: var(--space-between);
+    padding-inline-start: 0;
+    padding-inline-end: 0;
+    &.hdt-style-elessi {
+      --pag-w-active: 8px;
+      --pag-h-active: 30px;
+    }
+    @media (min-width: 768px) {
+      inset-inline-end: max(3rem, (100% - var(--container-max-width)) / 2);
+    }
+    @media (min-width: 1150px) {
+      inset-inline-end: max(5rem, (100% - var(--container-max-width)) / 2);
+    }
+  }
+}

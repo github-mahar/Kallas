@@ -1,0 +1,285 @@
+<!-- blocks/_card_tags.liquid -->
+{%- liquid
+  case block.settings.text_size
+    when 'xs'
+      assign font_size = '12px'
+    when 'sm'
+      assign font_size = '14px'
+    when 'base'
+      assign font_size = '16px'
+    when 'lg'
+      assign font_size = '18px'
+    else
+      assign font_size = '14px'
+  endcase
+
+  case block.settings.font_weight
+    when 'normal'
+      assign font_weight = '400'
+    when 'medium'
+      assign font_weight = '500'
+    when 'semibold'
+      assign font_weight = '600'
+    when 'bold'
+      assign font_weight = '700'
+    else
+      assign font_weight = '500'
+  endcase
+
+  case block.settings.rounded
+    when 'full'
+      assign border_radius = '50px'
+    when 'lg'
+      assign border_radius = '12px'
+    when 'md'
+      assign border_radius = '8px'
+    when 'sm'
+      assign border_radius = '4px'
+    when 'none'
+      assign border_radius = '0px'
+    else
+      assign border_radius = '50px'
+  endcase
+-%}
+
+{%- style -%}
+  #card-tags-{{ block.id }} {
+    --tag-bg: {{ block.settings.bg_color | default: '#e0f7fa' }};
+    --tag-color: {{ block.settings.text_color | default: '#2d3748' }};
+    --tag-border-color: {{ block.settings.border_color | default: 'transparent' }};
+    --tag-radius: {{ border_radius }};
+    --tag-font-size: {{ font_size }};
+    --tag-font-weight: {{ font_weight }};
+    --tag-gap: {{ block.settings.gap | default: 8 }}px;
+    --tag-padding-v: {{ block.settings.padding_v | default: 6 }}px;
+    --tag-padding-h: {{ block.settings.padding_h | default: 16 }}px;
+  }
+  #card-tags-{{ block.id }} .hdt-card-tags-wrapper {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--tag-gap);
+  }
+  #card-tags-{{ block.id }} .hdt-card-tag-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background-color: var(--tag-bg);
+    color: var(--tag-color);
+    border: 1px solid var(--tag-border-color);
+    border-radius: var(--tag-radius);
+    padding: var(--tag-padding-v) var(--tag-padding-h);
+    font-size: var(--tag-font-size);
+    font-weight: var(--tag-font-weight);
+    line-height: 1.3;
+    box-sizing: border-box;
+    white-space: normal;
+    word-break: break-word;
+  }
+  #card-tags-{{ block.id }} .hdt-card-tag-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: currentColor;
+    flex-shrink: 0;
+  }
+{%- endstyle -%}
+
+<div id="card-tags-{{ block.id }}" class="hdt-card-tags hdt-w-full" {{ block.shopify_attributes }}>
+  <div class="hdt-card-tags-wrapper">
+    {%- if block.settings.tags_list != blank -%}
+      {%- assign tags_array = block.settings.tags_list | newline_to_br | split: '<br />' -%}
+      {%- for tag_raw in tags_array -%}
+        {%- assign tag_text = tag_raw | strip | strip_newlines -%}
+        {%- if tag_text != blank -%}
+          {%- assign first_char = tag_text | slice: 0, 1 -%}
+          {%- assign clean_text = tag_text -%}
+          {%- if first_char == '•' or first_char == '-' or first_char == '*' -%}
+            {%- assign clean_text = tag_text | slice: 1, tag_text.size | strip -%}
+          {%- endif -%}
+          <span class="hdt-card-tag-item">
+            {%- if block.settings.show_dot -%}
+              <span class="hdt-card-tag-dot"></span>
+            {%- endif -%}
+            <span>{{ clean_text }}</span>
+          </span>
+        {%- endif -%}
+      {%- endfor -%}
+    {%- else -%}
+      <span class="hdt-card-tag-item">
+        {%- if block.settings.show_dot -%}<span class="hdt-card-tag-dot"></span>{%- endif -%}
+        <span>Neck massager</span>
+      </span>
+      <span class="hdt-card-tag-item">
+        {%- if block.settings.show_dot -%}<span class="hdt-card-tag-dot"></span>{%- endif -%}
+        <span>Heat therapy</span>
+      </span>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Pills / Tags",
+  "tag": null,
+  "class": "hdt-card-tags-block hdt-w-full",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "tags_list",
+      "label": "Tags list (one item per line)",
+      "default": "Neck massager\nHeat therapy\n3 Speed modes",
+      "info": "Enter each tag item on a new line."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dot",
+      "label": "Show dot indicator",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Tag Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#e0f7fa",
+      "alpha": true
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text & Dot Color",
+      "default": "#2d3748"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border Color",
+      "default": "transparent",
+      "alpha": true
+    },
+    {
+      "type": "header",
+      "content": "Typography & Shape"
+    },
+    {
+      "type": "select",
+      "id": "text_size",
+      "label": "t:settings_schema.typography.settings.font_size.label",
+      "options": [
+        {
+          "value": "xs",
+          "label": "Extra Small"
+        },
+        {
+          "value": "sm",
+          "label": "Small"
+        },
+        {
+          "value": "base",
+          "label": "Medium"
+        },
+        {
+          "value": "lg",
+          "label": "Large"
+        }
+      ],
+      "default": "sm"
+    },
+    {
+      "type": "select",
+      "id": "font_weight",
+      "label": "t:settings_schema.typography.settings.font_weight.label",
+      "options": [
+        {
+          "value": "normal",
+          "label": "t:settings_schema.typography.settings.font_weight.normal"
+        },
+        {
+          "value": "medium",
+          "label": "t:settings_schema.typography.settings.font_weight.medium"
+        },
+        {
+          "value": "semibold",
+          "label": "t:settings_schema.typography.settings.font_weight.semibold"
+        },
+        {
+          "value": "bold",
+          "label": "t:settings_schema.typography.settings.font_weight.bold"
+        }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "select",
+      "id": "rounded",
+      "label": "t:blocks.column.settings.rounded.label",
+      "options": [
+        {
+          "value": "full",
+          "label": "t:size.full"
+        },
+        {
+          "value": "lg",
+          "label": "t:size.lg"
+        },
+        {
+          "value": "md",
+          "label": "t:settings_schema.typography.settings.font_size.base"
+        },
+        {
+          "value": "sm",
+          "label": "t:size.sm"
+        },
+        {
+          "value": "none",
+          "label": "t:none"
+        }
+      ],
+      "default": "full"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Gap between tags",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "padding_v",
+      "label": "Vertical padding",
+      "min": 2,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "padding_h",
+      "label": "Horizontal padding",
+      "min": 6,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    }
+  ],
+  "presets": [
+    {
+      "name": "Pills / Tags"
+    }
+  ]
+}
+{% endschema %}

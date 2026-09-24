@@ -1,0 +1,9 @@
+{%- doc %}
+@param {string} form_id
+@param {string} [type] - customer, contact : customer_posted, contact_posted - form_type=customer, form_type=contact
+@example 
+{%- render 'return-to', form_id: form_id -%}
+{%- enddoc -%}
+
+{%- assign type = type | default: 'contact' -%}
+<hdt-return class="hdt-contents"><input type="hidden" name="return_to" value="{{ canonical_url | split: '?' | first | split: shop.domain | last }}?{{ type }}_posted=true&contact[id]={{ form_id }}&form_type={{ type }}#{{ form_id }}"></hdt-return>

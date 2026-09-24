@@ -1,0 +1,83 @@
+<!-- blocks/_interactive-timeline-item.liquid -->
+<div 
+  class="hdt-timeline-item hdt-w-full" 
+  data-block-id="{{ block.id }}"
+  {{ block.shopify_attributes }}
+>
+  {%- if block.settings.image != blank -%}
+    <template class="hdt-timeline-img-src">
+      <img 
+        src="{{ block.settings.image | image_url: width: 1400 }}" 
+        alt="{{ block.settings.image.alt | default: 'Timeline Image' | escape }}" 
+        loading="eager" 
+        width="{{ block.settings.image.width | default: 1400 }}" 
+        height="{{ block.settings.image.height | default: 900 }}" 
+        class="hdt-timeline-img hdt-w-full hdt-h-full hdt-object-cover"
+      >
+    </template>
+  {%- endif -%}
+
+  <div class="hdt-timeline-dot-wrapper">
+    <span class="hdt-timeline-dot">
+      <span class="hdt-timeline-dot-inner"></span>
+    </span>
+  </div>
+
+  <div class="hdt-timeline-item-body hdt-w-full">
+    {% content_for 'blocks' %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Timeline Item",
+  "tag": null,
+  "class": "hdt-timeline-item-wrapper hdt-w-full",
+  "blocks": [
+    {
+      "type": "heading"
+    },
+    {
+      "type": "text"
+    },
+    {
+      "type": "spacer"
+    },
+    {
+      "type": "button"
+    }
+  ],
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "t:blocks.image.name"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Timeline Item",
+      "blocks": [
+        {
+          "type": "heading",
+          "settings": {
+            "heading": "<p>Timeline Step Title</p>"
+          }
+        },
+        {
+          "type": "text",
+          "settings": {
+            "text": "<p>Write a short description explaining this option or solution.</p>"
+          }
+        },
+        {
+          "type": "button",
+          "settings": {
+            "label": "Learn more"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

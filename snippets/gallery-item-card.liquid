@@ -1,0 +1,13 @@
+{%- if block.settings.image -%}
+  <a href="{{ block.settings.url | default: routes.root_url }}" class="hdt-gallery-item-block hdt-radius hdt-block hdt-relative hdt-oh hdt-eff hdt-eff-{{ block.settings.b_effect }} hdt-eff-img-{{ block.settings.img_effect }} hdt-ratio--{{ block.settings.image_ratio }}{% unless block.settings.image_size %} hdt-ratio--contain{% endunless %}" {% if block.settings.open_in_new_tab %} target="_blank" {% endif %}{% if block.settings.image_ratio == 'adapt_image' %} style="--aspect-ratioapt: {{ block.settings.image.aspect_ratio | default: 1 }}"{% endif %} hdt-reveal="slide-in" timeline>
+    <span class="hdt-ratio">
+      {{ block.settings.image | image_url: width: block.settings.image.width | image_tag: loading: 'lazy', width: block.settings.image.width, height: block.settings.image.height, widths: '200,400,600,800,1000', class: 'hdt-gallery-item hdt-obj-eff hdt-object-cover' }}
+    </span>
+  </a>
+{%- else -%}
+  <div class="hdt-gallery-item hdt-ratio--{{ block.settings.image_ratio }}">
+    <div class="hdt-ratio" style="--aspect-ratioapt: 1 / 1;">
+      {{ 'detailed-apparel-1' | placeholder_svg_tag: 'hdt-placeholder-svg' }}
+    </div>
+  </div>
+{%- endif -%}

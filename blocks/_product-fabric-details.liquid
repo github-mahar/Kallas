@@ -1,0 +1,102 @@
+{%- liquid
+  assign target = product
+  assign product = section.settings.product | default: target
+  
+  assign heading = block.settings.heading | default: 'Fabric Details'
+  assign shirt_meta = product.metafields.custom.shirt.value | default: product.metafields.custom.shirt
+  assign trouser_meta = product.metafields.custom.trouser.value | default: product.metafields.custom.trouser
+  assign dupatta_meta = product.metafields.custom.duppata.value | default: product.metafields.custom.dupatta.value | default: product.metafields.custom.duppata | default: product.metafields.custom.dupatta
+  assign custom_fabric_details = product.metafields.custom.fabric_details.value | default: product.metafields.custom.fabric_details
+
+  assign has_fabric = false
+  if custom_fabric_details != blank or shirt_meta != blank or trouser_meta != blank or dupatta_meta != blank
+    assign has_fabric = true
+  endif
+-%}
+
+{%- if has_fabric -%}
+  {%- liquid
+    assign shirt = shirt_meta | default: block.settings.shirt_default
+    assign trouser = trouser_meta | default: block.settings.trouser_default
+    assign dupatta = dupatta_meta | default: block.settings.dupatta_default
+
+    assign product_color_option = nil
+    for option in product.options_with_values
+      assign name_lower = option.name | downcase
+      if name_lower contains 'color' or name_lower contains 'colour'
+        assign product_color_option = option.selected_value | default: option.values.first
+        break
+      endif
+    endfor
+
+    assign color = product.metafields.custom.color.value | default: product.metafields.custom.color | default: product_color_option | default: block.settings.color_default
+  -%}
+  <div class="hdt-product-info__item hdt-fabric-details-block" {{ block.shopify_attributes }}>
+    <div class="hdt-fabric-details-wrap">
+      {%- if heading != blank -%}
+        <p class="hdt-fabric-title">{{ heading }}</p>
+      {%- endif -%}
+      
+      {%- if custom_fabric_details != blank -%}
+        <div class="hdt-fabric-list">
+          {{ custom_fabric_details | metafield_tag }}
+        </div>
+      {%- else -%}
+        <div class="hdt-fabric-list">
+          {%- if shirt != blank -%}
+            <p><strong>Shirt:</strong> {{ shirt }}</p>
+          {%- endif -%}
+          {%- if trouser != blank -%}
+            <p><strong>Trouser:</strong> {{ trouser }}</p>
+          {%- endif -%}
+          {%- if dupatta != blank -%}
+            <p><strong>Dupatta:</strong> {{ dupatta }}</p>
+          {%- endif -%}
+          {%- if color != blank -%}
+            <p class="hdt-fabric-color"><strong>Color:</strong> {{ color }}</p>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Fabric Details",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Fabric Details"
+    },
+    {
+      "type": "text",
+      "id": "shirt_default",
+      "label": "Default Shirt Fabric"
+    },
+    {
+      "type": "text",
+      "id": "trouser_default",
+      "label": "Default Trouser Fabric"
+    },
+    {
+      "type": "text",
+      "id": "dupatta_default",
+      "label": "Default Dupatta Fabric"
+    },
+    {
+      "type": "text",
+      "id": "color_default",
+      "label": "Default Color"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Fabric Details"
+    }
+  ]
+}
+{% endschema %}

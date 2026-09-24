@@ -1,0 +1,473 @@
+<!-- blocks/compare_table.liquid -->
+{%- assign list = block.settings.content | newline_to_br | split: '<br />' -%}
+{%- capture checks -%}
+  {%- content_for 'blocks' -%}
+{%- endcapture -%}
+{%- assign items = checks | split: '<!-- blocks/compare_table_list.liquid -->' -%}
+<div class="hdt-scroll-outer hdt-compare-table-style-{{ block.settings.compare_style | default: '1' }}" hdt-reveal="slide-in" style="{% if block.settings.compare_style == '2' and block.settings.key_brand_bg != blank %}--compare-highlight-bg: {{ block.settings.key_brand_bg }};{% endif %}" {{ block.shopify_attributes }}>
+  <table>
+    <thead>
+      <tr>
+        <th class="hdt-col-feature">
+          {%- if block.settings.compare_style == '2' -%}
+            {{ block.settings.feature_title | default: 'FEATURES' }}
+          {%- endif -%}
+        </th>
+        {%- assign index_brand = 0 -%}
+        {%- for item in items -%}
+          {%- if item == blank -%}
+            {%- continue -%}
+          {%- endif -%}
+          {%- assign item_check_configs = item | split: "|||" -%}
+          {%- if item_check_configs[1] contains 'true' -%}
+            <th class="hdt-col-brand {%- if index_brand == 0 %} hdt-first-col-brand{% endif %}">
+              <span class="hdt-title-brand">{{ item_check_configs[0] }}</span>
+              {%- assign title_icon = item_check_configs[3] | strip -%}
+              {%- if title_icon != blank -%}
+                <span class="hdt-title-icon">{{ title_icon }}</span>
+              {%- endif -%}
+            </th>
+            {%- assign index_brand = index_brand | plus: 1 -%}
+          {%- else -%}
+            <th>{{ item_check_configs[0] }}</th>
+          {%- endif -%}
+        {%- endfor -%}
+      </tr>
+    </thead>
+    <tbody>
+      {%- for item in list -%}
+        {%- if item == blank -%}
+          {%- continue -%}
+        {%- endif -%}
+        <tr>
+          <td class="hdt-col-feature">{{ list[forloop.index0] }}</td>
+        {%- assign index_brand = 0 -%}
+        {%- for item in items -%}
+          {%- if item == blank -%}
+            {%- continue -%}
+          {%- endif -%}
+          {%- assign item_check_configs = item | split: "|||" -%}
+          {%- if item_check_configs[2] == blank -%}
+            {%- continue -%}
+          {%- endif -%}
+          {%- assign list_config = item_check_configs[2] | split: "||" -%}
+          {%- if list_config[forloop.parentloop.index0] contains '[1]' -%}
+            <td {%- if item_check_configs[1] contains 'true' %} class="hdt-col-brand {%- if index_brand == 0 %} hdt-first-col-brand{% endif %}" {% endif %}>
+              <div class="hdt-ic-check {%- if item_check_configs[1] contains 'false' %} on-white{% endif %}">
+                {% if block.settings.check_image %}
+                  {{ block.settings.check_image | image_url: width: block.settings.check_image.width | image_tag: sizes: 'auto', widths: '24, 48' }}
+                {% else %}
+                  {%- if block.settings.compare_style == '2' -%}
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  {%- else -%}
+                    {{ block.settings.check_icon }}
+                  {%- endif -%}
+                {% endif %}
+              </div>
+            </td>
+          {%- else -%}
+            <td {%- if item_check_configs[1] contains 'true' %} class="hdt-col-brand {%- if index_brand == 0 %} hdt-first-col-brand{% endif %}" {% endif %}>
+              <div class="hdt-ic-x">
+                {% if block.settings.x_image %}
+                  {{ block.settings.x_image | image_url: width: block.settings.x_image.width | image_tag: sizes: 'auto', widths: '24, 48' }}
+                {% else %}
+                  {%- if block.settings.compare_style == '2' -%}
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                  {%- else -%}
+                    {{ block.settings.x_icon }}
+                  {%- endif -%}
+                {% endif %}
+              </div>
+            </td>
+          {%- endif -%}
+          {%- assign index_brand = index_brand | plus: 1 -%}
+        {%- endfor -%}
+        </tr>
+      {%- endfor -%}
+    </tbody>
+  </table>
+</div>
+{% stylesheet %}
+  /* ── SCROLL WRAPPER ── */
+  .hdt-scroll-outer {
+    overflow-x: auto;
+    border-radius: 12px;
+    scroll-timeline: --table-scroll x;
+  }
+
+  /* ── TABLE ── */
+  .hdt-scroll-outer table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+    box-shadow: none;
+    margin: 0;
+  }
+
+  /* Sticky columns */
+  th.hdt-col-brand+th.hdt-col-brand,
+  td.hdt-col-brand+td.hdt-col-brand {
+    border-inline-start: 1px solid rgb(var(--color-background, var(--color-base-background)));
+  }
+
+  /* ── HEADER ── */
+  .hdt-scroll-outer thead th {
+    padding: 13px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    border: none;
+    color: rgb(var(--color-foreground));
+    white-space: nowrap;
+  }
+  .hdt-scroll-outer thead th:not(.hdt-col-feature) {
+    min-width: 100px;
+    width: 150px;
+  }
+
+  thead th.hdt-col-brand {
+    background: rgb(var(--color-accent));
+    color: #fff;
+    font-size: 18px;
+    font-weight: 700;
+    font-family: var(--font-heading-family);
+    letter-spacing: 0.06em;
+    border-radius: 12px 12px 0 0;
+  }
+
+  /* ── BODY ── */
+  .hdt-scroll-outer tbody td {
+    padding: 16px 12px;
+    border: none;
+    background: rgb(var(--color-background2));      
+    border-top: 1px solid rgb(var(--color-background,var(--color-base-background)));
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .hdt-scroll-outer tbody td.hdt-col-feature {
+    text-align: start;
+    font-weight: 600;
+    border: none;
+    color: rgb(var(--color-foreground));
+    background: rgb(var(--color-background2));
+    border-top: 1px solid rgb(var(--color-background,var(--color-base-background)));
+    padding-inline-start: 16px;
+    min-width: 170px;
+    max-width: 200px;
+    white-space: normal;
+  }
+
+  .hdt-scroll-outer tbody td.hdt-col-brand {
+    background: rgb(var(--color-accent));
+    color: #fff;
+    border-top: 1px solid rgb(var(--color-background,var(--color-base-background)));
+    & + td.hdt-col-brand {
+      border-inline-start: 1px solid rgb(var(--color-background, var(--color-base-background)));
+    }
+  }
+
+  @keyframes mask-fade {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  /* ── BORDER RADIUS — auto via :first-child / :last-child ── */
+  .hdt-scroll-outer tbody tr:first-child td.hdt-col-feature {
+    border-start-start-radius: 12px;
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
+    border-end-start-radius: 0;
+  }
+  .hdt-scroll-outer tbody tr:first-child td:last-child {
+    border-start-start-radius: 0;
+    border-start-end-radius: 12px;
+    border-end-end-radius: 0;
+    border-end-start-radius: 0;
+  }
+
+  .hdt-scroll-outer tbody tr:last-child td.hdt-col-feature  {
+    border-start-start-radius: 0;
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
+    border-end-start-radius: 12px; 
+  }
+  .hdt-scroll-outer tbody tr:last-child td.hdt-col-brand    { 
+    border-start-start-radius: 0;
+    border-start-end-radius: 0;
+    border-end-end-radius: 12px !important;
+    border-end-start-radius: 12px !important; 
+  }
+  .hdt-scroll-outer tbody tr:last-child td:last-child   { 
+    border-start-start-radius: 0;
+    border-start-end-radius: 0;
+    border-end-end-radius: 12px !important;
+    border-end-start-radius: 0; 
+  }
+  table:has(thead .hdt-col-brand:last-child) tbody tr:first-child td:last-child { border-radius: 0; }
+  .hdt-scroll-outer tbody tr:last-child {
+    position: relative;
+    &:after {
+      content: "";
+      position: absolute;
+      background: rgb(var(--color-background2));
+      top: 0;
+      bottom: 0;
+      inset-inline-start: 1px;
+      inset-inline-end: 1px;
+      z-index: -1;
+      border-radius: 12px;
+    }
+  }
+
+  /* ── ICONS ── */
+  .hdt-scroll-outer .hdt-ic-check, .hdt-scroll-outer .hdt-ic-x {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+  }
+
+  .hdt-scroll-outer .hdt-ic-check:has(svg)          { background: #ffffff; color: rgb(var(--color-accent)); }
+  .hdt-scroll-outer .hdt-ic-check.on-white:has(svg) { background: rgba(42,122,101,0.15); color: rgb(var(--color-accent)); }
+  .hdt-scroll-outer .hdt-ic-x:has(svg)              { background: #e53e3e; }
+
+  /* ── STYLE 2 ── */
+  .hdt-scroll-outer.hdt-compare-table-style-2 {
+    border-radius: 0;
+    overflow-x: auto;
+    width: 100%;
+    .hdt-scroll-outer tbody tr:last-child td.hdt-col-brand  {
+      border-radius: 0 !important;
+    }
+    table {
+      border-collapse: collapse;
+      border-spacing: 0;
+      width: 100%;
+      table-layout: fixed;
+      background: transparent;
+      margin: 0;
+    }
+
+    thead tr {
+      border-bottom: 1px solid rgb(var(--color-line-border) / 0.5);
+    }
+    thead th {
+      padding: 16px 12px;
+      font-size: 16px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      color: rgb(var(--color-foreground));
+      border: none;
+      background: transparent;
+      text-align: center;
+      white-space: normal;
+      word-break: break-word;
+      min-width: 130px;
+      max-width: 230px;
+
+      &.hdt-col-feature {
+        text-align: start;
+        padding-inline-start: 12px;
+        font-size: 15px;
+        font-weight: 500;
+        color: rgb(var(--color-foreground));
+        min-width: 140px;
+        max-width: 230px;
+        white-space: normal;
+        word-break: break-word;
+      }
+
+      &.hdt-col-brand {
+        background: var(--compare-highlight-bg, rgb(var(--color-background2)));
+        font-family: var(--f_family_1);
+        font-size: 16px;
+        font-weight: 500;
+        border-radius: 0;
+        min-width: 130px;
+        max-width: 230px;
+      }
+
+      &:not(.hdt-col-feature) {
+        min-width: 130px;
+        max-width: 230px;
+      }
+    }
+    tbody tr {
+      border-bottom: 1px solid rgb(var(--color-line-border) / 0.5);
+
+      &:last-child {
+        border-bottom: 1px solid rgb(var(--color-line-border) / 0.5);
+
+        &:after {
+          display: none;
+        }
+      }
+    }
+
+    tbody td {
+      padding: 14px 12px;
+      background: transparent;
+      border: none;
+      text-align: center;
+      font-size: 16px;
+      color: rgb(var(--color-foreground));
+      white-space: normal;
+      word-break: break-word;
+      min-width: 130px;
+      max-width: 230px;
+
+      &.hdt-col-feature {
+        text-align: start;
+        font-weight: 500;
+        padding-inline-start: 12px;
+        background: transparent;
+        border: none;
+        color: rgb(var(--color-foreground));
+        font-size: 16px;
+        min-width: 140px;
+        max-width: 230px;
+        white-space: normal;
+        word-break: break-word;
+      }
+
+      &.hdt-col-brand {
+        background: var(--compare-highlight-bg, rgb(var(--color-background2)));
+        color: rgb(var(--color-foreground));
+        border: none;
+        border-top: none;
+        min-width: 130px;
+        max-width: 230px;
+      }
+    }
+
+    tbody tr:first-child td,
+    tbody tr:last-child td,
+    tbody tr:first-child td.hdt-col-feature,
+    tbody tr:last-child td.hdt-col-feature,
+    tbody tr:last-child td.hdt-col-brand,
+    tbody tr:last-child td:last-child {
+      border-radius: 0 !important;
+    }
+
+    .hdt-ic-check,
+    .hdt-ic-x {
+      width: auto;
+      height: auto;
+      background: transparent !important;
+      border-radius: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin: auto;
+      box-shadow: none;
+    }
+
+    .hdt-ic-check {
+      color: rgb(var(--color-accent));
+
+      svg {
+        width: 22px;
+        height: 22px;
+        stroke: currentColor;
+      }
+    }
+
+    .hdt-ic-x {
+      color: rgb(var(--color-accent));
+
+      svg {
+        width: 20px;
+        height: 20px;
+        stroke: currentColor;
+      }
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Compare table 01",
+  "tag": null,
+  "settings": [
+    {
+      "type": "select",
+      "id": "compare_style",
+      "label": "Design style",
+      "options": [
+        {
+          "value": "1",
+          "label": "Style 1 (Default)"
+        },
+        {
+          "value": "2",
+          "label": "Style 2 (Clean Modern Table)"
+        }
+      ],
+      "default": "1"
+    },
+    {
+      "type": "text",
+      "id": "feature_title",
+      "label": "Feature column title",
+      "default": "FEATURES",
+      "visible_if": "{{ block.settings.compare_style == '2' }}"
+    },
+    {
+      "type": "color",
+      "id": "key_brand_bg",
+      "label": "Key brand background",
+      "info": "Leave blank to use color scheme background",
+      "visible_if": "{{ block.settings.compare_style == '2' }}"
+    },
+    {
+      "type": "textarea",
+      "id": "content",
+      "label": "t:content"
+    },
+    {
+      "type": "header",
+      "content": "Icons"
+    },
+    {
+      "type": "html",
+      "id": "check_icon",
+      "label": "Code icon check",
+      "default": "<svg width=\"14\" height=\"14\" viewBox=\"0 0 14 14\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"2,7 6,11 12,3\"></polyline></svg>",
+      "info": "t:blocks.icon.settings.svg_upload.info"
+    },
+    {
+      "type": "image_picker",
+      "id": "check_image",
+      "label": "Image check",
+      "info": "If you not upload image, it will use code icon check"
+    },
+    {
+      "type": "html",
+      "id": "x_icon",
+      "label": "Code icon x",
+      "default": "<svg width=\"12\" height=\"12\" viewBox=\"0 0 12 12\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\"><line x1=\"2\" y1=\"2\" x2=\"10\" y2=\"10\"></line><line x1=\"10\" y1=\"2\" x2=\"2\" y2=\"10\"></line></svg>",
+      "info": "t:blocks.icon.settings.svg_upload.info"
+    },
+    {
+      "type": "image_picker",
+      "id": "x_image",
+      "label": "Image x",
+      "info": "If you not upload image, it will use code icon x"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "compare_table_list"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Compare table"
+    }
+  ]
+}
+{% endschema %}

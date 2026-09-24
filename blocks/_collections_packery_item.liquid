@@ -1,0 +1,322 @@
+{%- liquid
+  assign collection = collections[block.settings.collection]
+  assign image = block.settings.image | default: collection.metafields.theme.featured_image_collection.value | default: collection.image | default: collection.products.first.featured_image
+  assign title = block.settings.title | default: collection.title
+  assign enable_custom_ratio = block.settings.enable_custom_ratio
+  if enable_custom_ratio
+    assign custom_aspect_ratio_num = block.settings.custom_aspect_ratio | plus: 0
+    if custom_aspect_ratio_num > 0
+      assign aspect_ratio = custom_aspect_ratio_num
+    else
+      assign aspect_ratio = image.aspect_ratio | default: 1.2
+    endif
+    assign item_height_dk = block.settings.height_dk | default: 0
+    assign item_height_tb = block.settings.height_tb | default: 0
+    assign item_height_mb = block.settings.height_mb | default: 0
+  else
+    assign aspect_ratio = image.aspect_ratio | default: 1.2
+    assign item_height_dk = 0
+    assign item_height_tb = 0
+    assign item_height_mb = 0
+  endif
+
+  assign collection_des = 1
+  assign gap_item_dk = 30
+  assign gap_item_tb = 20
+  assign gap_item_mb = 10
+  assign content_position = 'center'
+  assign content_size = 'base'
+  assign content_weight = 'semibold'
+-%}
+
+{%- capture sizes -%}
+  (min-width: 1150px) calc( {{ settings.page_width | append: 'px' }} * {{ block.settings.col_dk }} / 12 - {{ gap_item_dk }}px / 2 ),(min-width: 768px) calc( 100vw * {{ block.settings.col_tb }} / 12 - {{ gap_item_tb }}px / 2 ), calc( 100vw * {{ block.settings.col_mb }} / 12 - {{ gap_item_mb }}px / 2 )
+{%- endcapture -%}
+
+<div class="hdt-collection-item hdt-collection-style{{ collection_des }} lg:hdt-custom-col-{{ block.settings.col_dk }} md:hdt-custom-col-{{ block.settings.col_tb }} hdt-custom-col-{{ block.settings.col_mb }}" item-selector {{ block.shopify_attributes }}>
+  <div class="hdt-collection-inner hdt-relative hdt-oh hdt-grid" timeline hdt-reveal="slide-in">
+    <div class="hdt-collection-img hdt-relative{% if enable_custom_ratio %} hdt-ratio--adapt_image{% if item_height_dk > 0 or item_height_tb > 0 or item_height_mb > 0 %} hdt-has-custom-height{% endif %} hdt-has-custom-ratio-height{% endif %}" style="--aspect-ratioapt: {{ aspect_ratio }};{% if item_height_dk > 0 %}--item-height-dk: {{ item_height_dk }}px;{% endif %}{% if item_height_tb > 0 %}--item-height-tb: {{ item_height_tb }}px;{% endif %}{% if item_height_mb > 0 %}--item-height-mb: {{ item_height_mb }}px;{% endif %}">
+      {% if collection_des == "9" %}
+        <span class="hdt-count">{{ collection.all_products_count | default: 0 }}</span> 
+      {% endif %}
+      <span class="hdt-ratio" calc-nav>
+        {%- if image != blank -%}
+          {{ image | image_url: width: image.width | image_tag: loading: 'lazy', width: image.width, height: image.height, class: 'hdt-obj-eff' , sizes: sizes, widths: "360,400,600,800,1000,1200,1400,1440,1920,2000,2400,2800,3600" }}
+        {%- else -%}
+          {{ 'collection-apparel-1' | placeholder_svg_tag: 'hdt-placeholder-svg hdt-obj-eff' }}  
+        {%- endif -%}
+      </span>
+      <a data-pr-href class="hdt-full-width-link" aria-label="link" href="{{ collection.url }}"></a>
+    </div>
+    {%- if title != blank and collection_des != "15" -%}
+      <div class="hdt-collection-content hdt-absolute hdt-place-self-{{ content_position }}">
+        <div class="hdt-collection-wrapper hdt-flex hdt-flex-col hdt-justify-center hdt-align-center">
+          <a data-pr-href class="hdt-full-width-link" aria-label="link" href="{{ collection.url }}"></a>
+          <a class="hdt-collection-title hdt-truncate hdt-inline-flex hdt-align-center hdt-justify-center hdt-text-{{ content_size }} hdt-font-{{ content_weight }}" href="{{ collection.url }}">
+            <span class="hdt-collection-title-text hdt-truncate">{{ title }}</span>
+            {% if collection_des == "10" %} <span class="hdt-count">{{ collection.all_products_count | default: 0 }}</span> {% endif %}
+            {% if collection_des == "11" %} <span class="hdt-count"> ({{ collection.all_products_count | default: 0 }}) </span> {% endif %}
+          </a>
+        </div>
+      </div>
+    {%- endif -%}
+    {% if title != blank and collection_des == "15" %}
+      <div class="hdt-collection-content hdt-absolute hdt-place-self-{{ content_position }}">
+        <div class="hdt-collection-wrapper hdt-flex hdt-flex-col hdt-justify-center hdt-align-center">
+          <span class="hdt-collection-title-text hdt-truncate">{{ title }}</span>
+          <a class="hdt-collection-title hdt-truncate hdt-inline-flex hdt-align-center hdt-justify-center hdt-text-{{ content_size }} hdt-font-{{ content_weight }}" href="{{ collection.url }}">Shop now</a>
+        </div>
+      </div>
+    {% endif %}
+  </div> 
+</div>
+
+{% schema %}
+{
+  "name": "Collection Item",
+  "class": "hdt-collection-item-packery",
+  "settings": [
+    {
+      "id": "collection",
+      "type": "collection",
+      "label": "t:settings_schema.cart.settings.cart_drawer.collection.label"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "t:blocks.image.name"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "t:settings_schema.cart.settings.shipping_protection.protect_title"
+    },
+    {
+      "type": "header",
+      "content": "Collection image ratio & height"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_custom_ratio",
+      "label": "Enable Collection image ratio & height",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "custom_aspect_ratio",
+      "label": "Custom Aspect Ratio (width / height)",
+      "info": "Must be > 0. Example: 0.72 for tall item, 1.48 for half-stacked item. Leave blank or 0 to use image ratio.",
+      "visible_if": "{{ block.settings.enable_custom_ratio == true and block.settings.height_dk == 0 and block.settings.height_tb == 0 and block.settings.height_mb == 0}}"
+    },
+    {
+      "type": "range",
+      "id": "height_dk",
+      "label": "Custom Height Desktop (px)",
+      "info": "Set > 0 to force item height. Example: 550px for tall item, 265px for stacked item.",
+      "min": 0,
+      "max": 800,
+      "step": 10,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ block.settings.enable_custom_ratio == true and block.settings.custom_aspect_ratio == blank}}"
+    },
+    {
+      "type": "range",
+      "id": "height_tb",
+      "label": "Custom Height Tablet (px)",
+      "min": 0,
+      "max": 800,
+      "step": 10,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ block.settings.enable_custom_ratio == true and block.settings.custom_aspect_ratio == blank}}"
+    },
+    {
+      "type": "range",
+      "id": "height_mb",
+      "label": "Custom Height Mobile (px)",
+      "min": 0,
+      "max": 800,
+      "step": 10,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ block.settings.enable_custom_ratio == true and block.settings.custom_aspect_ratio == blank}}"
+    },
+    {
+      "type": "header",
+      "content": "Column Width"
+    },
+    {
+      "type": "select",
+      "id": "col_dk",
+      "label": "Column width (Desktop)",
+      "options": [
+        {
+          "value": "1",
+          "label": "8.33%"
+        },
+        {
+          "value": "2",
+          "label": "16.67%"
+        },
+        {
+          "value": "3",
+          "label": "25%"
+        },
+        {
+          "value": "4",
+          "label": "33.33%"
+        },
+        {
+          "value": "5",
+          "label": "41.67%"
+        },
+        {
+          "value": "6",
+          "label": "50%"
+        },
+        {
+          "value": "7",
+          "label": "58.33%"
+        },
+        {
+          "value": "8",
+          "label": "66.67%"
+        },
+        {
+          "value": "9",
+          "label": "75%"
+        },
+        {
+          "value": "10",
+          "label": "83.33%"
+        },
+        {
+          "value": "11",
+          "label": "91.67%"
+        },
+        {
+          "value": "12",
+          "label": "100%"
+        }
+      ],
+      "default": "6"
+    },
+    {
+      "type": "select",
+      "id": "col_tb",
+      "label": "Column width (Tablet)",
+      "options": [
+        {
+          "value": "1",
+          "label": "8.33%"
+        },
+        {
+          "value": "2",
+          "label": "16.67%"
+        },
+        {
+          "value": "3",
+          "label": "25%"
+        },
+        {
+          "value": "4",
+          "label": "33.33%"
+        },
+        {
+          "value": "5",
+          "label": "41.67%"
+        },
+        {
+          "value": "6",
+          "label": "50%"
+        },
+        {
+          "value": "7",
+          "label": "58.33%"
+        },
+        {
+          "value": "8",
+          "label": "66.67%"
+        },
+        {
+          "value": "9",
+          "label": "75%"
+        },
+        {
+          "value": "10",
+          "label": "83.33%"
+        },
+        {
+          "value": "11",
+          "label": "91.67%"
+        },
+        {
+          "value": "12",
+          "label": "100%"
+        }
+      ],
+      "default": "6"
+    },
+    {
+      "type": "select",
+      "id": "col_mb",
+      "label": "Column width (Mobile)",
+      "options": [
+        {
+          "value": "1",
+          "label": "8.33%"
+        },
+        {
+          "value": "2",
+          "label": "16.67%"
+        },
+        {
+          "value": "3",
+          "label": "25%"
+        },
+        {
+          "value": "4",
+          "label": "33.33%"
+        },
+        {
+          "value": "5",
+          "label": "41.67%"
+        },
+        {
+          "value": "6",
+          "label": "50%"
+        },
+        {
+          "value": "7",
+          "label": "58.33%"
+        },
+        {
+          "value": "8",
+          "label": "66.67%"
+        },
+        {
+          "value": "9",
+          "label": "75%"
+        },
+        {
+          "value": "10",
+          "label": "83.33%"
+        },
+        {
+          "value": "11",
+          "label": "91.67%"
+        },
+        {
+          "value": "12",
+          "label": "100%"
+        }
+      ],
+      "default": "6"
+    }
+  ],
+  "presets": [
+    { "name": "Collection Item" }
+  ]
+}
+{% endschema %}

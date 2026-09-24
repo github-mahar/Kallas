@@ -1,0 +1,137 @@
+
+{%- liquid
+  assign product = closest.product | default: product
+-%}
+
+{%- if product != blank -%}
+  {%- liquid
+    assign disclosures = product.metafields.shopify.disclosure.value
+    assign has_visible_disclosures = false
+  -%}
+
+  {%- if disclosures != blank -%}
+    {%- capture disclosure_rows -%}
+      {%- for disclosure in disclosures -%}
+        {%- liquid
+          unless disclosure.display_preferences.value.surfaces contains 'product_page'
+            continue
+          endunless
+          assign disclosure_title = disclosure.title.value | default: disclosure.title
+          if disclosure_title == blank
+            assign disclosure_title = disclosure.message.value | default: disclosure.message
+          endif
+          assign disclosure_symbol = disclosure.symbol.value
+        -%}
+        {%- if disclosure_title != blank -%}
+          {%- assign has_visible_disclosures = true -%}
+          <li class="hdt-disclosure__row">
+            {%- if disclosure_symbol != blank -%}
+              {{
+                disclosure_symbol
+                | image_url: width: 40
+                | image_tag:
+                  class: 'hdt-disclosure__symbol',
+                  loading: 'lazy',
+                  alt: '',
+                  width: disclosure_symbol.width,
+                  height: disclosure_symbol.height
+              }}
+            {%- endif -%}
+            <p class="hdt-disclosure__title">
+              {{ disclosure_title | escape }}
+            </p>
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endcapture -%}
+
+    {%- capture disclosure_modal_items -%}
+      {%- for disclosure in disclosures -%}
+        {%- liquid
+          unless disclosure.display_preferences.value.surfaces contains 'product_page'
+            continue
+          endunless
+          assign disclosure_title = disclosure.title.value | default: disclosure.title
+          assign disclosure_message = disclosure.message.value | default: disclosure.message
+          assign disclosure_content = disclosure.content
+          assign disclosure_symbol = disclosure.symbol.value
+
+          assign disclosure_item_heading = disclosure_title | default: disclosure_message
+          assign render_message = false
+          if disclosure_content != blank
+            assign render_message = true
+          elsif disclosure_message != blank and disclosure_title != blank
+            assign render_message = true
+          endif
+        -%}
+        {%- if disclosure_item_heading != blank -%}
+          <li class="hdt-disclosure-modal__item">
+            <div class="hdt-disclosure-modal__item-heading-wrapper">
+              {%- if disclosure_symbol != blank -%}
+                {{
+                  disclosure_symbol
+                  | image_url: width: 48
+                  | image_tag:
+                    class: 'hdt-disclosure-modal__symbol',
+                    loading: 'lazy',
+                    alt: '',
+                    width: disclosure_symbol.width,
+                    height: disclosure_symbol.height
+                }}
+              {%- endif -%}
+              <h3 class="hdt-disclosure-modal__item-heading">{{ disclosure_item_heading | escape }}</h3>
+            </div>
+            {%- if render_message -%}
+              <div class="hdt-disclosure-modal__body">
+                {%- if disclosure_content != blank -%}
+                  {{ disclosure_content | metafield_tag }}
+                {%- else -%}
+                  {{ disclosure_message | escape | newline_to_br }}
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endcapture -%}
+
+    {%- if has_visible_disclosures -%}
+      <hdt-marque-bounce class="hdt-disclosure hdt-block hdt-relative">
+        <div class="hdt-disclosure__wrapper" aria-controls="modal-disclosure__{{ product.id }}">
+          <ul class="hdt-disclosure__list">
+            {{- disclosure_rows -}}
+          </ul>
+        </div>
+      </hdt-marque-bounce>
+      <hdt-modal class="hdt-modal hdt-contents" color-scheme="{{ settings.color_scheme_dialog }}">
+        <dialog id="modal-disclosure__{{ product.id }}" class="hdt-dialog hdt-dialog-modal hdt-modal-disclosure" scroll-lock>
+          <button ref="closeButton" class="hdt-s-text hdt-dialog-btn__close" aria-controls="modal-disclosure__{{ product.id }}" aria-label="{{ 'accessibility.close' | t | escape }}">{%- render 'icon' with 'close' -%}</button>
+
+          <div class="hdt-disclosure-modal__content">
+            <h2 class="hdt-disclosure-modal__heading">
+              {{ 'products.product.product_disclosures' | t }}
+            </h2>
+            <p class="hdt-disclosure-modal__sub-heading">{{ 'products.product.product_disclosures_info' | t }}</p>
+            <ul class="hdt-disclosure-modal__list">
+              {{- disclosure_modal_items -}}
+            </ul>
+          </div>
+        </dialog>
+      </hdt-modal>
+    {%- endif -%}
+  {%- endif -%}
+{%- endif -%}
+
+{% schema %}
+  {
+    "name": "Disclosure",
+    "tag": null,
+    "settings": [
+    ],
+    "presets": [
+      {
+        "name": "Disclosure"
+      }
+    ]
+  }
+{% endschema %}

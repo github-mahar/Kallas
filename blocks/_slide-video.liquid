@@ -1,0 +1,219 @@
+<!-- blocks/_slide-video.liquid -->
+{%- assign fetch = 'low' -%}
+{%- if section.index <= 3 -%}
+  {%- assign block_index = section.blocks | find_index: 'id', block.id -%}
+  {%- if block_index == 0 -%}
+    {%- assign fetch = 'high' -%}
+  {%- endif -%}
+{%- endif -%}
+<div id="block_id-{{ block.id }}" class="hdt-slider__slide hdt-slideshow_item slide-item_base slide-item_video hdt-oh" color-scheme="{{ block.settings.color_scheme }}" {{ block.shopify_attributes }} style="{% render 'block-style', settings: block.settings, type: 'background_content' %}">
+  {%- if section.settings.image_height == 'adapt_image_first' or section.settings.image_height_mb == 'adapt_image_first' -%}
+    <style>
+      #Slider-{{ section.id }} {
+        {%- if section.settings.image_height_mb == 'adapt_image_first' %}--slide-{{ block.id }}-ratio: {{ block.settings.video.aspect_ratio | default: block.settings.image_mb.aspect_ratio | default: block.settings.image.aspect_ratio | default: 1.777 }};{%- endif -%}
+        {%- if section.settings.image_height == 'adapt_image_first' %}--slide-{{ block.id }}-ratio-md: {{ block.settings.video.aspect_ratio | default: block.settings.image.aspect_ratio | default: 1.777 }};{%- endif -%}
+      }
+    </style>
+  {%- endif -%}
+  <style>
+    #block_id-{{ block.id }} {
+      --content-pd-tb-dk: {{ block.settings.padding_vertical }}px;
+      --content-pd-lr-dk: {{ block.settings.padding_horizontal }}px;
+      --content-min-width: {{ block.settings.min_width_content }}px;
+    }
+  </style>
+
+  {% assign image_mb = block.settings.image_mb | default: block.settings.image %}
+  <div class="hdt-slide_inner hdt-relative hdt-media-overlap-content{% if block.settings.overlay_content %} hdt-overlay-wrap{% endif %}" style="{% if section.settings.image_height_mb == 'adapt_image' %}--aspect-ratioapt: {{ block.settings.video.aspect_ratio | default: image_mb.aspect_ratio | default: 1.777 }};{% endif %}{% if section.settings.image_height == 'adapt_image' %}--aspect-ratioapt-md: {{ block.settings.video.aspect_ratio | default: block.settings.image.aspect_ratio | default: 1.777 }};{% endif %}">
+    
+    <div class="hdt-media-wrapper hdt-video-media-wrapper hdt-w-full hdt-h-full hdt-absolute hdt-top-0 hdt-left-0">
+      {%- if block.settings.video != blank -%}
+        <hdt-video-player {% if block.settings.autoplay %}autoplay{% endif %} class="hdt-w-full hdt-h-full">
+          {%- assign loop_video = block.settings.loop -%}
+          {{- block.settings.video | video_tag: image_size: '1920x', playsinline: true, muted: block.settings.muted, loop: loop_video, controls: block.settings.show_controls, preload: 'metadata', class: 'hdt-object-cover hdt-w-full hdt-h-full' -}}
+        </hdt-video-player>
+      {%- elsif block.settings.external_video_url != blank -%}
+        <hdt-video-player host="{{ block.settings.external_video_url.type }}" type="background" {% if block.settings.autoplay %}autoplay{% endif %} class="hdt-w-full hdt-h-full">
+          <template>
+            {%- if block.settings.external_video_url.type == 'youtube' -%}
+              <iframe id="iframe-{{ block.id }}" src="https://www.youtube.com/embed/{{ block.settings.external_video_url.id }}?playsinline=1{% if block.settings.autoplay %}&autoplay=1{% endif %}&controls={% if block.settings.show_controls %}1{% else %}0{% endif %}&mute={% if block.settings.muted %}1{% else %}0{% endif %}&loop={% if block.settings.loop %}1{% else %}0{% endif %}&playlist={{ block.settings.external_video_url.id }}&enablejsapi=1&rel=0&modestbranding=1" allow="autoplay; encrypted-media" allowfullscreen="allowfullscreen" class="hdt-w-full hdt-h-full"></iframe>
+            {%- elsif block.settings.external_video_url.type == 'vimeo' -%}
+              <iframe src="https://player.vimeo.com/video/{{ block.settings.external_video_url.id }}?{% if block.settings.autoplay %}autoplay=1{% endif %}&autopause=1&background=1&loop={% if block.settings.loop %}1{% else %}0{% endif %}&muted={% if block.settings.muted %}1{% else %}0{% endif %}&transparent=0&responsive=1" allow="autoplay; encrypted-media;" allowfullscreen="allowfullscreen" class="hdt-w-full hdt-h-full"></iframe>
+            {%- endif -%}
+          </template>
+        </hdt-video-player>
+      {%- elsif block.settings.image != blank -%}
+        <picture class="hdt-media-wrapper">
+          {% if block.settings.image_mb != blank and block.settings.image_mb != block.settings.image %}
+            {% assign srcset = block.settings.image_mb | image_url: width: block.settings.image_mb.width | image_tag: widths: '200,400,600,800,1000', alt: null | split: 'srcset="' | last %}
+            {% unless srcset contains 'src=' %}
+              <source media="(max-width: 767px)" srcset="{{ srcset }}">
+            {% endunless %}
+          {% endif %}
+          {{ block.settings.image | image_url: width: block.settings.image.width | image_tag: loading: 'eager', fetchpriority: fetch, class: 'hdt-object-cover hdt-w-full hdt-h-full', sizes: '100vw' }}
+        </picture>
+      {%- else -%}
+        <div class="hdt-media-wrapper">
+          {{ 'hero-apparel-1' | placeholder_svg_tag: 'placeholder-svg hdt-placeholder' }}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <a {% if block.settings.url == blank %}role="link" disabled="true"{% else %}href="{{ block.settings.url }}"{% endif %} target="{% if block.settings.banner_target %}_blank{% else %}_self{% endif %}" class="hdt-full-width-link" aria-label="link"></a>
+
+    <div class="hdt-grid hdt-h-full{% unless request.design_mode %} hdt-pe-none{% endunless %} hdt-content-type-{{ block.settings.content_position_type }}" {% if block.settings.background_content %}reval{% endif %}>
+      <div class="hdt-content hdt-radius hdt-place-self-{{ block.settings.content_position_mb }} md:hdt-place-self-{{ block.settings.content_position }}">
+        <div class="hdt-content-inner hdt-text-{{ block.settings.alignment_mb }} md:hdt-text-{{ block.settings.alignment }} {% if block.settings.background_content %} hdt-background-content{% endif %}{% if block.settings.use_border_content %} hdt-content-use-border{% endif %}{% if block.settings.box_square %} hdt-content-boxsquare{% endif %}{% if block.settings.content_rounded %} hdt-radius-full{% endif %}"{% if block.settings.background_content %} style="--content-bg-opacity: {{ block.settings.bg_opacity | divided_by: 100.00 }};--content-border-opacity: {{ block.settings.border_opacity | divided_by: 100.00 }};--content-border-style: {{ block.settings.border_style }};--border-pd-dk: {{ block.settings.border_pd_dk }}px;--border-pd-mb: {{ block.settings.border_pd }}px;"{% endif %}>
+          {% content_for 'blocks' %}
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Slide Video",
+  "tag": null,
+  "blocks": [
+    { "type": "text" },
+    { "type": "button" },
+    { "type": "_button_group" },
+    { "type": "heading" },
+    { "type": "spacer" },
+    { "type": "text_custom" },
+    { "type": "button_custom" },
+    { "type": "_media" },
+    { "type": "_space_html" },
+    { "type": "_liquid" },
+    { "type": "social-proof__rating" },
+    { "type": "divide" }
+  ],
+  "settings": [
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Shopify-hosted video",
+      "info": "Recommended: 1920 x 1080 px (Aspect ratio 16:9) MP4/MOV file."
+    },
+    {
+      "type": "video_url",
+      "id": "external_video_url",
+      "accept": ["youtube", "vimeo"],
+      "label": "External video URL",
+      "info": "Recommended: 16:9 widescreen YouTube or Vimeo video link."
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Autoplay video",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "muted",
+      "label": "Mute video",
+      "default": true,
+      "info": "Videos will only autoplay if muted in browsers."
+    },
+    {
+      "type": "checkbox",
+      "id": "loop",
+      "label": "Loop video",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_controls",
+      "label": "Show video controls",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Fallback poster image (Desktop)",
+      "info": "Recommended: 1920 x 800 px or 1920 x 1080 px (Aspect ratio 16:9 or 21:9)"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mb",
+      "label": "Fallback poster image (Mobile)",
+      "info": "Recommended: 750 x 1100 px or 750 x 900 px (Aspect ratio 3:4 or 9:16)"
+    },
+    {
+      "type": "url",
+      "id": "url",
+      "label": "Slide link URL"
+    },
+    {
+      "type": "checkbox",
+      "id": "banner_target",
+      "label": "Open link in new tab",
+      "default": false
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme"
+    },
+    {
+      "type": "select",
+      "id": "content_position_type",
+      "label": "Content position type",
+      "options": [
+        { "value": "container", "label": "Container" },
+        { "value": "auto", "label": "Custom" }
+      ],
+      "default": "container"
+    },
+    {
+      "type": "header",
+      "content": "Desktop Settings"
+    },
+    {
+      "type": "select",
+      "id": "content_position",
+      "label": "Content position",
+      "options": [
+        { "value": "start", "label": "Top left" },
+        { "value": "start-center", "label": "Top center" },
+        { "value": "start-end", "label": "Top right" },
+        { "value": "center", "label": "Middle center" },
+        { "value": "center-start", "label": "Middle left" },
+        { "value": "center-end", "label": "Middle right" },
+        { "value": "end", "label": "Bottom left" },
+        { "value": "end-start", "label": "Bottom left" },
+        { "value": "end-center", "label": "Bottom center" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "text_alignment",
+      "id": "alignment",
+      "label": "Text alignment"
+    },
+    {
+      "type": "header",
+      "content": "Mobile Settings"
+    },
+    {
+      "type": "select",
+      "id": "content_position_mb",
+      "label": "Content position (Mobile)",
+      "options": [
+        { "value": "start", "label": "Top left" },
+        { "value": "start-center", "label": "Top center" },
+        { "value": "start-end", "label": "Top right" },
+        { "value": "center", "label": "Middle center" },
+        { "value": "center-start", "label": "Middle left" },
+        { "value": "center-end", "label": "Middle right" },
+        { "value": "end", "label": "Bottom left" },
+        { "value": "end-start", "label": "Bottom left" },
+        { "value": "end-center", "label": "Bottom center" }
+      ],
+      "default": "center"
+    }
+  ]
+}
+{% endschema %}

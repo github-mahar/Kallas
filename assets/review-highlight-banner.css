@@ -1,0 +1,302 @@
+.hdt-review-highlight-banner {
+  background-color: rgb(var(--color-background) / var(--background-opacity, 1));
+  color: rgb(var(--color-foreground));
+  --cl-bg: rgb(var(--color-background2));
+  --cl-bd: rgb(var(--color-line-border) / 0.15);
+}
+
+.hdt-review-highlight-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.hdt-review-highlight-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  max-width: 100%;
+  position: relative;
+  z-index: 2;
+}
+
+.hdt-review-highlight-left .hdt-slider {
+  width: 100%;
+  max-width: 100%;
+}
+
+.hdt-review-highlight-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.hdt-review-highlight-card {
+  position: relative;
+  overflow: hidden;
+  background-color: rgb(var(--color-background));
+  color: rgb(var(--color-foreground));
+  border-radius: 16px;
+  padding: 40px 30px;
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+@media (min-width: 1150px) {
+  .hdt-review-highlight-card {
+    max-width: var(--card-max-width, 360px);
+  }
+}
+
+.hdt-review-highlight-card-title {
+  font-weight: 500;
+}
+
+.hdt-review-highlight-card-stars {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  color: rgb(var(--color-foreground));
+}
+
+.hdt-review-highlight-card-stars svg {
+  width: 40px;
+  height: 40px;
+  fill: currentColor;
+  display: inline-block;
+}
+
+.hdt-review-highlight-card-link-wrap {
+  margin-top: 10px;
+}
+
+.hdt-review-highlight-card-link {
+  font-size: 16px;
+  color: rgb(var(--color-foreground));
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  font-weight: 500;
+  transition: opacity 0.3s ease;
+  display: inline-block;
+}
+
+.hdt-review-highlight-card-link:hover {
+  opacity: 0.8;
+}
+
+/* Overrides for standard testimonial blocks when rendered inside the Review Highlight Banner */
+.hdt-review-highlight-banner .hdt-quote-texts {
+  font-size: clamp(20px, 3.5vw, 34px);
+  line-height: 1.4;
+  font-weight: 500;
+  color: rgb(var(--color-foreground));
+  margin: 0 0 24px 0;
+}
+
+.hdt-review-highlight-banner .hdt-quote-texts p {
+  color: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  font-weight: inherit;
+  margin: 0;
+}
+
+.hdt-review-highlight-banner .hdt-quote-texts ol,
+.hdt-review-highlight-banner .hdt-quote-content ol {
+  list-style-type: decimal;
+  list-style-position: inside;
+  padding-inline-start: 1rem;
+}
+
+.hdt-review-highlight-banner .hdt-quote-texts ol > li,
+.hdt-review-highlight-banner .hdt-quote-content ol > li {
+  list-style-type: decimal;
+}
+
+.hdt-review-highlight-banner .hdt-quote-texts ul,
+.hdt-review-highlight-banner .hdt-quote-content ul {
+  list-style-type: disc;
+  list-style-position: inside;
+  padding-inline-start: 1rem;
+}
+
+.hdt-review-highlight-banner .hdt-quote-texts ul > li,
+.hdt-review-highlight-banner .hdt-quote-content ul > li {
+  list-style-type: disc;
+}
+
+.hdt-review-highlight-banner :is(.hdt-quotes-des-1, .hdt-quotes-des-4, .hdt-quotes-des-7, .hdt-quotes-des-8) .hdt-quote-wrap {
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+  border-radius: 0;
+}
+
+.hdt-review-highlight-banner .hdt-testimonial-item {
+  background: transparent;
+  width: 100%;
+}
+
+.hdt-review-highlight-banner :is(.hdt-quotes-des-1, .hdt-quotes-des-4, .hdt-quotes-des-7, .hdt-quotes-des-8) .testimonial-inner {
+  background: transparent;
+  box-shadow: none;
+  border: none;
+  padding: 0;
+}
+
+.hdt-review-highlight-banner .hdt-quote-avatar {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  display: block;
+  margin: 0;
+}
+
+.hdt-review-highlight-banner .hdt-quote-infors {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin-top: 15px;
+  flex-wrap: nowrap;
+}
+
+.hdt-review-highlight-banner .hdt-quote-au-rev {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.hdt-review-highlight-banner .hdt-quote-author {
+  font-size: 20px;
+  font-weight: 600;
+  color: rgb(var(--color-foreground));
+  line-height: 1.2;
+  margin: 0;
+}
+
+.hdt-review-highlight-banner .hdt-quote-position {
+  font-size: 16px;
+  color: rgb(var(--color-foreground2));
+  line-height: 1.2;
+  margin: 0;
+}
+
+.hdt-review-highlight-banner .hdt-review-highlight-left .hdt-rating-wapper {
+  display: none;
+}
+
+@media (min-width: 1150px) {
+  .hdt-review-highlight-inner {
+    flex-direction: row;
+    align-items: center !important;
+    justify-content: space-between;
+    gap: 60px;
+  }
+
+  .hdt-review-highlight-left {
+    flex: 1 1 0%;
+    min-width: 0;
+  }
+
+  .hdt-review-highlight-right {
+    flex: 0 0 auto;
+    width: var(--card-max-width, 360px);
+    justify-content: flex-end;
+  }
+}
+
+.hdt-quotes-des-4 .hdt-quote-author {
+  letter-spacing: 0;
+}
+
+.hdt-review-highlight-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 150%;
+  height: 100%;
+  background: linear-gradient(
+    115deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.01) 15%,
+    rgba(255, 255, 255, 0.16) 50%,
+    rgba(255, 255, 255, 0.01) 85%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  pointer-events: none;
+  transform: translateX(-150%) skewX(-25deg);
+  transition: transform 1.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: transform;
+}
+
+.hdt-review-highlight-card:hover::after {
+  transform: translateX(120%) skewX(-25deg);
+}
+
+
+.hdt-review-highlight-banner .hdt-quotes-des-4 .hdt-prent .hdt-slider__viewport {
+  --padding-y: 0;
+  --padding-x: 0;
+}
+
+.hdt-review-highlight-banner .hdt-prent {
+  --column-gap: var(--spacing-x);
+  --row-gap: var(--spacing-y);
+  row-gap: var(--row-gap);
+  column-gap: var(--column-gap);
+}
+
+.hdt-review-highlight-banner .hdt-slider__viewport {
+  --slide-spacing: var(--column-gap);
+}
+
+.hdt-review-highlight-banner .hdt-slider__container > .shopify-block {
+  flex: 0 0 var(--slide-size);
+  min-width: 0px;
+  padding-inline-start: var(--slide-spacing);
+}
+.hdt-review-highlight-banner .hdt-slider__container > .shopify-block > .hdt-slider__slide {
+  flex: 1 1 auto;
+  width: 100%;
+  padding-inline-start: 0;
+}
+
+/* Slider navigation colors following the schema */
+.hdt-review-highlight-banner .hdt-navigation {
+  z-index: 10;
+  --nav-color: rgb(var(--hdt-btn-color));
+  --nav-bg: rgb(var(--hdt-btn-bg));
+  --nav-border: rgb(var(--hdt-btn-border-color));
+  --nav-color-hv: rgb(var(--hdt-btn-hover-color, var(--hdt-btn-color)));
+  --nav-bg-hv: rgb(var(--color-accent));
+  --nav-border-hv: rgb(var(--color-accent));
+}
+
+.hdt-review-highlight-banner .hdt-navigation.hdt-style-outline {
+  --nav-color: rgb(var(--hdt-btn-outline-color));
+  --nav-bg: transparent;
+  --nav-border: rgb(var(--hdt-btn-outline-border-color, var(--hdt-btn-outline-color)));
+  --nav-color-hv: rgb(var(--hdt-btn-hover-color, var(--hdt-btn-color)));
+  --nav-bg-hv: rgb(var(--color-accent));
+  --nav-border-hv: rgb(var(--color-accent));
+}
+
+.hdt-review-highlight-banner .hdt-navigation.hdt-style-simple {
+  --nav-color: rgb(var(--hdt-btn-outline-color));
+  --nav-bg: transparent;
+  --nav-border: transparent;
+  --nav-color-hv: rgb(var(--color-accent));
+  --nav-bg-hv: transparent;
+  --nav-border-hv: transparent;
+}

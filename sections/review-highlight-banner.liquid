@@ -1,0 +1,601 @@
+<!-- sections/review-highlight-banner.liquid -->
+{{ 'testimonials.css' | asset_url | stylesheet_tag }}
+{{ 'review-highlight-banner.css' | asset_url | stylesheet_tag }}
+{% style %}
+  {% render 'spacing-vars', box: section %}
+  .hdt-section-spacing-{{ section.id }} {
+    --card-max-width: {{ section.settings.card_width }}px;
+    --card-max-width-tb: {{ section.settings.card_width_tb }}px;
+    --card-max-width-mb: {{ section.settings.card_width_mb }}px;
+  }
+{% endstyle %}
+
+{% liquid
+  case section.settings.section_layout 
+    when 'container'
+      assign parent = 'hdt-container'
+      assign child  = 'hdt-section-spacing hdt-relative' | append: ' hdt-section-spacing-' | append: section.id
+    when 'wrapper_container'
+      assign parent = 'hdt-section-spacing hdt-relative' | append: ' hdt-section-spacing-' | append: section.id
+      assign child  = 'hdt-container'
+    when 'full_width'
+      assign parent = 'hdt-container-full hdt-section-spacing hdt-relative' | append: ' hdt-section-spacing-' | append: section.id
+      assign child  = ''
+  endcase
+
+  assign col_dk = section.settings.col_dk
+  if col_dk == blank
+    assign col_dk = '1'
+  endif
+  assign col_tb = section.settings.col_tb
+  if col_tb == blank
+    assign col_tb = '1'
+  endif
+  assign col_mb = section.settings.col_mb
+  if col_mb == blank
+    assign col_mb = '1'
+  endif
+%}
+
+<div class="{{ parent }} hdt-review-highlight-banner" {%- if section.settings.colors_by_section %} color-scheme="{{ section.settings.color_scheme }}" style="--background-opacity: {{ section.settings.background_opacity }};"{%- endif %}>
+  <div class="{{ child }}">
+    <div class="hdt-review-highlight-inner">
+      
+      <!-- Left Column: Testimonial blocks (Grid or Slider) -->
+      <div class="hdt-review-highlight-left">
+        <div class="hdt-quotes-des-4 hdt-text-{{ section.settings.content_align }}" style="--cl-name:{{ section.settings.cl_name }};--cl-content:{{ section.settings.cl_content }};--cl-bd:{{ section.settings.cl_bd }};--cl-bg:{{ section.settings.cl_bg_item }};--bdr:{{ section.settings.bdr }}px;--spacing-horizontal:{{ section.settings.space_horizontal }}px;--spacing-vertical:{{ section.settings.space_vertical }}px;--spacing-horizontal-mb:{{ section.settings.space_horizontal_mb }}px;--spacing-vertical-mb:{{ section.settings.space_vertical_mb }}px;">
+          {% if section.settings.layout == 'grid' %}
+            <div class="hdt-row-grid hdt-prent hdt-grid-cols-{{ col_mb }} md:hdt-grid-cols-{{ col_tb }} lg:hdt-grid-cols-{{ col_dk }}">
+          {% else %}
+            <hdt-slider id="Slider-{{ section.id }}" class="hdt-slider hdt-prent hdt-relative hdt-slide-spacing-x lg:hdt-slides-{{ col_dk }} md:hdt-slides-{{ col_tb }} hdt-slides-{{ col_mb }}" config='{ "id": "Slider-{{ section.id }}", "navUI": {{ section.settings.navUI }}, "dotUI": true, "loop": {{ section.settings.loop }}, "autoPlay": {{ section.settings.autoplay | times: 1000 }}, "pauseOnHover": {{ section.settings.pauseOnHover }} }'>
+              <div class="hdt-slider__viewport hdt-relative">
+                <div class="hdt-slider__container">
+          {% endif %}
+          
+          {% content_for 'blocks' %}
+          
+          {% if section.settings.layout == 'grid' %}
+            </div>
+          {% else %}
+                </div>
+              </div>
+              {%- if section.settings.navUI -%}
+                <div class="hdt-navigation hdt-position-{{ section.settings.nav_position }} hdt-visible-{{ section.settings.nav_visible }} hdt-style-{{ section.settings.nav_style }} hdt-shape-{{ section.settings.nav_shape }} hdt-size-{{ section.settings.nav_size }} hdt-hide-mobile-{{ section.settings.nav_hide_mobile }}">
+                  <button aria-controls="Slider-{{ section.id }}" class="hdt-slider__button hdt-slider__button--prev" type="button" disabled name="previous" aria-label="previous">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="7" height="11" viewBox="0 0 7 11" fill="none"><path d="M5.5 11L0 5.5L5.5 0L6.47625 0.97625L1.9525 5.5L6.47625 10.0238L5.5 11Z" fill="currentColor"/></svg>
+                  </button>
+                  <button aria-controls="Slider-{{ section.id }}" class="hdt-slider__button hdt-slider__button--next" type="button" disabled name="next" aria-label="next">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="7" height="11" viewBox="0 0 7 11" fill="none"><path d="M1.5 11L7 5.5L1.5 0L0.52375 0.97625L5.0475 5.5L0.52375 10.0238L1.5 11Z" fill="currentColor"/></svg>
+                  </button>
+                </div>
+              {%- endif -%}
+              {%- if section.settings.dotUI -%}
+                <div hdt-slider-dots aria-controls="Slider-{{ section.id }}" class="hdt-slider__dots hdt-pagination hdt-style-{{ section.settings.pag_style }} hdt-radius-{{ section.settings.pag_rounded }}{% if section.settings.only_show_mobile %} hdt-only-show-mobile{% else %} hdt-hide-mobile-{{ section.settings.pag_hide_mobile }}{% endif %}" style="--space-between: {{ section.settings.pag_space }}px; --margin-top: {{ section.settings.pag_mgt }}px;"></div>
+              {%- endif -%}
+            </hdt-slider>
+          {% endif %}
+        </div>
+      </div>
+      
+      <!-- Right Column: Card -->
+      <div class="hdt-review-highlight-right">
+        <div class="hdt-review-highlight-card" color-scheme="{{ section.settings.card_color_scheme }}">
+          {%- if section.settings.card_title != blank -%}
+            <h3 class="hdt-review-highlight-card-title hdt-h3 hdt-s-text">{{ section.settings.card_title }}</h3>
+          {%- endif -%}
+          
+          {%- if section.settings.rating > 0 -%}
+            <div class="hdt-review-highlight-card-stars">
+              {%- assign rating_num = section.settings.rating | plus: 0 -%}
+              {%- for i in (1..rating_num) -%}
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+          
+          {%- if section.settings.link_text != blank and section.settings.link_url != blank -%}
+            <div class="hdt-review-highlight-card-link-wrap">
+              <a href="{{ section.settings.link_url }}" class="hdt-review-highlight-card-link">
+                {{ section.settings.link_text }}
+              </a>
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<div class="hdt-hidden">
+  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <symbol id="hdt_star"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M329.6 176H488C498.3 176 507.4 182.5 510.7 192.2C514 201.9 510.8 212.6 502.7 218.9L371.9 320.7L422.9 480.7C426.1 490.7 422.4 501.7 413.7 507.7C405.1 513.7 393.6 513.4 385.3 506.9L256 406.4L126.7 506.9C118.4 513.4 106.9 513.7 98.27 507.7C89.65 501.7 85.94 490.7 89.13 480.7L140.1 320.7L9.267 218.9C1.174 212.6-2.027 201.9 1.3 192.2C4.628 182.5 13.75 176 24 176H182.5L233.1 16.72C236.3 6.764 245.6 0 256 0C266.5 0 275.7 6.764 278.9 16.72L329.6 176z"/></svg></symbol>
+    <symbol id="hdt_star_half"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M233.1 16.72C236.3 6.764 245.5 .0006 256 0V406.4L126.7 506.9C118.4 513.4 106.9 513.7 98.27 507.7C89.65 501.7 85.94 490.7 89.13 480.7L140.1 320.7L9.267 218.9C1.174 212.6-2.027 201.9 1.3 192.2C4.628 182.5 13.75 175.1 24 175.1H182.5L233.1 16.72z"/><path class="hdt-star-emty" d="M278.9 16.72C275.7 6.764 266.5 .0006 255.1 0V406.4L385.3 506.9C393.6 513.4 405.1 513.7 413.7 507.7C422.4 501.7 426.1 490.7 422.9 480.7L371.9 320.7L502.7 218.9C510.8 212.6 514 201.9 510.7 192.2C507.4 182.5 498.3 175.1 488 175.1H329.5L278.9 16.72z"/></svg></symbol>
+  </svg>
+  <style>
+  path.hdt-star-emty {
+      fill: #dedede;
+  }
+  </style>
+</div>
+
+{% schema %}
+{
+  "name": "Review Highlight Banner",
+  "class": "hdt-section hdt-review-highlight hdt-ttmn",
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer",
+      "custom.system"
+    ]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Testimonial General Settings"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout Mode",
+      "options": [
+        {
+          "value": "grid",
+          "label": "Grid"
+        },
+        {
+          "value": "carousel",
+          "label": "Slider/Carousel"
+        }
+      ],
+      "default": "carousel"
+    },
+    {
+      "type": "select",
+      "id": "col_dk",
+      "label": "Columns (Desktop)",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        },
+        {
+          "value": "3",
+          "label": "3"
+        },
+        {
+          "value": "4",
+          "label": "4"
+        }
+      ],
+      "default": "1"
+    },
+    {
+      "type": "select",
+      "id": "col_tb",
+      "label": "Columns (Tablet)",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        }
+      ],
+      "default": "1"
+    },
+    {
+      "type": "select",
+      "id": "col_mb",
+      "label": "Columns (Mobile)",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        }
+      ],
+      "default": "1"
+    },
+    {
+      "type": "header",
+      "content": "Carousel Options",
+      "visible_if": "{{ section.settings.layout == 'carousel' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "loop",
+      "label": "Loop slides",
+      "default": true,
+      "visible_if": "{{ section.settings.layout == 'carousel' }}"
+    },
+    {
+      "type": "range",
+      "id": "autoplay",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "label": "Autoplay speed (0 to disable)",
+      "default": 0,
+      "visible_if": "{{ section.settings.layout == 'carousel' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "pauseOnHover",
+      "label": "Pause autoplay on hover",
+      "default": true,
+      "visible_if": "{{ section.settings.layout == 'carousel' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "navUI",
+      "label": "Show navigation arrows",
+      "default": false,
+      "visible_if": "{{ section.settings.layout == 'carousel' }}"
+    },
+    {
+      "type": "select",
+      "id": "nav_position",
+      "label": "t:sections.all.slider.nav_pos.label",
+      "options": [
+        {
+          "value": "default",
+          "label": "Default"
+        },
+        {
+          "value": "on_border",
+          "label": "On border"
+        },
+        {
+          "value": "out_side",
+          "label": "Outside"
+        }
+      ],
+      "default": "default",
+      "visible_if": "{{ section.settings.navUI }}"
+    },
+    {
+      "type": "select",
+      "id": "nav_visible",
+      "label": "Navigation visibility",
+      "options": [
+        {
+          "value": "always",
+          "label": "Always"
+        },
+        {
+          "value": "hover",
+          "label": "On Hover"
+        }
+      ],
+      "default": "always",
+      "visible_if": "{{ section.settings.navUI }}"
+    },
+    {
+      "type": "select",
+      "id": "nav_style",
+      "label": "t:blocks.carousel.settings.navigation.nav_style.label",
+      "options": [
+        {
+          "value": "default",
+          "label": "Default"
+        },
+        {
+          "value": "outline",
+          "label": "Outline"
+        },
+        {
+          "value": "simple",
+          "label": "Simple"
+        }
+      ],
+      "default": "default",
+      "visible_if": "{{ section.settings.navUI }}"
+    },
+    {
+      "type": "select",
+      "id": "nav_shape",
+      "label": "t:sections.all.slider.nav_shape.label",
+      "options": [
+        {
+          "value": "default",
+          "label": "Default"
+        },
+        {
+          "value": "rounded",
+          "label": "Rounded"
+        },
+        {
+          "value": "rotate",
+          "label": "Rotate"
+        }
+      ],
+      "default": "default",
+      "visible_if": "{{ section.settings.navUI }}"
+    },
+    {
+      "type": "select",
+      "id": "nav_size",
+      "label": "t:sections.all.slider.nav_size.label",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "small",
+      "visible_if": "{{ section.settings.navUI }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "nav_hide_mobile",
+      "label": "Hide navigation on mobile",
+      "default": false,
+      "visible_if": "{{ section.settings.navUI }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "dotUI",
+      "label": "Show pagination dots",
+      "default": false,
+      "visible_if": "{{ section.settings.layout == 'carousel' }}"
+    },
+    {
+      "type": "select",
+      "id": "pag_style",
+      "label": "t:blocks.carousel.settings.pagination.style.label",
+      "options": [
+        {
+          "value": "default",
+          "label": "Default"
+        },
+        {
+          "value": "outline",
+          "label": "Outline"
+        },
+        {
+          "value": "elessi",
+          "label": "Elessi"
+        },
+        {
+          "value": "full",
+          "label": "Full"
+        },
+        {
+          "value": "number",
+          "label": "Number"
+        }
+      ],
+      "default": "default",
+      "visible_if": "{{ section.settings.dotUI and section.settings.layout == 'carousel' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "pag_rounded",
+      "label": "Rounded dots",
+      "default": false,
+      "visible_if": "{{ section.settings.dotUI and section.settings.layout == 'carousel' }}"
+    },
+    {
+      "type": "range",
+      "id": "pag_space",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "t:blocks.carousel.settings.pagination.space",
+      "default": 10,
+      "visible_if": "{{ section.settings.dotUI and section.settings.layout == 'carousel' }}"
+    },
+    {
+      "type": "range",
+      "id": "pag_mgt",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin top of pagination",
+      "default": 10,
+      "visible_if": "{{ section.settings.dotUI and section.settings.layout == 'carousel' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "only_show_mobile",
+      "label": "Only show pagination on mobile",
+      "default": false,
+      "visible_if": "{{ section.settings.dotUI and section.settings.layout == 'carousel' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "pag_hide_mobile",
+      "label": "Hide pagination on mobile",
+      "default": false,
+      "visible_if": "{{ section.settings.dotUI and section.settings.only_show_mobile == false and section.settings.layout == 'carousel' }}"
+    },
+    {
+      "type": "header",
+      "content": "Review Card Settings"
+    },
+    {
+      "type": "range",
+      "id": "card_width",
+      "min": 250,
+      "max": 500,
+      "step": 10,
+      "unit": "px",
+      "label": "Card Maximum Width (Desktop)",
+      "default": 360
+    },
+    {
+      "type": "range",
+      "id": "card_width_tb",
+      "min": 250,
+      "max": 500,
+      "step": 10,
+      "unit": "px",
+      "label": "Card Maximum Width (Tablet)",
+      "default": 340
+    },
+    {
+      "type": "range",
+      "id": "card_width_mb",
+      "min": 200,
+      "max": 450,
+      "step": 10,
+      "unit": "px",
+      "label": "Card Maximum Width (Mobile)",
+      "default": 300
+    },
+    {
+      "type": "text",
+      "id": "card_title",
+      "label": "Card Heading",
+      "default": "Over 1.600 Five Star Reviews"
+    },
+    {
+      "type": "range",
+      "id": "rating",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "label": "Rating (Stars)",
+      "default": 5
+    },
+    {
+      "type": "text",
+      "id": "link_text",
+      "label": "Link Text",
+      "default": "Read the review"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Link URL",
+      "default": "/"
+    },
+    {
+      "type": "header",
+      "content": "Section Colors"
+    },
+    {
+      "type": "checkbox",
+      "id": "colors_by_section",
+      "label": "t:sections.all.colors.display_colors_by_section",
+      "default": false
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "visible_if": "{{ section.settings.colors_by_section }}"
+    },
+    {
+      "type": "range",
+      "id": "background_opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "label": "t:sections.all.background.opacity",
+      "default": 0,
+      "visible_if": "{{ section.settings.colors_by_section }}"
+    },
+    {
+      "type": "color_scheme",
+      "id": "card_color_scheme",
+      "label": "Card Color Scheme"
+    },
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "select",
+      "id": "section_layout",
+      "label": "Section Layout Width",
+      "options": [
+        {
+          "value": "container",
+          "label": "Container"
+        },
+        {
+          "value": "wrapper_container",
+          "label": "Wrapper Container"
+        },
+        {
+          "value": "full_width",
+          "label": "Full Width"
+        }
+      ],
+      "default": "container"
+    },
+    {
+      "type": "text",
+      "id": "mg",
+      "label": "Margin (Desktop)",
+      "info": "Top, Right, Bottom, Left. E.g. ,,50px,",
+      "default": ",,50px,"
+    },
+    {
+      "type": "text",
+      "id": "mg_mb",
+      "label": "Margin (Mobile)",
+      "default": ",,30px,"
+    },
+    {
+      "type": "text",
+      "id": "pd",
+      "label": "Padding (Desktop)",
+      "info": "Top, Right, Bottom, Left. E.g. 50px,,50px,",
+      "default": "60px,,60px,"
+    },
+    {
+      "type": "text",
+      "id": "pd_mb",
+      "label": "Padding (Mobile)",
+      "default": "40px,,40px,"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "_testimonial_item_review"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Review Banner",
+      "category": "02. Banner",
+      "blocks": [
+        {
+          "type": "_testimonial_item_review",
+          "settings": {
+            "title": "Ronald Richards",
+            "pos": "- Nursing Assistant -",
+            "content": "<p>“Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis.”</p>",
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

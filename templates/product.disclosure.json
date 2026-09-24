@@ -1,0 +1,1271 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "breadcrumb": {
+      "type": "brc-nav-product",
+      "settings": {
+        "back_next_pr": true,
+        "colors_by_section": true,
+        "color_scheme": "scheme-c9476b69-abc7-454f-a946-2d5a9f5f3a37",
+        "background_opacity": 1,
+        "section_layout": "wrapper_container",
+        "hdt_background_parallax": false,
+        "mg": "",
+        "mg_mb": "",
+        "pd": "20px,,20px,",
+        "pd_mb": "15px,,15px,"
+      }
+    },
+    "main-product": {
+      "type": "main-product",
+      "blocks": {
+        "group_product_9RYttB": {
+          "type": "_group-product",
+          "settings": {
+            "colors_by_block": false,
+            "color_scheme": ""
+          },
+          "blocks": {
+            "product_title_ehRqkq": {
+              "type": "_product-title",
+              "settings": {
+                "txt_tr_pr": "none",
+                "tag": "h2",
+                "heading_size": "h_custom",
+                "font_size_heading_lg": 36,
+                "font_size_heading": 26,
+                "font_weight": "semibold",
+                "letter_spacing_heading": 0
+              },
+              "blocks": {}
+            },
+            "product_price_9JizTC": {
+              "type": "_product-price",
+              "settings": {
+                "label_onsale_style": "none"
+              },
+              "blocks": {}
+            },
+            "product_description_AJaqwJ": {
+              "type": "_product-description",
+              "settings": {
+                "des": "2",
+                "short_des": "",
+                "readm": false,
+                "length": 130,
+                "readm_txt": "Read more",
+                "readl_txt": "Read less",
+                "ffamily": "",
+                "text_size": "base",
+                "line_height": "",
+                "font_weight": "normal",
+                "heading_color": "",
+                "text_color": "hdt-text-secondary",
+                "font_size_text_lg": 16,
+                "font_size_text": 14,
+                "letter_spacing_text": 0
+              },
+              "blocks": {}
+            },
+            "text_tGDaxm": {
+              "type": "text",
+              "name": "t:blocks.text.name",
+              "disabled": true,
+              "settings": {
+                "text": "<ul><li>Perfect for fine motor skills & coordination </li><li>Great for imaginative & open-ended play </li><li>Encourages shape recognition & problem-solving</li><li>Ideal for screen-free toddler entertainment</li></ul>",
+                "hidden_br_mobile": false,
+                "hidden_on_mobile": false,
+                "ffamily": "",
+                "text_size": "base",
+                "line_height": "",
+                "font_weight": "normal",
+                "text_color": "hdt-text-secondary",
+                "font_size_text_lg": 16,
+                "font_size_text": 14,
+                "letter_spacing_text": 0
+              },
+              "blocks": {}
+            },
+            "product_variant_picker_WMmDTM": {
+              "type": "_product-variant-picker",
+              "settings": {
+                "color_picker_type": "color_rounded",
+                "color_size": "medium",
+                "picker_type": "circle",
+                "size_chart_source": "page",
+                "size_chart_page": "size-chart"
+              },
+              "blocks": {}
+            },
+            "quantity_selector_tarLcL": {
+              "type": "_quantity-selector",
+              "disabled": true,
+              "settings": {},
+              "blocks": {}
+            },
+            "product_buy_button_aPmAbD": {
+              "type": "_product-buy-button",
+              "settings": {
+                "show_quantity_selector": true,
+                "show_dynamic_checkout": true,
+                "show_gift_card_recipient": true,
+                "show_wishlist": true,
+                "color_wishlist": "#222222",
+                "color_hover_wishlist": "#0f7f73",
+                "color_active_wishlist": "#e81e1e",
+                "show_compare": true,
+                "color_compare": "#222222",
+                "color_hover_compare": "#0f7f73",
+                "color_active_compare": "#e81e1e",
+                "ani": "hdt-ani-shake is--infinite",
+                "time": 6,
+                "btn_transform": "hdt-uppercase",
+                "btn_style": "hdt-btn-accent",
+                "btn_fullwidth": true
+              },
+              "blocks": {}
+            },
+            "disclosure_7Jg7KX": {
+              "type": "_disclosure",
+              "name": "Disclosure",
+              "settings": {},
+              "blocks": {}
+            },
+            "product_back_instock_qMdMA6": {
+              "type": "_product_back_instock",
+              "name": "Back in stock",
+              "settings": {
+                "only_show_soldout": true
+              },
+              "blocks": {}
+            },
+            "product_pickup_Jpchr6": {
+              "type": "_product-pickup",
+              "name": "t:sections.main-product.blocks.pickup_availability.name",
+              "settings": {},
+              "blocks": {}
+            },
+            "product_trust_badge_QALnxQ": {
+              "type": "_product-trust-badge",
+              "settings": {
+                "mess": "",
+                "size": 16,
+                "source": "1",
+                "image": "shopify://shop_images/trust_img.png",
+                "wimg": 370,
+                "svg": "amazon,american_express,apple_pay,bitcoin,dankort,diners_club,discover,dogecoin,dwolla,forbrugsforeningen,interac,google_pay,jcb,klarna,klarna-pay-later,litecoin,maestro,master,paypal,shopify_pay,sofort,visa",
+                "height": 30
+              },
+              "blocks": {}
+            },
+            "product_extra_link_HfDmDV": {
+              "type": "_product-extra-link",
+              "settings": {},
+              "blocks": {
+                "product_size_chart_6Y9gBm": {
+                  "type": "_product-size-chart",
+                  "settings": {
+                    "size_chart": "3",
+                    "size_chart_source": "page",
+                    "size_chart_page": "size-chart"
+                  },
+                  "blocks": {}
+                },
+                "product_delivery_return_CqMf76": {
+                  "type": "_product-delivery-return",
+                  "settings": {
+                    "page_delivery": "delivery-return"
+                  },
+                  "blocks": {}
+                },
+                "product_ask_question_nWC4pL": {
+                  "type": "_product-ask-question",
+                  "settings": {},
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "product_size_chart_6Y9gBm",
+                "product_delivery_return_CqMf76",
+                "product_ask_question_nWC4pL"
+              ]
+            },
+            "product_meta_hnDEjn": {
+              "type": "_product-meta",
+              "disabled": true,
+              "settings": {},
+              "blocks": {
+                "product_meta_available_hVC3VU": {
+                  "type": "_product-meta-available",
+                  "name": "t:sections.main-product.blocks.meta.settings.show_available.label",
+                  "settings": {},
+                  "blocks": {}
+                },
+                "product_meta_sku_kXHJPJ": {
+                  "type": "_product-meta-sku",
+                  "settings": {},
+                  "blocks": {}
+                },
+                "product_meta_category_4Gq4HK": {
+                  "type": "_product-meta-category",
+                  "settings": {},
+                  "blocks": {}
+                },
+                "product_meta_tags_bePDzg": {
+                  "type": "_product-meta-tags",
+                  "settings": {},
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "product_meta_available_hVC3VU",
+                "product_meta_sku_kXHJPJ",
+                "product_meta_category_4Gq4HK",
+                "product_meta_tags_bePDzg"
+              ]
+            },
+            "socials_XYJPwj": {
+              "type": "socials",
+              "disabled": true,
+              "settings": {
+                "text_color": "hdt-s-text",
+                "type": "share",
+                "share_facebook": true,
+                "share_x": true,
+                "share_pinterest": true,
+                "share_tumblr": true,
+                "share_telegram": true,
+                "share_email": true,
+                "share_whatsapp": true,
+                "socials_style": "simple",
+                "socials_size": "medium",
+                "bd_radius": 30,
+                "space_item": 30
+              },
+              "blocks": {}
+            },
+            "group_product_accordion_en3TwK": {
+              "type": "_group_product_accordion",
+              "name": "t:sections.accordion.name",
+              "settings": {
+                "open": false,
+                "accordion_des": "1",
+                "spacing": 15
+              },
+              "blocks": {
+                "accordion_des_item_nNbBrh": {
+                  "type": "_accordion_des_item",
+                  "settings": {
+                    "icon": "none",
+                    "title": "Description"
+                  },
+                  "blocks": {}
+                },
+                "accordion_adt_item_6RBncR": {
+                  "type": "_accordion_adt_item",
+                  "settings": {
+                    "icon": "none",
+                    "title": "Accordion title"
+                  },
+                  "blocks": {}
+                },
+                "accordion_html_item_NaUrP9": {
+                  "type": "_accordion_html_item",
+                  "name": "t:blocks.html.name",
+                  "settings": {
+                    "icon": "none",
+                    "title": "Custom tab",
+                    "content": "",
+                    "page": "wash-care"
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "accordion_des_item_nNbBrh",
+                "accordion_adt_item_6RBncR",
+                "accordion_html_item_NaUrP9"
+              ]
+            }
+          },
+          "block_order": [
+            "product_title_ehRqkq",
+            "product_price_9JizTC",
+            "product_description_AJaqwJ",
+            "text_tGDaxm",
+            "product_variant_picker_WMmDTM",
+            "quantity_selector_tarLcL",
+            "product_buy_button_aPmAbD",
+            "disclosure_7Jg7KX",
+            "product_back_instock_qMdMA6",
+            "product_pickup_Jpchr6",
+            "product_trust_badge_QALnxQ",
+            "product_extra_link_HfDmDV",
+            "product_meta_hnDEjn",
+            "socials_XYJPwj",
+            "group_product_accordion_en3TwK"
+          ]
+        },
+        "main-product-sidebar": {
+          "type": "_product_sidebar",
+          "static": true,
+          "settings": {
+            "color_scheme": "",
+            "space": 50,
+            "last_order": false
+          },
+          "blocks": {}
+        },
+        "main-product-medias": {
+          "type": "_product-medias",
+          "static": true,
+          "settings": {
+            "media_box_size": 50,
+            "desktop_media_layout": "thumbnail_left",
+            "media_size": "medium",
+            "mobile_media_layout": "thumbnails",
+            "show_first_media": false,
+            "use_select_varaint_change_media": true,
+            "enable_media_autoplay": false,
+            "enable_video_looping": false,
+            "enable_thumb_efect": true,
+            "image_ratio": "adapt_image",
+            "image_size": true,
+            "image_zoom": "zoom_lightbox",
+            "enable_lightbox_icon": false,
+            "image_zoom_type": "external",
+            "zoom_level": 2,
+            "max_zoom_lightbox": 3,
+            "navUI": true,
+            "nav_style": "outline",
+            "nav_shape": "rounded",
+            "nav_size": "small",
+            "nav_hide_mobile": true
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "group_product_9RYttB"
+      ],
+      "settings": {
+        "product_list_fbt": [],
+        "sticky_atc": true,
+        "hdt_layout_atc_mob": "hdt_layout_atc_mob_default",
+        "hdt_show_sticky_atc": "hdt_show_scrolls_outside_the_scope_of_the_form",
+        "ani": "hdt-ani-shake is--infinite",
+        "time": 6,
+        "btn_transform": "hdt-uppercase",
+        "btn_style": "hdt-btn-accent",
+        "colors_by_section": false,
+        "color_scheme": "",
+        "background_opacity": 1,
+        "fullwidth": false,
+        "mg": "",
+        "mg_mb": "",
+        "pd": "30px,,60px,",
+        "pd_mb": "22px,,45px,"
+      }
+    },
+    "tabs": {
+      "type": "main-product-tabs",
+      "blocks": {
+        "tab_des_tKqkJj": {
+          "type": "tab_des",
+          "settings": {
+            "title": "Description"
+          }
+        },
+        "tab_add_HXf3yk": {
+          "type": "tab_add",
+          "settings": {
+            "title": "Additional Information"
+          }
+        },
+        "tab_html_7dKb7L": {
+          "type": "tab_html",
+          "settings": {
+            "title": "Custom tab",
+            "content": "",
+            "page": "wash-care"
+          }
+        }
+      },
+      "block_order": [
+        "tab_des_tKqkJj",
+        "tab_add_HXf3yk",
+        "tab_html_7dKb7L"
+      ],
+      "disabled": true,
+      "settings": {
+        "tabs_design": "tab",
+        "enable_first_tab": false,
+        "full_width": false,
+        "colors_by_section": true,
+        "color_scheme": "scheme-c9476b69-abc7-454f-a946-2d5a9f5f3a37",
+        "background_opacity": 1,
+        "mg": "",
+        "mg_mb": "",
+        "pd": "60px,,60px,",
+        "pd_mb": "30px,,30px,"
+      }
+    },
+    "sidebar": {
+      "type": "sidebar-product",
+      "disabled": true,
+      "settings": {
+        "color_scheme": "",
+        "space": 50
+      }
+    },
+    "marquee_m4mnqP": {
+      "type": "marquee",
+      "blocks": {
+        "item_rXLwPU": {
+          "type": "item",
+          "settings": {
+            "text": "<p>30 DAY MONEYBACK GUARANTEE</p>",
+            "icon_svg": "flash",
+            "custom_svg": "",
+            "icon_width": 20,
+            "icon_width_mb": 20
+          }
+        },
+        "item_Rdazkd": {
+          "type": "item",
+          "settings": {
+            "text": "<p>FREE SHIPPING ON ORDER $200</p>",
+            "icon_svg": "flash",
+            "custom_svg": "",
+            "icon_width": 20,
+            "icon_width_mb": 20
+          }
+        },
+        "item_PwrHfB": {
+          "type": "item",
+          "settings": {
+            "text": "<p>30% OFF TODAY ONLY</p>",
+            "icon_svg": "flash",
+            "custom_svg": "",
+            "icon_width": 20,
+            "icon_width_mb": 20
+          }
+        }
+      },
+      "block_order": [
+        "item_rXLwPU",
+        "item_Rdazkd",
+        "item_PwrHfB"
+      ],
+      "name": "t:sections.marquee.name",
+      "settings": {
+        "space_item": 30,
+        "speed": 0.3,
+        "direction": "rtl",
+        "marquee_pause_when_hover": true,
+        "enable_effect": false,
+        "width_marquee": 300,
+        "angle": -4,
+        "color_scheme_effect": "",
+        "text_fs": "h6",
+        "font_size_heading_lg": 50,
+        "font_size_heading": 24,
+        "font_weight_heading": 600,
+        "letter_spacing_heading": 0,
+        "text_uppercase": false,
+        "adding_border": true,
+        "border_bottom": false,
+        "icon_position_between": true,
+        "color_scheme": "scheme-6707cc8e-6558-49d9-8759-f7d934d9fe4f",
+        "mg": "",
+        "mg_mb": ",,30px,",
+        "pd": "10px,,10px",
+        "pd_mb": ""
+      }
+    },
+    "image_text_t4CE3G": {
+      "type": "image_text",
+      "blocks": {
+        "image_text_column_fkrPTN": {
+          "type": "_image-text-column",
+          "settings": {
+            "image_position": "md:hdt-order-last",
+            "rounded": "none"
+          },
+          "blocks": {
+            "image_c6fzK9": {
+              "type": "image",
+              "settings": {
+                "img": "shopify://shop_images/ChatGPT_Image_Jun_23_2026_03_27_32_PM.png",
+                "image_ratio": "adapt_image",
+                "img_effect": "none",
+                "b_effect": "none",
+                "custom_width": "full",
+                "image_w": 50,
+                "image_w_mb": 50,
+                "rounded": ""
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "image_c6fzK9"
+          ]
+        },
+        "image_text_col_nbqULL": {
+          "type": "_image-text-col",
+          "settings": {
+            "alignment": "left",
+            "alignment_mb": "center",
+            "colors_by_block": false,
+            "color_scheme": "",
+            "align_center": true,
+            "padding_h": 0,
+            "padding_v": 0,
+            "padding_h_mb": 15,
+            "padding_v_mb": 15
+          },
+          "blocks": {
+            "heading_DaYpGL": {
+              "type": "heading",
+              "settings": {
+                "heading": "<h3>Why Parents & Kids Love It</h3>",
+                "hidden_br_mobile": false,
+                "hidden_on_mobile": false,
+                "line_height": "",
+                "font_weight": "normal",
+                "heading_size": "h3",
+                "text_color": "hdt-s-text",
+                "font_size_heading_lg": 50,
+                "font_size_heading": 24,
+                "letter_spacing_heading": 0
+              },
+              "blocks": {}
+            },
+            "spacer_kEKKzW": {
+              "type": "spacer",
+              "settings": {
+                "direction": false,
+                "space_lg": 10,
+                "space_md": 10,
+                "space": 10
+              },
+              "blocks": {}
+            },
+            "text_htBzfD": {
+              "type": "text",
+              "settings": {
+                "text": "<p>From living room floors to imaginative road trips — <strong>Kalles</strong> transforms playtime into interactive learning adventures.</p><p>The durable, eco-friendly wooden design encourages story-telling, hand-eye coordination, and independent building while keeping little ones engaged without screens.</p>",
+                "hidden_br_mobile": false,
+                "hidden_on_mobile": false,
+                "ffamily": "",
+                "text_size": "base",
+                "line_height": "",
+                "font_weight": "normal",
+                "text_color": "hdt-s-text",
+                "font_size_text_lg": 16,
+                "font_size_text": 14,
+                "letter_spacing_text": 0
+              },
+              "blocks": {}
+            },
+            "spacer_bgLCYj": {
+              "type": "spacer",
+              "settings": {
+                "direction": false,
+                "space_lg": 10,
+                "space_md": 10,
+                "space": 10
+              },
+              "blocks": {}
+            },
+            "text_ztAQJW": {
+              "type": "text",
+              "name": "t:blocks.text.name",
+              "settings": {
+                "text": "<ul><li>Encourages creative & open-ended play</li><li>Helps improve fine motor skills</li><li>Easy to stack, build, and tidy away</li><li>Adorable, nursery-friendly wooden design</li></ul>",
+                "hidden_br_mobile": false,
+                "hidden_on_mobile": false,
+                "ffamily": "",
+                "text_size": "base",
+                "line_height": "",
+                "font_weight": "normal",
+                "text_color": "hdt-s-text",
+                "font_size_text_lg": 16,
+                "font_size_text": 14,
+                "letter_spacing_text": 0
+              },
+              "blocks": {}
+            },
+            "spacer_rx3yki": {
+              "type": "spacer",
+              "settings": {
+                "direction": false,
+                "space_lg": 10,
+                "space_md": 10,
+                "space": 10
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "heading_DaYpGL",
+            "spacer_kEKKzW",
+            "text_htBzfD",
+            "spacer_bgLCYj",
+            "text_ztAQJW",
+            "spacer_rx3yki"
+          ]
+        },
+        "image-text-heading": {
+          "type": "section-heading",
+          "static": true,
+          "settings": {
+            "design_heading": "1",
+            "horizontal": false,
+            "alignment": "left",
+            "heading_gap": 15,
+            "margin_bottom": 30
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "image_text_column_fkrPTN",
+        "image_text_col_nbqULL"
+      ],
+      "name": "Image with text",
+      "settings": {
+        "colors_by_section": true,
+        "color_scheme": "scheme-c9476b69-abc7-454f-a946-2d5a9f5f3a37",
+        "background_opacity": 1,
+        "section_layout": "wrapper_container",
+        "hdt_background_parallax": false,
+        "mg": "",
+        "mg_mb": "",
+        "pd": "100px,,100px",
+        "pd_mb": ""
+      }
+    },
+    "custom_section_zFNAie": {
+      "type": "custom-section",
+      "blocks": {
+        "multi_column_qNbnPx": {
+          "type": "_multi_column",
+          "settings": {
+            "column_dk": "5",
+            "column_tb": "6",
+            "column_mb": "12",
+            "column_dk_10": "4",
+            "column_tb_10": "5",
+            "column_mb_10": "10",
+            "spacing_h_dk": 0,
+            "spacing_v_dk": 30,
+            "spacing_h_tb": 0,
+            "spacing_v_tb": 30,
+            "spacing_h_mb": 0,
+            "spacing_v_mb": 30,
+            "content_position": "center",
+            "align_content": false,
+            "content_position_mb": "auto",
+            "alignment": "center",
+            "alignment_mb": "center",
+            "class_custom": "",
+            "rounded": "none"
+          },
+          "blocks": {
+            "heading_rAjYKT": {
+              "type": "heading",
+              "settings": {
+                "heading": "<p>What Makes Kalles Different?</p>",
+                "hidden_br_mobile": false,
+                "hidden_on_mobile": false,
+                "line_height": "",
+                "font_weight": "normal",
+                "heading_size": "h3",
+                "text_color": "hdt-s-text",
+                "font_size_heading_lg": 50,
+                "font_size_heading": 24,
+                "letter_spacing_heading": 0
+              },
+              "blocks": {}
+            },
+            "spacer_q3FibL": {
+              "type": "spacer",
+              "settings": {
+                "direction": false,
+                "space_lg": 10,
+                "space_md": 10,
+                "space": 10
+              },
+              "blocks": {}
+            },
+            "text_xiLPwJ": {
+              "type": "text",
+              "settings": {
+                "text": "<p>Unlike ordinary bath toys, <strong>Kalles</strong> combines sensory comfort, adorable design, and safe materials into one playful experience kids instantly love.</p>",
+                "hidden_br_mobile": false,
+                "hidden_on_mobile": false,
+                "ffamily": "",
+                "text_size": "base",
+                "line_height": "",
+                "font_weight": "normal",
+                "text_color": "hdt-s-text",
+                "font_size_text_lg": 16,
+                "font_size_text": 14,
+                "letter_spacing_text": 0
+              },
+              "blocks": {}
+            },
+            "spacer_pjwKaw": {
+              "type": "spacer",
+              "settings": {
+                "direction": false,
+                "space_lg": 20,
+                "space_md": 20,
+                "space": 20
+              },
+              "blocks": {}
+            },
+            "button_dREJBQ": {
+              "type": "button",
+              "settings": {
+                "label": "BUY ME NOW",
+                "link": "shopify://products/vehicles-play-set",
+                "open_in_new_tab": false,
+                "full_width": false,
+                "btn_style": "hdt-btn-accent",
+                "color_btn": "#fff",
+                "color_hover_btn": "#fff",
+                "background_btn": "#222",
+                "background_hover_btn": "#333",
+                "border_w_btn": "",
+                "border_btn": "#222",
+                "border_hover_btn": "#333",
+                "size": "m",
+                "text_size": "hdt-text-base",
+                "font_weight": "semibold",
+                "font_size_btn": 14,
+                "padding_btn": 30,
+                "min_width_btn": 100,
+                "min_width_dt_btn": 100,
+                "min_height_btn": 40,
+                "rounded": "",
+                "icon": "none",
+                "icon_position": "after",
+                "icon_height": 14,
+                "icon_spacing": 5
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "heading_rAjYKT",
+            "spacer_q3FibL",
+            "text_xiLPwJ",
+            "spacer_pjwKaw",
+            "button_dREJBQ"
+          ]
+        },
+        "multi_column_kAgxih": {
+          "type": "_multi_column",
+          "settings": {
+            "column_dk": "7",
+            "column_tb": "6",
+            "column_mb": "12",
+            "column_dk_10": "7",
+            "column_tb_10": "5",
+            "column_mb_10": "10",
+            "spacing_h_dk": 0,
+            "spacing_v_dk": 0,
+            "spacing_h_tb": 0,
+            "spacing_v_tb": 0,
+            "spacing_h_mb": 0,
+            "spacing_v_mb": 0,
+            "content_position": "auto",
+            "align_content": false,
+            "content_position_mb": "auto",
+            "alignment": "center",
+            "alignment_mb": "center",
+            "class_custom": "",
+            "rounded": "none"
+          },
+          "blocks": {
+            "compare_table_GeLeAY": {
+              "type": "compare_table",
+              "name": "Compare table",
+              "settings": {
+                "content": "BPA-Free Materials\nSensory-Friendly Design\nSoft Rounded Edges\nKid-Safe Waterproof Build",
+                "check_icon": "<svg width=\"14\" height=\"14\" viewbox=\"0 0 14 14\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"2,7 6,11 12,3\"></polyline></svg>",
+                "x_icon": "<svg width=\"12\" height=\"12\" viewbox=\"0 0 12 12\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2.5\" stroke-linecap=\"round\"><line x1=\"2\" y1=\"2\" x2=\"10\" y2=\"10\"></line><line x1=\"10\" y1=\"2\" x2=\"2\" y2=\"10\"></line></svg>"
+              },
+              "blocks": {
+                "compare_table_list_xKye74": {
+                  "type": "compare_table_list",
+                  "name": "List",
+                  "settings": {
+                    "title": "ROARBUDDY™",
+                    "key_brand": true,
+                    "checks": "[1]\n[1]\n[1]\n[1]"
+                  },
+                  "blocks": {}
+                },
+                "compare_table_list_ET9Vdj": {
+                  "type": "compare_table_list",
+                  "name": "List",
+                  "settings": {
+                    "title": "Others",
+                    "key_brand": false,
+                    "checks": "[0]\n[1]\n[0]\n[0]"
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "compare_table_list_xKye74",
+                "compare_table_list_ET9Vdj"
+              ]
+            }
+          },
+          "block_order": [
+            "compare_table_GeLeAY"
+          ]
+        }
+      },
+      "block_order": [
+        "multi_column_qNbnPx",
+        "multi_column_kAgxih"
+      ],
+      "name": "t:sections.custom_section.name",
+      "settings": {
+        "layout": "12",
+        "item_spacing": 30,
+        "item_spacing_tb": 15,
+        "item_spacing_mb": 15,
+        "colors_by_section": false,
+        "color_scheme": "",
+        "background_opacity": 0,
+        "section_layout": "container",
+        "hdt_background_parallax": false,
+        "mg": ",,50px,",
+        "mg_mb": ",,30px,",
+        "pd": "80px,,110px",
+        "pd_mb": "50px,,80px"
+      }
+    },
+    "testimonial_section_pPLHAP": {
+      "type": "testimonial_section",
+      "blocks": {
+        "testimonial_item_r8Lk7X": {
+          "type": "_testimonial_item",
+          "settings": {
+            "image_avata": "shopify://shop_images/8b2e9dc2d475e8ab04325735ce0dfd32c88361a1.png",
+            "heading": "",
+            "content": "<p>\"I honestly didn’t expect these little dino ducks to become my son’s favorite bath toy so quickly. Bath time used to be a struggle every single night — crying, refusing to get in the tub, the whole thing. Since we got these, he literally runs to the bathroom holding his tiny towel and asks for his ‘dino duck friends.\"</p>",
+            "title": "Daniel C.",
+            "pos": "",
+            "rating": 5
+          },
+          "blocks": {}
+        },
+        "testimonial_item_jXQ3Vj": {
+          "type": "_testimonial_item",
+          "settings": {
+            "image_avata": "shopify://shop_images/0b91cc41357a1611e67ff527770f3b13bd8e9013.png",
+            "heading": "",
+            "content": "<p>“As a mom of two toddlers, I’m always looking for toys that keep them entertained without screens, and these have honestly been amazing. The dinosaur design is adorable in person, and both of my kids instantly became obsessed with them.”</p>",
+            "title": "Sophia L.",
+            "pos": "",
+            "rating": 5
+          },
+          "blocks": {}
+        },
+        "testimonial_item_n7MMdC": {
+          "type": "_testimonial_item",
+          "settings": {
+            "image_avata": "shopify://shop_images/e3c2c7c5a1a18c07e1a6c4ae9a0fd4c188f39443.png",
+            "heading": "",
+            "content": "<p>“These are SO much cuter in real life than in the photos. The packaging was adorable and felt surprisingly premium for the price. I bought them as a birthday gift for my niece, but after seeing them in person, I ended up ordering another set for my own daughter immediately.”</p>",
+            "title": "Emily R.",
+            "pos": "",
+            "rating": 5
+          },
+          "blocks": {}
+        },
+        "testimonial_item_Be9ck9": {
+          "type": "_testimonial_item",
+          "name": "Testimonial",
+          "settings": {
+            "image_avata": "shopify://shop_images/model-with-leather-jacket-over-shoulders.jpg",
+            "heading": "",
+            "content": "<p>“The moment I opened the package, I could tell the quality was better than most toys in this price range. The colors are soft and aesthetic, the material feels safe and durable, and the dinosaur costumes are ridiculously cute. My little boy carries them everywhere — bath tub, couch, stroller, even bedtime.”</p>",
+            "title": "Emily R.",
+            "pos": "",
+            "rating": 5
+          },
+          "blocks": {}
+        },
+        "our-team": {
+          "type": "section-heading",
+          "static": true,
+          "settings": {
+            "design_heading": "1",
+            "horizontal": false,
+            "alignment": "center",
+            "heading_gap": 15,
+            "margin_bottom": 50
+          },
+          "blocks": {
+            "heading_section_dyy78k": {
+              "type": "_heading_section",
+              "name": "t:settings_schema.heading.name",
+              "settings": {
+                "heading": "Thousands Of Happy Parents",
+                "line_height": "",
+                "heading_size": "h3",
+                "text_color": "hdt-s-text",
+                "font_size_heading_lg": 50,
+                "font_size_heading": 24,
+                "letter_spacing_heading": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "heading_section_dyy78k"
+          ]
+        }
+      },
+      "block_order": [
+        "testimonial_item_r8Lk7X",
+        "testimonial_item_jXQ3Vj",
+        "testimonial_item_n7MMdC",
+        "testimonial_item_Be9ck9"
+      ],
+      "name": "t:sections.testimonials_section.name",
+      "settings": {
+        "ter_des": "1",
+        "cl_name": "#222",
+        "cl_content": "#878787",
+        "cl_bd": "",
+        "cl_bg_item": "",
+        "bdr": 0,
+        "content_align": "center",
+        "col_dk": "3",
+        "col_tb": "2",
+        "col_mb": "1",
+        "space_horizontal": "30",
+        "space_vertical": "30",
+        "space_horizontal_mb": "30",
+        "space_vertical_mb": "30",
+        "layout": "carousel",
+        "loop": false,
+        "autoplay": 0,
+        "pauseOnHover": false,
+        "navUI": false,
+        "nav_position": "default",
+        "nav_visible": "always",
+        "nav_style": "default",
+        "nav_shape": "default",
+        "nav_size": "small",
+        "nav_hide_mobile": false,
+        "dotUI": true,
+        "pag_style": "default",
+        "pag_rounded": true,
+        "pag_space": 10,
+        "pag_mgt": 30,
+        "only_show_mobile": false,
+        "pag_hide_mobile": false,
+        "colors_by_section": true,
+        "color_scheme": "scheme-c9476b69-abc7-454f-a946-2d5a9f5f3a37",
+        "background_opacity": 1,
+        "section_layout": "wrapper_container",
+        "hdt_background_parallax": false,
+        "mg": ",,80px,",
+        "mg_mb": ",,50px,",
+        "pd": "100px,,100px",
+        "pd_mb": ""
+      }
+    },
+    "accordion_FJkFwL": {
+      "type": "accordion",
+      "blocks": {
+        "accordion_item_8nwV4j": {
+          "type": "_accordion-item",
+          "settings": {
+            "open": true,
+            "icon": "none",
+            "title": "1. Is this toy safe for babies?",
+            "content": "<p>Yes! RoarBuddy™ toys are made from BPA-free, non-toxic materials with smooth rounded edges designed for little hands.</p>"
+          },
+          "blocks": {}
+        },
+        "accordion_item_R3YEFJ": {
+          "type": "_accordion-item",
+          "settings": {
+            "open": false,
+            "icon": "none",
+            "title": "2. Does it float in water?",
+            "content": "<p>Please click on \"Login/Register\" followed by 'Create An Account' and fill in your personal particulars.</p>"
+          },
+          "blocks": {}
+        },
+        "accordion_item_nzipzw": {
+          "type": "_accordion-item",
+          "settings": {
+            "open": false,
+            "icon": "none",
+            "title": "3. What age is this suitable for?",
+            "content": "<p>Shop for the items you want and add it to your shopping cart. When you have finished, you can proceed to your shopping cart and check out. Check and ensure that all information is correct before confirming your purchases and payment.</p>"
+          },
+          "blocks": {}
+        },
+        "accordion_item_Y6jQFy": {
+          "type": "_accordion-item",
+          "settings": {
+            "open": false,
+            "icon": "none",
+            "title": "4. Is this a good gift option?",
+            "content": "<p>Shop for the items you want and add it to your shopping cart. When you have finished, you can proceed to your shopping cart and check out. Check and ensure that all information is correct before confirming your purchases and payment.</p>"
+          },
+          "blocks": {}
+        },
+        "accordion-heading": {
+          "type": "section-heading",
+          "static": true,
+          "settings": {
+            "design_heading": "1",
+            "horizontal": false,
+            "alignment": "center",
+            "heading_gap": 5,
+            "margin_bottom": 30
+          },
+          "blocks": {
+            "heading_section_LAHNNg": {
+              "type": "_heading_section",
+              "name": "t:settings_schema.heading.name",
+              "settings": {
+                "heading": "Frequently Asked Questions",
+                "line_height": "",
+                "heading_size": "h3",
+                "text_color": "hdt-s-text",
+                "font_size_heading_lg": 50,
+                "font_size_heading": 24,
+                "letter_spacing_heading": 0
+              },
+              "blocks": {}
+            },
+            "sub_heading_section_4kLxhF": {
+              "type": "_sub_heading_section",
+              "name": "t:blocks.section_heading.sub_heading",
+              "settings": {
+                "text": "<p>Minimal steps, maximum glow. Perfect for busy routines and modern skincare lovers.</p>",
+                "hidden_br_mobile": false,
+                "hidden_on_mobile": false,
+                "text_size": "base",
+                "text_color": "hdt-text-secondary",
+                "font_size_text_lg": 16,
+                "font_size_text": 14,
+                "letter_spacing_text": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "heading_section_LAHNNg",
+            "sub_heading_section_4kLxhF"
+          ]
+        }
+      },
+      "block_order": [
+        "accordion_item_8nwV4j",
+        "accordion_item_R3YEFJ",
+        "accordion_item_nzipzw",
+        "accordion_item_Y6jQFy"
+      ],
+      "name": "t:sections.accordion.name",
+      "settings": {
+        "accordion_des": "1",
+        "section_layout": "wrapper_container",
+        "hdt_background_parallax": false,
+        "colors_by_section": false,
+        "color_scheme": "scheme-1",
+        "background_opacity": 0,
+        "mg": ",,50px,",
+        "mg_mb": ",,30px,",
+        "pd": "",
+        "pd_mb": ""
+      }
+    },
+    "related-products": {
+      "type": "related-products",
+      "blocks": {
+        "pr-heading": {
+          "type": "section-heading",
+          "static": true,
+          "settings": {
+            "design_heading": "1",
+            "horizontal": false,
+            "alignment": "center",
+            "heading_gap": 18,
+            "margin_bottom": 30
+          },
+          "blocks": {
+            "heading_section_nLFWkr": {
+              "type": "_heading_section",
+              "settings": {
+                "heading": "You may also like",
+                "line_height": "",
+                "heading_size": "h5",
+                "text_color": "hdt-s-text",
+                "font_size_heading_lg": 50,
+                "font_size_heading": 24,
+                "letter_spacing_heading": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "heading_section_nLFWkr"
+          ]
+        }
+      },
+      "disabled": true,
+      "settings": {
+        "product_des": "1",
+        "image_ratio": "portrait",
+        "image_size": true,
+        "show_vendor": false,
+        "display_type": "4",
+        "pr_border": "none",
+        "limit": 10,
+        "col_dk": "4",
+        "col_tb": "3",
+        "col_mb": "2",
+        "space_items": "x",
+        "loop": false,
+        "autoplay": 0,
+        "pauseOnHover": false,
+        "navUI": true,
+        "nav_position": "default",
+        "nav_visible": "hover",
+        "nav_style": "outline",
+        "nav_shape": "rounded",
+        "nav_size": "small",
+        "nav_hide_mobile": false,
+        "dotUI": false,
+        "pag_style": "default",
+        "pag_rounded": false,
+        "pag_space": 10,
+        "pag_mgt": 10,
+        "only_show_mobile": false,
+        "pag_hide_mobile": false,
+        "colors_by_section": false,
+        "color_scheme": "",
+        "background_opacity": 0,
+        "section_layout": "container",
+        "hdt_background_parallax": false,
+        "mg": "",
+        "mg_mb": "",
+        "pd": "75px,,75px,",
+        "pd_mb": "37px,,37px,"
+      }
+    },
+    "recently-products": {
+      "type": "recently-products",
+      "blocks": {
+        "pr-heading": {
+          "type": "section-heading",
+          "static": true,
+          "settings": {
+            "design_heading": "1",
+            "horizontal": false,
+            "alignment": "center",
+            "heading_gap": 18,
+            "margin_bottom": 30
+          },
+          "blocks": {
+            "heading_section_JdADpx": {
+              "type": "_heading_section",
+              "settings": {
+                "heading": "Recently viewed products",
+                "line_height": "",
+                "heading_size": "h5",
+                "text_color": "hdt-s-text",
+                "font_size_heading_lg": 50,
+                "font_size_heading": 24,
+                "letter_spacing_heading": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "heading_section_JdADpx"
+          ]
+        }
+      },
+      "disabled": true,
+      "settings": {
+        "product_des": "1",
+        "image_ratio": "portrait",
+        "image_size": true,
+        "show_vendor": false,
+        "pr_border": "none",
+        "sort_by": "new_to_old",
+        "availability": "show",
+        "limit": 10,
+        "col_dk": "4",
+        "col_tb": "3",
+        "col_mb": "2",
+        "space_items": "x",
+        "loop": false,
+        "autoplay": 0,
+        "pauseOnHover": false,
+        "navUI": true,
+        "nav_position": "default",
+        "nav_visible": "hover",
+        "nav_style": "outline",
+        "nav_shape": "rounded",
+        "nav_size": "small",
+        "nav_hide_mobile": false,
+        "dotUI": false,
+        "pag_style": "default",
+        "pag_rounded": false,
+        "pag_space": 10,
+        "pag_mgt": 10,
+        "only_show_mobile": false,
+        "pag_hide_mobile": false,
+        "colors_by_section": false,
+        "color_scheme": "",
+        "background_opacity": 0,
+        "section_layout": "container",
+        "hdt_background_parallax": false,
+        "mg": "",
+        "mg_mb": "",
+        "pd": ",,50px,",
+        "pd_mb": ",,40px,"
+      }
+    }
+  },
+  "order": [
+    "breadcrumb",
+    "main-product",
+    "tabs",
+    "sidebar",
+    "marquee_m4mnqP",
+    "image_text_t4CE3G",
+    "custom_section_zFNAie",
+    "testimonial_section_pPLHAP",
+    "accordion_FJkFwL",
+    "related-products",
+    "recently-products"
+  ]
+}

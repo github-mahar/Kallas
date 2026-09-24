@@ -1,0 +1,111 @@
+{%- liquid
+  assign product_list = block.settings.product_list
+  assign product_form_id = 'product-form-'| append: section.id | append: product.id
+  assign image_ratio = block.settings.image_ratio
+  assign product_url = product.url
+  assign un_no_pick = true
+  if settings.pick_mode == 'no' and product.variants.size > 1
+    assign selected_variant = product.selected_variant
+    unless selected_variant
+      assign un_no_pick = false
+    endunless
+  elsif settings.pick_mode == 'first' and settings.hide_sold_out == false
+    assign selected_variant = product.selected_variant | default: product.variants.first
+  else
+    assign selected_variant = product.selected_or_first_available_variant
+  endif
+-%}
+<product-group class="hdt-product-group hdt-block hdt-ratio--{{ block.settings.image_ratio }} {% unless block.settings.image_size %} hdt-ratio--contain{% endunless %}">
+  <div class="hdt-product-group__list hdt-w-full">
+    <product-group-item data-product='{ "quantity": 1, "compare_at_price": {{ product.selected_or_first_available_variant.compare_at_price | default: product.selected_or_first_available_variant.price }}, "price": {{ product.selected_or_first_available_variant.price }} }'>
+      <div class="hdt-product-group-wrap">
+        <div class="hdt-item-col">
+          <div class="hdt-pr-media hdt-col">
+            {%- render 'card-product-media', card_product: product, product_url: product_url, sizes: '', image_ratio: image_ratio -%}
+          </div>
+        </div>
+        <div class="hdt-item-col">
+          <div class="hdt-col hdt-text-center">
+            <p class="hdt-pr-title hdt-block">{{ product.title }}</p>
+            {%- if product.has_only_default_variant -%}
+              <input type="hidden" value="{{ product.variants.first.id }}" name="id" form="{{ product_form_id }}">
+            {%- else -%}
+              <select name="id" form="{{ product_form_id }}">
+                {%- for variant in product.variants -%}
+                  <option value="{{ variant.id }}" {%- unless variant.available -%} disabled{%- endunless -%}>{{ variant.title }}</option>
+                {%- endfor -%}
+              </select>
+            {%- endif -%}
+            <div>
+              {%- render 'price', product: product, use_variant: true, form_id: product_form_id, show_badges: false, only_show_sale: true, show_volume_note: false, un_no_pick: un_no_pick -%}
+            </div>
+          </div>
+        </div>
+        <div class="hdt-item-col">
+          <div class="hdt-col">
+            {% render 'quantity-selector', product: product %}
+          </div>
+        </div>
+      </div>
+      <script type="application/ld+json">
+        {
+          "variants": {{ product.variants | json }}
+        }
+      </script>
+    </product-group-item>
+    {% for card_product in product_list %}
+      {% if product.id == card_product.id %}
+        {% continue %}
+      {% endif %}
+      {% unless card_product.available %}
+        {% continue %}
+      {% endunless %}
+      {%- liquid
+        assign title = card_product.title
+        assign card_product_url = card_product.url
+      -%}
+      <product-group-item data-product='{ "quantity": 0, "compare_at_price": {{ card_product.selected_or_first_available_variant.compare_at_price | default: card_product.selected_or_first_available_variant.price }}, "price": {{ card_product.selected_or_first_available_variant.price }} }'>
+        <div class="hdt-product-group-wrap">
+          <div class="hdt-item-col">
+            <div class="hdt-pr-media hdt-col">
+              {%- render 'card-product-media', card_product: card_product, product_url: card_product_url, sizes: '', image_ratio: image_ratio -%}
+            </div>
+          </div>
+          <div class="hdt-item-col">
+            <div class="hdt-col hdt-text-center">
+              <a href="{{ card_product.url }}" class="hdt-pr-title hdt-block">{{ title }}</a>
+              {%- if card_product.has_only_default_variant -%}
+                <input type="hidden" value="{{ card_product.variants.first.id }}" name="items[][id]" form="{{ product_form_id }}">
+              {%- else -%}
+                <select name="items[][id]" form="{{ product_form_id }}">
+                  {%- for variant in card_product.variants -%}
+                    <option value="{{ variant.id }}" {%- unless variant.available -%} disabled{%- endunless -%}>{{ variant.title }}</option>
+                  {%- endfor -%}
+                </select>
+              {%- endif -%}
+              <div>
+                {%- render 'price', product: card_product, use_variant: true, form_id: product_form_id, show_badges: false, only_show_sale: true, show_volume_note: false, un_no_pick: un_no_pick -%}
+              </div>
+            </div>
+          </div>
+          <div class="hdt-item-col">
+            <div class="hdt-col">
+              {% render 'quantity-selector', product: product, name_type: 'items[][quantity]', minimum: 0, value_init: 0 %}
+            </div>
+          </div>
+        </div>
+        <script type="application/ld+json">
+          {
+            "variants": {{ card_product.variants | json }}
+          }
+        </script>
+      </product-group-item>
+    {% endfor %}
+  </div>
+  <div class="hdt-group-total-price hdt-font-medium">
+    <span>{{ 'sections.cart.subtotal' | t }}:</span>
+    <span data-group-total-price>
+      {%- render 'price', product: product, use_variant: true, form_id: product_form_id, show_badges: false, only_show_sale: true, show_volume_note: false, un_no_pick: un_no_pick -%}
+    </span>
+  </div>
+</product-group>

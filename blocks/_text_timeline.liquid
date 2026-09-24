@@ -1,0 +1,71 @@
+{%- style -%}
+  #hdt-timeline-{{ block.id }} .hdt-timeline-content {
+    border-inline-start: {{ block.settings.line_width }}px solid {{ block.settings.line_color }};
+    padding-inline-start: {{ block.settings.spacing_left }}px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+{%- endstyle -%}
+
+<!-- blocks/_text_timeline.liquid -->
+<div id="hdt-timeline-{{ block.id }}" class="hdt-text-timeline" hdt-reveal="slide-in" timeline {{ block.shopify_attributes }}>
+  <div class="hdt-timeline-content">
+    {% content_for 'blocks' %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Text Timeline",
+  "class": "hdt-text-timeline-block",
+  "blocks": [
+    {
+      "type": "heading"
+    },
+    {
+      "type": "text"
+    },
+    {
+      "type": "spacer"
+    }
+  ],
+  "settings": [
+    {
+      "type": "header",
+      "content": "Line settings"
+    },
+    {
+      "type": "color",
+      "id": "line_color",
+      "label": "t:sections.custom_line.settings.line_cl.label",
+      "default": "#5ab5fc"
+    },
+    {
+      "type": "range",
+      "id": "line_width",
+      "label": "t:sections.custom_line.settings.line_width.label",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "spacing_left",
+      "label": "Spacing to text",
+      "min": 5,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    }
+  ],
+  "presets": [
+    {
+      "name": "Text Timeline"
+    }
+  ]
+}
+{% endschema %}

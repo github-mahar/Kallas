@@ -1,0 +1,914 @@
+<hdt-accordion class="hdt-contents">
+  <details class="hdt-widget hdt-widget-iconbox" aria-expanded="false" open>
+    {%- if block.settings.widget_heading != blank -%}
+      <summary class="hdt-widget-title hdt-s-text hdt-flex hdt-align-center hdt-justify-between hdt-text-xl hdt-font-semibold">
+        <span>{{ block.settings.widget_heading }}</span>
+        <span accordion-icon>
+          <svg xmlns="http://www.w3.org/2000/svg" width="11" height="7" viewBox="0 0 11 7" fill="none"><path d="M11 5.5L5.5 6.55868e-08L-6.55868e-08 5.5L0.97625 6.47625L5.5 1.9525L10.0238 6.47625L11 5.5Z" fill="currentColor"/></svg>
+        </span>
+      </summary>
+    {%- endif -%}
+    <div class="hdt-widget-content">
+      <div class="hdt-iconbox-list hdt-row-grid hdt-ratio--square hdt-object-cover lg:hdt-grid-cols-1">
+        {%- for i in (1..4) -%}
+          {%- liquid
+            assign icon_svg = 'icon_svg' | append: i
+            assign custom_svg = 'custom_svg' | append: i
+            assign iconbox_icon_img = 'iconbox_icon_img' | append: i
+            assign iconbox_content = 'iconbox_content' | append: i
+            assign link_item = 'link_item' | append: i
+            assign icon_svg = block.settings[icon_svg]
+            assign custom_svg = block.settings[custom_svg]
+            assign iconbox_icon_img = block.settings[iconbox_icon_img]
+            assign iconbox_content = block.settings[iconbox_content]
+            assign link_item = block.settings[link_item] -%}
+          {%- if iconbox_content != blank -%}
+            {%- assign iconbox_content = iconbox_content | replace: ' _', '_' | replace: '_ ', '_' | split: '_' -%}
+            <div class="hdt-iconbox-item hdt-flex hdt-align-center hdt-relative">
+              {% if link_item != blank %}<a data-pr-href class="hdt-full-width-link"  aria-label="link" href="{{ link_item }}"></a>{% endif %}
+              <span class="hdt-iconbox-icon hdt-flex hdt-align-center hdt-justify-center">
+                {%- if iconbox_icon_img != blank -%}
+                  {{ iconbox_icon_img | image_url: width: iconbox_icon_img.width | image_tag: loading: 'lazy', width: iconbox_icon_img.width, height: iconbox_icon_img.height, class: '' , sizes: sizes, widths: "24, 52, 48, 104, 120, 240" }}
+                {%- elsif custom_svg != blank  -%}
+                  {{ custom_svg }}
+                {%- else -%}
+                  {%- render 'icons', icon: icon_svg -%}
+                {%- endif -%}
+              </span>
+              <div class="hdt-iconbox-content">
+                <h4 class="hdt-sidebar-iconbox-title hdt-text-lg hdt-font-semibold">{{ iconbox_content[0] }}</h4>
+                <p class="hdt-sidebar-iconbox-desc hdt-text-base hdt-font-normal hdt-s-text2">{{ iconbox_content[1] }}</p>
+              </div>
+            </div>
+          {%- endif -%}
+      {%- endfor -%}
+      </div>
+    </div>
+  </details>
+</hdt-accordion>
+{% schema %}
+  {
+    "name": "t:sections.main-collection.blocks.iconbox.name",
+    "tag": null,
+    "settings": [
+      {
+        "type": "text",
+        "id": "widget_heading",
+        "label": "t:settings_schema.heading.name",
+        "default": "Shipping & Delivery"
+      },
+      {
+        "type": "paragraph",
+        "content": "t:sections.main-collection.blocks.iconbox.item1"
+      },
+      {
+        "type": "select",
+        "id": "icon_svg1",
+        "label": "t:sections.main-collection.blocks.iconbox.icon_svg",
+        "default": "truck",
+        "options": [
+          {
+            "value": "none",
+            "label": "t:none"
+          },
+          {
+            "value": "arrow_right",
+            "label": "Arrow right"
+          },
+          {
+            "value": "arrow_simple",
+            "label": "Arrow simple"
+          },
+          {
+            "value": "arrow_bottom",
+            "label": "Arrow bottom"
+          },
+          {
+            "value": "arrow_stretch",
+            "label": "Arrow stretch"
+          },
+          {
+            "value": "car",
+            "label": "Car"
+          },
+          {
+            "value": "truck",
+            "label": "Truck"
+          },
+          {
+            "value": "diamond",
+            "label": "Diamond"
+          },
+          {
+            "value": "door-lock",
+            "label": "Door lock"
+          },
+          {
+            "value": "gym",
+            "label": "Gym"
+          },
+          {
+            "value": "hammer",
+            "label": "Hammer"
+          },
+          {
+            "value": "headphones",
+            "label": "Headphones"
+          },
+          {
+            "value": "helm",
+            "label": "Helm"
+          },
+          {
+            "value": "hourglass",
+            "label": "Hourglass"
+          },
+          {
+            "value": "map",
+            "label": "Map"
+          },
+          {
+            "value": "piggy",
+            "label": "Piggy"
+          },
+          {
+            "value": "refesh",
+            "label": "Refresh"
+          },
+          {
+            "value": "rocket",
+            "label": "Rocket"
+          },
+          {
+            "value": "shield",
+            "label": "Shield"
+          },
+          {
+            "value": "shield2",
+            "label": "Shield 2"
+          },
+          {
+            "value": "smile",
+            "label": "Smile"
+          },
+          {
+            "value": "scissors",
+            "label": "Scissors"
+          },
+          {
+            "value": "shuffle",
+            "label": "Shuffle"
+          },
+          {
+            "value": "cloud_upload",
+            "label": "Cloud upload"
+          },
+          {
+            "value": "cash",
+            "label": "Cash"
+          },
+          {
+            "value": "way",
+            "label": "Way"
+          },
+          {
+            "value": "wristwatch",
+            "label": "Wristwatch"
+          },
+          {
+            "value": "world",
+            "label": "World"
+          },
+          {
+            "value": "wallet",
+            "label": "Wallet"
+          },
+          {
+            "value": "unlock",
+            "label": "Unlock"
+          },
+          {
+            "value": "umbrella",
+            "label": "Umbrella"
+          },
+          {
+            "value": "repeat",
+            "label": "Repeat"
+          },
+          {
+            "value": "refesh-2",
+            "label": "Refesh 2"
+          },
+          {
+            "value": "medal",
+            "label": "Medal"
+          },
+          {
+            "value": "portfolio",
+            "label": "Portfolio"
+          },
+          {
+            "value": "like",
+            "label": "Like"
+          },
+          {
+            "value": "plance",
+            "label": "Plance"
+          },
+          {
+            "value": "map-maker",
+            "label": "Map maker"
+          },
+          {
+            "value": "help",
+            "label": "Help"
+          },
+          {
+            "value": "gift",
+            "label": "Gift"
+          },
+          {
+            "value": "cart",
+            "label": "Cart"
+          },
+          {
+            "value": "box",
+            "label": "Box"
+          },
+          {
+            "value": "back",
+            "label": "Back"
+          },
+          {
+            "value": "back2",
+            "label": "Back 2"
+          }
+        ],
+      },
+      {
+        "type": "textarea",
+        "id": "custom_svg1",
+        "label": "t:sections.main-collection.blocks.iconbox.custom_svg",
+        "info": "[Remixicon](https://remixicon.com/)"
+      },
+      {
+        "type": "image_picker",
+        "id": "iconbox_icon_img1",
+        "label": "t:sections.main-collection.blocks.iconbox.iconbox_icon_img.label",
+        "info": "t:sections.main-collection.blocks.iconbox.iconbox_icon_img.info"
+      },
+      {
+        "type": "textarea",
+        "id": "iconbox_content1",
+        "label": "t:sections.main-collection.blocks.iconbox.iconbox_content.label",
+        "info": "t:sections.main-collection.blocks.iconbox.iconbox_content.info",
+        "default": "FREE SHIPPING_ Free shipping for all US orders"
+      },
+      {
+        "type": "url",
+        "id": "link_item1",
+        "label": "t:sections.main-collection.blocks.iconbox.link_item"
+      },
+      {
+        "type": "paragraph",
+        "content": "t:sections.main-collection.blocks.iconbox.item2"
+      },
+      {
+        "type": "select",
+        "id": "icon_svg2",
+        "label": "t:sections.main-collection.blocks.iconbox.icon_svg",
+        "default": "headphones",
+        "options": [
+          {
+            "value": "none",
+            "label": "t:none"
+          },
+          {
+            "value": "arrow_right",
+            "label": "Arrow right"
+          },
+          {
+            "value": "arrow_simple",
+            "label": "Arrow simple"
+          },
+          {
+            "value": "arrow_bottom",
+            "label": "Arrow bottom"
+          },
+          {
+            "value": "arrow_stretch",
+            "label": "Arrow stretch"
+          },
+          {
+            "value": "car",
+            "label": "Car"
+          },
+          {
+            "value": "truck",
+            "label": "Truck"
+          },
+          {
+            "value": "diamond",
+            "label": "Diamond"
+          },
+          {
+            "value": "door-lock",
+            "label": "Door lock"
+          },
+          {
+            "value": "gym",
+            "label": "Gym"
+          },
+          {
+            "value": "hammer",
+            "label": "Hammer"
+          },
+          {
+            "value": "headphones",
+            "label": "Headphones"
+          },
+          {
+            "value": "helm",
+            "label": "Helm"
+          },
+          {
+            "value": "hourglass",
+            "label": "Hourglass"
+          },
+          {
+            "value": "map",
+            "label": "Map"
+          },
+          {
+            "value": "piggy",
+            "label": "Piggy"
+          },
+          {
+            "value": "refesh",
+            "label": "Refresh"
+          },
+          {
+            "value": "rocket",
+            "label": "Rocket"
+          },
+          {
+            "value": "shield",
+            "label": "Shield"
+          },
+          {
+            "value": "shield2",
+            "label": "Shield 2"
+          },
+          {
+            "value": "smile",
+            "label": "Smile"
+          },
+          {
+            "value": "scissors",
+            "label": "Scissors"
+          },
+          {
+            "value": "shuffle",
+            "label": "Shuffle"
+          },
+          {
+            "value": "cloud_upload",
+            "label": "Cloud upload"
+          },
+          {
+            "value": "cash",
+            "label": "Cash"
+          },
+          {
+            "value": "way",
+            "label": "Way"
+          },
+          {
+            "value": "wristwatch",
+            "label": "Wristwatch"
+          },
+          {
+            "value": "world",
+            "label": "World"
+          },
+          {
+            "value": "wallet",
+            "label": "Wallet"
+          },
+          {
+            "value": "unlock",
+            "label": "Unlock"
+          },
+          {
+            "value": "umbrella",
+            "label": "Umbrella"
+          },
+          {
+            "value": "repeat",
+            "label": "Repeat"
+          },
+          {
+            "value": "refesh-2",
+            "label": "Refesh 2"
+          },
+          {
+            "value": "medal",
+            "label": "Medal"
+          },
+          {
+            "value": "portfolio",
+            "label": "Portfolio"
+          },
+          {
+            "value": "like",
+            "label": "Like"
+          },
+          {
+            "value": "plance",
+            "label": "Plance"
+          },
+          {
+            "value": "map-maker",
+            "label": "Map maker"
+          },
+          {
+            "value": "help",
+            "label": "Help"
+          },
+          {
+            "value": "gift",
+            "label": "Gift"
+          },
+          {
+            "value": "cart",
+            "label": "Cart"
+          },
+          {
+            "value": "box",
+            "label": "Box"
+          },
+          {
+            "value": "back",
+            "label": "Back"
+          },
+          {
+            "value": "back2",
+            "label": "Back 2"
+          }
+        ],
+      },
+      {
+        "type": "textarea",
+        "id": "custom_svg2",
+        "label": "t:sections.main-collection.blocks.iconbox.custom_svg",
+        "info": "[Remixicon](https://remixicon.com/)"
+      },
+      {
+        "type": "image_picker",
+        "id": "iconbox_icon_img2",
+        "label": "t:sections.main-collection.blocks.iconbox.iconbox_icon_img.label",
+        "info": "t:sections.main-collection.blocks.iconbox.iconbox_icon_img.info"
+      },
+      {
+        "type": "textarea",
+        "id": "iconbox_content2",
+        "label": "t:sections.main-collection.blocks.iconbox.iconbox_content.label",
+        "info": "t:sections.main-collection.blocks.iconbox.iconbox_content.info",
+        "default": "SUPPORT 24/7_ We support 24 hours a day"
+      },
+      {
+        "type": "url",
+        "id": "link_item2",
+        "label": "t:sections.main-collection.blocks.iconbox.link_item"
+      },
+      {
+        "type": "paragraph",
+        "content": "t:sections.main-collection.blocks.iconbox.item3"
+      },
+      {
+        "type": "select",
+        "id": "icon_svg3",
+        "label": "t:sections.main-collection.blocks.iconbox.icon_svg",
+        "default": "refesh-2",
+        "options": [
+          {
+            "value": "none",
+            "label": "t:none"
+          },
+          {
+            "value": "arrow_right",
+            "label": "Arrow right"
+          },
+          {
+            "value": "arrow_simple",
+            "label": "Arrow simple"
+          },
+          {
+            "value": "arrow_bottom",
+            "label": "Arrow bottom"
+          },
+          {
+            "value": "arrow_stretch",
+            "label": "Arrow stretch"
+          },
+          {
+            "value": "car",
+            "label": "Car"
+          },
+          {
+            "value": "truck",
+            "label": "Truck"
+          },
+          {
+            "value": "diamond",
+            "label": "Diamond"
+          },
+          {
+            "value": "door-lock",
+            "label": "Door lock"
+          },
+          {
+            "value": "gym",
+            "label": "Gym"
+          },
+          {
+            "value": "hammer",
+            "label": "Hammer"
+          },
+          {
+            "value": "headphones",
+            "label": "Headphones"
+          },
+          {
+            "value": "helm",
+            "label": "Helm"
+          },
+          {
+            "value": "hourglass",
+            "label": "Hourglass"
+          },
+          {
+            "value": "map",
+            "label": "Map"
+          },
+          {
+            "value": "piggy",
+            "label": "Piggy"
+          },
+          {
+            "value": "refesh",
+            "label": "Refresh"
+          },
+          {
+            "value": "rocket",
+            "label": "Rocket"
+          },
+          {
+            "value": "shield",
+            "label": "Shield"
+          },
+          {
+            "value": "shield2",
+            "label": "Shield 2"
+          },
+          {
+            "value": "smile",
+            "label": "Smile"
+          },
+          {
+            "value": "scissors",
+            "label": "Scissors"
+          },
+          {
+            "value": "shuffle",
+            "label": "Shuffle"
+          },
+          {
+            "value": "cloud_upload",
+            "label": "Cloud upload"
+          },
+          {
+            "value": "cash",
+            "label": "Cash"
+          },
+          {
+            "value": "way",
+            "label": "Way"
+          },
+          {
+            "value": "wristwatch",
+            "label": "Wristwatch"
+          },
+          {
+            "value": "world",
+            "label": "World"
+          },
+          {
+            "value": "wallet",
+            "label": "Wallet"
+          },
+          {
+            "value": "unlock",
+            "label": "Unlock"
+          },
+          {
+            "value": "umbrella",
+            "label": "Umbrella"
+          },
+          {
+            "value": "repeat",
+            "label": "Repeat"
+          },
+          {
+            "value": "refesh-2",
+            "label": "Refesh 2"
+          },
+          {
+            "value": "medal",
+            "label": "Medal"
+          },
+          {
+            "value": "portfolio",
+            "label": "Portfolio"
+          },
+          {
+            "value": "like",
+            "label": "Like"
+          },
+          {
+            "value": "plance",
+            "label": "Plance"
+          },
+          {
+            "value": "map-maker",
+            "label": "Map maker"
+          },
+          {
+            "value": "help",
+            "label": "Help"
+          },
+          {
+            "value": "gift",
+            "label": "Gift"
+          },
+          {
+            "value": "cart",
+            "label": "Cart"
+          },
+          {
+            "value": "box",
+            "label": "Box"
+          },
+          {
+            "value": "back",
+            "label": "Back"
+          },
+          {
+            "value": "back2",
+            "label": "Back 2"
+          }
+        ],
+      },
+      {
+        "type": "textarea",
+        "id": "custom_svg3",
+        "label": "t:sections.main-collection.blocks.iconbox.custom_svg",
+        "info": "[Remixicon](https://remixicon.com/)"
+      },
+      {
+        "type": "image_picker",
+        "id": "iconbox_icon_img3",
+        "label": "t:sections.main-collection.blocks.iconbox.iconbox_icon_img.label",
+        "info": "t:sections.main-collection.blocks.iconbox.iconbox_icon_img.info"
+      },
+      {
+        "type": "textarea",
+        "id": "iconbox_content3",
+        "label": "t:sections.main-collection.blocks.iconbox.iconbox_content.label",
+        "info": "t:sections.main-collection.blocks.iconbox.iconbox_content.info",
+        "default": "30 DAYS RETURN_ You have 30 days to return"
+      },
+      {
+        "type": "url",
+        "id": "link_item3",
+        "label": "t:sections.main-collection.blocks.iconbox.link_item"
+      },
+      {
+        "type": "paragraph",
+        "content": "t:sections.main-collection.blocks.iconbox.item4"
+      },
+      {
+        "type": "select",
+        "id": "icon_svg4",
+        "label": "t:sections.main-collection.blocks.iconbox.icon_svg",
+        "default": "car",
+        "options": [
+          {
+            "value": "none",
+            "label": "t:none"
+          },
+          {
+            "value": "arrow_right",
+            "label": "Arrow right"
+          },
+          {
+            "value": "arrow_simple",
+            "label": "Arrow simple"
+          },
+          {
+            "value": "arrow_bottom",
+            "label": "Arrow bottom"
+          },
+          {
+            "value": "arrow_stretch",
+            "label": "Arrow stretch"
+          },
+          {
+            "value": "car",
+            "label": "Car"
+          },
+          {
+            "value": "truck",
+            "label": "Truck"
+          },
+          {
+            "value": "diamond",
+            "label": "Diamond"
+          },
+          {
+            "value": "door-lock",
+            "label": "Door lock"
+          },
+          {
+            "value": "gym",
+            "label": "Gym"
+          },
+          {
+            "value": "hammer",
+            "label": "Hammer"
+          },
+          {
+            "value": "headphones",
+            "label": "Headphones"
+          },
+          {
+            "value": "helm",
+            "label": "Helm"
+          },
+          {
+            "value": "hourglass",
+            "label": "Hourglass"
+          },
+          {
+            "value": "map",
+            "label": "Map"
+          },
+          {
+            "value": "piggy",
+            "label": "Piggy"
+          },
+          {
+            "value": "refesh",
+            "label": "Refresh"
+          },
+          {
+            "value": "rocket",
+            "label": "Rocket"
+          },
+          {
+            "value": "shield",
+            "label": "Shield"
+          },
+          {
+            "value": "shield2",
+            "label": "Shield 2"
+          },
+          {
+            "value": "smile",
+            "label": "Smile"
+          },
+          {
+            "value": "scissors",
+            "label": "Scissors"
+          },
+          {
+            "value": "shuffle",
+            "label": "Shuffle"
+          },
+          {
+            "value": "cloud_upload",
+            "label": "Cloud upload"
+          },
+          {
+            "value": "cash",
+            "label": "Cash"
+          },
+          {
+            "value": "way",
+            "label": "Way"
+          },
+          {
+            "value": "wristwatch",
+            "label": "Wristwatch"
+          },
+          {
+            "value": "world",
+            "label": "World"
+          },
+          {
+            "value": "wallet",
+            "label": "Wallet"
+          },
+          {
+            "value": "unlock",
+            "label": "Unlock"
+          },
+          {
+            "value": "umbrella",
+            "label": "Umbrella"
+          },
+          {
+            "value": "repeat",
+            "label": "Repeat"
+          },
+          {
+            "value": "refesh-2",
+            "label": "Refesh 2"
+          },
+          {
+            "value": "medal",
+            "label": "Medal"
+          },
+          {
+            "value": "portfolio",
+            "label": "Portfolio"
+          },
+          {
+            "value": "like",
+            "label": "Like"
+          },
+          {
+            "value": "plance",
+            "label": "Plance"
+          },
+          {
+            "value": "map-maker",
+            "label": "Map maker"
+          },
+          {
+            "value": "help",
+            "label": "Help"
+          },
+          {
+            "value": "gift",
+            "label": "Gift"
+          },
+          {
+            "value": "cart",
+            "label": "Cart"
+          },
+          {
+            "value": "box",
+            "label": "Box"
+          },
+          {
+            "value": "back",
+            "label": "Back"
+          },
+          {
+            "value": "back2",
+            "label": "Back 2"
+          }
+        ],
+      },
+      {
+        "type": "textarea",
+        "id": "custom_svg4",
+        "label": "t:sections.main-collection.blocks.iconbox.custom_svg",
+        "info": "[Remixicon](https://remixicon.com/)"
+      },
+      {
+        "type": "image_picker",
+        "id": "iconbox_icon_img4",
+        "label": "t:sections.main-collection.blocks.iconbox.iconbox_icon_img.label",
+        "info": "t:sections.main-collection.blocks.iconbox.iconbox_icon_img.info"
+      },
+      {
+        "type": "textarea",
+        "id": "iconbox_content4",
+        "label": "t:sections.main-collection.blocks.iconbox.iconbox_content.label",
+        "info": "t:sections.main-collection.blocks.iconbox.iconbox_content.info"
+      },
+      {
+        "type": "url",
+        "id": "link_item4",
+        "label": "t:sections.main-collection.blocks.iconbox.link_item"
+      }
+    ],
+    "presets": [
+      {
+        "name": "t:sections.main-collection.blocks.iconbox.name"
+      }
+    ]
+  }
+{% endschema %}

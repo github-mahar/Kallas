@@ -1,0 +1,59 @@
+<!-- blocks/_fbt_item.liquid -->
+{%- assign current_item_count = fbt_item_count | default: 0 | plus: 1 -%}
+{%- assign fbt_item_count = current_item_count -%}
+{%- assign custom_image = block.settings.custom_image -%}
+{%- if block.settings.product != blank -%}
+  {%- assign product = all_products[block.settings.product] -%}
+  {%- assign current_variant = product.selected_or_first_available_variant -%}
+  {%- assign display_image = custom_image | default: product.featured_media -%}
+  <div class="hdt-fbt-item hdt-slider__slide hdt-flex hdt-flex-col hdt-align-center" data-product-id="{{ product.id }}" data-variant-id="{{ current_variant.id }}" data-price="{{ current_variant.price }}" data-compare-price="{{ current_variant.compare_at_price | default: current_variant.price }}" {{ block.shopify_attributes }}>
+    <div class="hdt-fbt-item__image-wrap hdt-relative">
+      <a href="{{ product.url }}" class="hdt-fbt-item__link hdt-ratio" {%- if display_image != blank -%} style="--aspect-ratioapt: {{ display_image.aspect_ratio | default: 1 }}"{%- endif -%}>
+        {%- if display_image != blank -%}
+          {{ display_image | image_url: width: 240 | image_tag: loading: 'lazy', class: 'hdt-fbt-item__image' }}
+        {%- else -%}
+          {{ 'product-1' | placeholder_svg_tag: 'hdt-fbt-item__placeholder' }}
+        {%- endif -%}
+      </a>
+    </div>
+  </div>
+{%- else -%}
+  {%- assign display_image = custom_image -%}
+  <div class="hdt-fbt-item hdt-fbt-item--placeholder hdt-slider__slide hdt-flex hdt-flex-col hdt-align-center" {{ block.shopify_attributes }}>
+    <div class="hdt-fbt-item__image-wrap hdt-relative">
+      <div class="hdt-fbt-item__link hdt-ratio" {%- if display_image != blank -%} style="--aspect-ratioapt: {{ display_image.aspect_ratio | default: 1 }}"{%- else -%} style="--aspect-ratioapt: 1"{%- endif -%}>
+        {%- if display_image != blank -%}
+          {{ display_image | image_url: width: 240 | image_tag: loading: 'lazy', class: 'hdt-fbt-item__image' }}
+        {%- else -%}
+          {{ 'product-1' | placeholder_svg_tag: 'hdt-fbt-item__placeholder' }}
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "FBT Product Item",
+  "tag": null,
+  "class": "hdt-fbt-item-wrapper hdt-slider__slide",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "t:settings_schema.colors.settings.product.header"
+    },
+    {
+      "type": "image_picker",
+      "id": "custom_image",
+      "label": "Custom image",
+      "info": "Leave blank to use default product image"
+    }
+  ],
+  "presets": [
+    {
+      "name": "FBT Product Item"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,65 @@
+{%- doc -%}
+  Renders a product card
+
+  @param {object} card_product - Product Liquid object (required)
+  @param {string} [image_ratio] - Size of the product image card. Values are "square" and "portrait". Default is "square" (optional)
+  @param {boolean} [show_vendor] - Boolean to show the product vendor. Default: false
+  @param {boolean} [show_type] - Boolean to show the product type. Default: false
+  @param {string} [product_url] - URL of the product (optional)
+  @param {string} [sizes] - Sizes attribute for the image tag (optional)
+  @param {string} [class] - Additional CSS classes (optional)  
+  @param {boolean} [show_shadow] - Boolean to show the product shadow. Default: false
+  @param {boolean} [show_short_description] - Boolean to show the product short description. Default: false
+
+  @example
+    {%- render 'card-product', card_product: product, show_vendor: section.settings.show_vendor -%}
+{%- enddoc -%}
+
+{%- liquid
+  unless product_url
+    assign product_url = card_product.url
+  endunless
+  assign featured_media = card_product.featured_media | default: settings.placeholder_img
+-%}
+  
+  <hdt-card-product class="hdt-card-product {{ class }}{% if card_product.available == false %} hdt-pr-sold_out{% endif %} {% if show_shadow == true %}hdt-pr-shaddow{% endif %}">
+    <div class="hdt-card-product__wrapper hdt-flex" --hdt-reveal="slide-in" timeline>
+      <div class="hdt-card-product__media">
+        {%- if featured_media -%}
+          <a data-pr-url href="{{ product_url }}" data-instant calc-nav class="hdt-card-product__media-wrapp hdt-ratio"{% if image_ratio == 'adapt_image' %} style="--aspect-ratioapt: {{ featured_media.aspect_ratio }}"{% endif %}>
+            {%- liquid
+              echo featured_media | image_url: width: featured_media.width | image_tag: loading: 'lazy', sizes: sizes, widths: '165, 240', data-widths: '[165, 240]', class: 'hdt-card-product__media--main'
+            -%}
+          </a>
+        {%- endif -%}
+        {% comment %} {%- liquid
+          render 'badges', product: card_product, use_variant: false
+        -%} {% endcomment %}
+      </div>
+      <div class="hdt-card-product__info hdt-card-align-left">
+        {%- liquid
+          if settings.show_rating
+            render 'hdt-pr-card-rating', product: card_product
+          endif
+          if card_product.vendor.size > 0 and show_vendor
+            render 'vendor' with card_product.vendor, class: 'hdt-inline-block hdt-text-base hdt-font-normal'
+          endif
+          if card_product.type and show_type
+            render 'type' with card_product.type, class: 'hdt-inline-block hdt-text-base hdt-font-normal'
+          endif
+        -%}
+        <h3>
+          <a data-pr-url href="{{ product_url }}" class="hdt-card-product__title hdt-text-{{ settings.pr_title_size }} hdt-font-{{ settings.pr_title_weight }} hdt-line-clamp" data-instant>
+            {{- card_product.title | default: "Product title" | escape -}}
+          </a>
+        </h3>
+        {%- render 'card-price', product: card_product, show_volume_note: true -%}
+        {%- assign description_excerpt = card_product.metafields.theme.description_excerpt | default: card_product.description -%}
+        {%- if show_short_description and description_excerpt != blank -%}
+          <div class="hdt-pr-description hdt-text-sm hdt-text-secondary hdt-line-clamp">
+            {{- description_excerpt | strip_html | truncatewords: 20 -}}
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </hdt-card-product>

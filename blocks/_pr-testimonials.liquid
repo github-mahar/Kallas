@@ -1,0 +1,116 @@
+{% stylesheet %}
+  .hdt-pr-tes{
+    .hdt-slider .hdt-navigation{
+      width: fit-content;
+      right: 1.5rem;
+      left: auto;
+      bottom: 1.5rem;
+      top: auto;
+      transform: none;
+      gap: 0px;
+      --nav-size-icon: 11px;
+      button{
+        background-color: transparent;
+        color: var(--nav-bg);
+        border: none;
+        width: 2rem;
+        height: 2rem;
+      }
+      .dir--rtl &{
+        left: 1.5rem;
+        right: auto;
+      }
+      
+    } 
+    &:has(.hdt-navigation){
+      .hdt-pr-tes__item .hdt-inner{
+        padding-bottom: clamp(2rem, 3vw, 3.4rem);
+      }
+    }
+  }
+{% endstylesheet %}
+<div class="hdt-pr-tes">
+  <hdt-slider id="Slider-{{ block.id }}" class="hdt-slider hdt-slider-parent hdt-slide-spacing-x hdt-relative lg:hdt-slides-{{ block.settings.col_dk | default: "auto" }} md:hdt-slides-{{ block.settings.col_tb | default: "auto" }} hdt-slides-{{ block.settings.col_mb | default: "auto" }}" config='{ "id": "Slider-{{ block.id }}", "navUI": {{ block.settings.navUI }}, "dotUI": true, "loop": {{ block.settings.loop }}, "autoPlay": {{ block.settings.autoplay | times: 1000 }}, "pauseOnHover": {{ block.settings.pauseOnHover }} }'>
+    <div class="hdt-slider__viewport hdt-relative">
+      <div class="hdt-slider__container">
+        {% content_for 'blocks' %}
+      </div>
+    </div>
+    {%- if block.settings.navUI -%}
+      <div class="hdt-navigation">
+        <button aria-controls="Slider-{{ block.id }}" class="hdt-slider__button hdt-slider__button--prev" type="button" disabled name="previous" aria-label="previous">
+          <svg xmlns="http://www.w3.org/2000/svg" width="7" height="11" viewBox="0 0 7 11" fill="none"><path d="M5.5 11L0 5.5L5.5 0L6.47625 0.97625L1.9525 5.5L6.47625 10.0238L5.5 11Z" fill="currentColor"/></svg>
+        </button>
+        <button aria-controls="Slider-{{ block.id }}" class="hdt-slider__button hdt-slider__button--next" type="button" disabled name="next" aria-label="next">
+          <svg xmlns="http://www.w3.org/2000/svg" width="7" height="11" viewBox="0 0 7 11" fill="none"><path d="M1.5 11L7 5.5L1.5 0L0.52375 0.97625L5.0475 5.5L0.52375 10.0238L1.5 11Z" fill="currentColor"/></svg>
+        </button>
+      </div>
+    {%- endif -%}
+  </hdt-slider>
+</div>
+{% schema %}
+  {
+    "name": "Testimonials",
+    "tag": null,
+    "settings": [
+      {
+        "type": "header",
+        "content": "t:blocks.carousel.name"
+      },
+      {
+        "type": "checkbox",
+        "id": "loop",
+        "label": "t:blocks.carousel.settings.loop",
+        "default": false
+      },
+      {
+        "type": "range",
+        "id": "autoplay",
+        "min": 0,
+        "max": 7,
+        "step": 0.5,
+        "unit": "s",
+        "label": "t:blocks.carousel.settings.autoplay.label",
+        "default": 0,
+        "info": "t:blocks.carousel.settings.autoplay.info"
+      },
+      {
+        "type": "checkbox",
+        "id": "pauseOnHover",
+        "label": "t:blocks.carousel.settings.autoplay.pause_on_hover",
+        "default": false
+      },
+      {
+        "type": "header",
+        "content": "t:blocks.carousel.settings.navigation.label"
+      },
+      {
+        "type": "checkbox",
+        "id": "navUI",
+        "label": "t:blocks.carousel.settings.navigation.use_navigation",
+        "default": true
+      },
+    ],
+    "blocks": [
+      {
+        "type": "_pr_testimonial_item"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Testimonials",
+        "blocks": [
+          {
+            "type": "_pr_testimonial_item"
+          },
+          {
+            "type": "_pr_testimonial_item"
+          },
+          {
+            "type": "_pr_testimonial_item"
+          },
+        ]
+      }
+    ]
+  }
+{% endschema %}

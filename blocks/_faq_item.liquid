@@ -1,0 +1,68 @@
+<!-- blocks/_faq_item.liquid -->
+{{ 'hdt-faq-item.css' | asset_url | stylesheet_tag }}
+
+<hdt-accordion open-setting="{{ block.settings.open }}" class="hdt-faq-item hdt-block" hdt-reveal="slide-in" timeline {{ block.shopify_attributes }}>
+  <details class="hdt-faq-details" {%- if block.settings.open %} open {%- endif %} itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    
+    <summary class="hdt-faq-summary hdt-flex hdt-align-center" aria-expanded="{%- if block.settings.open -%}true{%- else -%}false{%- endif -%}">
+      <!-- Toggle Icon on the left -->
+      <span class="hdt-faq-toggle-icon hdt-inline-flex hdt-align-center hdt-justify-center hdt-relative hdt-radius-full">
+        <svg class="hdt-icon-plus" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 12 12" fill="currentColor">
+          <path d="M12 6.85714H6.85714V12H5.14286V6.85714H0V5.14286H5.14286V0H6.85714V5.14286H12V6.85714Z"/>
+        </svg>
+        <svg class="hdt-icon-minus hdt-absolute" xmlns="http://www.w3.org/2000/svg" width="10" height="2" viewBox="0 0 12 2" fill="currentColor">
+          <rect width="12" height="2"/>
+        </svg>
+      </span>
+      
+      <!-- Question text -->
+      {%- if block.settings.title != blank -%}
+        <span class="hdt-faq-title hdt-text-base hdt-font-semibold" itemprop="name">
+          {{ block.settings.title }}
+        </span>
+      {%- endif -%}
+    </summary>
+
+    <!-- Answer text -->
+    {%- if block.settings.content != blank -%}
+      <div class="hdt-faq-content hdt-text-base hdt-font-normal hdt-rte" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+        <div itemprop="text">
+          {{ block.settings.content }}
+        </div>
+      </div>
+    {%- endif -%}
+
+  </details>
+</hdt-accordion>
+
+{% schema %}
+{
+  "name": "FAQ Item",
+  "tag": null,
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "open",
+      "label": "Open by default",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Question",
+      "default": "Frequently Asked Question"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Answer",
+      "default": "<p>This is the answer to the frequently asked question.</p>"
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ Item"
+    }
+  ]
+}
+{% endschema %}

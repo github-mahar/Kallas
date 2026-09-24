@@ -1,0 +1,250 @@
+{%- comment %} Check sizes image when Shopify update API {% endcomment -%}
+<div id="block-{{ block.id }}" class="hdt-icon-block hdt-s-text" style=" --width: {{ block.settings.width }}px; --width-md: {{ block.settings.width_md }}px; --width-lg: {{ block.settings.width_lg }}px;" {{ block.shopify_attributes }}>
+  {%- liquid
+    if block.settings.svg_upload != blank
+      echo block.settings.svg_upload
+    elsif block.settings.image_upload != blank
+      echo block.settings.image_upload | image_url: width: 500 | image_tag: widths: '50, 100, 200, 300, 400, 500'
+    else
+      render 'icons', icon: block.settings.icon
+    endif
+    -%}
+</div>
+{% schema %}
+{
+  "name": "t:blocks.icon.name",
+  "tag": null,
+  "settings": [
+    {
+      "type": "select",
+      "id": "icon",
+      "label": "t:blocks.icon.name",
+      "options": [
+        {
+          "value": "mail",
+          "label": "Mail"
+        },
+        {
+          "value": "arrow_right",
+          "label": "Arrow right"
+        },
+        {
+          "value": "arrow_simple",
+          "label": "Arrow simple"
+        },
+        {
+          "value": "arrow_bottom",
+          "label": "Arrow bottom"
+        },
+        {
+          "value": "arrow_stretch",
+          "label": "Arrow stretch"
+        },
+        {
+          "value": "car",
+          "label": "Car"
+        },
+        {
+          "value": "truck",
+          "label": "Truck"
+        },
+        {
+          "value": "diamond",
+          "label": "Diamond"
+        },
+        {
+          "value": "door-lock",
+          "label": "Door lock"
+        },
+        {
+          "value": "gym",
+          "label": "Gym"
+        },
+        {
+          "value": "hammer",
+          "label": "Hammer"
+        },
+        {
+          "value": "headphones",
+          "label": "Headphones"
+        },
+        {
+          "value": "helm",
+          "label": "Helm"
+        },
+        {
+          "value": "hourglass",
+          "label": "Hourglass"
+        },
+        {
+          "value": "map",
+          "label": "Map"
+        },
+        {
+          "value": "piggy",
+          "label": "Piggy"
+        },
+        {
+          "value": "refesh",
+          "label": "Refresh"
+        },
+        {
+          "value": "rocket",
+          "label": "Rocket"
+        },
+        {
+          "value": "shield",
+          "label": "Shield"
+        },
+        {
+          "value": "shield2",
+          "label": "Shield 2"
+        },
+        {
+          "value": "smile",
+          "label": "Smile"
+        },
+        {
+          "value": "scissors",
+          "label": "Scissors"
+        },
+        {
+          "value": "shuffle",
+          "label": "Shuffle"
+        },
+        {
+          "value": "cloud_upload",
+          "label": "Cloud upload"
+        },
+        {
+          "value": "cash",
+          "label": "Cash"
+        },
+        {
+          "value": "way",
+          "label": "Way"
+        },
+        {
+          "value": "wristwatch",
+          "label": "Wristwatch"
+        },
+        {
+          "value": "world",
+          "label": "World"
+        },
+        {
+          "value": "wallet",
+          "label": "Wallet"
+        },
+        {
+          "value": "unlock",
+          "label": "Unlock"
+        },
+        {
+          "value": "umbrella",
+          "label": "Umbrella"
+        },
+        {
+          "value": "repeat",
+          "label": "Repeat"
+        },
+        {
+          "value": "refesh-2",
+          "label": "Refesh 2"
+        },
+        {
+          "value": "medal",
+          "label": "Medal"
+        },
+        {
+          "value": "portfolio",
+          "label": "Portfolio"
+        },
+        {
+          "value": "like",
+          "label": "Like"
+        },
+        {
+          "value": "plance",
+          "label": "Plance"
+        },
+        {
+          "value": "map-maker",
+          "label": "Map maker"
+        },
+        {
+          "value": "help",
+          "label": "Help"
+        },
+        {
+          "value": "gift",
+          "label": "Gift"
+        },
+        {
+          "value": "cart",
+          "label": "Cart"
+        },
+        {
+          "value": "box",
+          "label": "Box"
+        },
+        {
+          "value": "back",
+          "label": "Back"
+        },
+        {
+          "value": "back2",
+          "label": "Back 2"
+        }
+      ],
+      "default": "car"
+    },
+    {
+      "type": "liquid",
+      "id": "svg_upload",
+      "label": "t:blocks.icon.settings.svg_upload.label",
+      "info": "t:blocks.icon.settings.svg_upload.info"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_upload",
+      "label": "t:blocks.icon.settings.image_upload.label"
+    },
+    {
+      "type": "range",
+      "id": "width_lg",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "label": "t:blocks.icon.settings.width_lg.label",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "width_md",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "label": "t:blocks.icon.settings.width_md.label",
+      "default": 44
+    },
+    {
+      "type": "range",
+      "id": "width",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "label": "t:blocks.icon.settings.width.label",
+      "default": 44
+    }
+  ],
+  "presets": [
+    {
+      "name": "Icon"
+    }
+  ]
+}
+{% endschema %}

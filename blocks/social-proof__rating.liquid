@@ -1,0 +1,337 @@
+<!-- blocks/social-proof__rating.liquid -->
+{% liquid
+  assign effect = 'hdt-reveal="slide-in" timeline'
+  if section.id contains 'slideshow'
+    assign effect = 'reval'
+  endif   
+  if section.location contains 'footer' or section.location == 'header'
+    assign effect = ''
+  endif
+%}
+{%- liquid
+  assign rating = block.settings.rating | default: 4.5
+  assign rating_number = rating | plus: 0
+  assign layout_style = block.settings.layout_style | default: 'style_1'
+  
+  # For avatar overlap and styling
+  assign avatar_size = block.settings.avatar_size | default: 40
+  assign margin_overlap = avatar_size | times: -0.3 | round
+-%}
+
+{%- capture block_styles -%}
+  #hdt-social-proof-{{ block.id }} {
+    {% if block.settings.align == 'center' %}
+      margin-inline-start: auto;
+      margin-inline-end: auto;
+    {% elsif block.settings.align == 'right' %}
+      margin-inline-start: auto;
+      margin-inline-end: 0;
+    {% else %}
+      margin-inline-start: 0;
+      margin-inline-end: auto;
+    {% endif %}
+    --align-flex: {% if block.settings.align == 'center' %}center{% elsif block.settings.align == 'right' %}flex-end{% else %}flex-start{% endif %};
+    --align-text: {% if block.settings.align == 'left' %}start{% elsif block.settings.align == 'right' %}end{% else %}center{% endif %};
+    --avatar-size: {{ avatar_size }}px;
+    --margin-overlap: {{ margin_overlap }}px;
+    --rating-color: {{ block.settings.rating_color | default: '#1a2530' }};
+    --rating-number-size: {{ block.settings.rating_number_size }}px;
+    --rating-number-color: {{ block.settings.rating_number_color | default: '#1a2530' }};
+    --subtext-font-size: {{ block.settings.subtext_font_size }}px;
+    --subtext-color: {{ block.settings.subtext_color | default: '#4b5563' }};
+    --avatar-border-color: {{ block.settings.avatar_border_color | default: '#1a2530' }};
+  }
+  
+  @media (max-width: 767px) {
+    #hdt-social-proof-{{ block.id }} {
+      --avatar-size: {{ avatar_size | times: 0.8 | round }}px;
+      --margin-overlap: {{ margin_overlap | times: 0.8 | round }}px;
+      --rating-number-size: max(14px, {{ block.settings.rating_number_size | times: 0.85 | round }}px);
+      --subtext-font-size: max(12px, {{ block.settings.subtext_font_size | times: 0.9 | round }}px);
+    }
+  }
+{%- endcapture -%}
+
+{%- capture avatars_html -%}
+  <div class="hdt-social-proof__avatars">
+    {%- assign avatars_count = 0 -%}
+    {%- for i in (1..5) -%}
+      {%- assign avatar_key = 'avatar_' | append: i -%}
+      {%- assign avatar_img = block.settings[avatar_key] -%}
+      {%- if avatar_img != blank -%}
+        {%- assign avatars_count = avatars_count | plus: 1 -%}
+        {{ avatar_img | image_url: width: 120 | image_tag: class: 'hdt-social-proof__avatar', loading: 'lazy' }}
+      {%- endif -%}
+    {%- endfor -%}
+    
+    {%- if avatars_count == 0 -%}
+      <svg class="hdt-social-proof__avatar" viewBox="0 0 100 100" aria-hidden="true" focusable="false" style="background-color: #5AB5A6;">
+        <path d="M 32 45 C 32 25 68 25 68 45 C 68 62 62 82 62 82 C 62 82 58 75 50 75 C 42 75 38 82 38 82 C 38 82 32 62 32 45 Z" fill="#8D4A3C" />
+        <rect x="44" y="45" width="12" height="30" fill="#F8DCCB" />
+        <circle cx="50" cy="45" r="18" fill="#F8DCCB" />
+        <path d="M 20 100 C 20 80 35 70 50 70 C 65 70 80 80 80 100 Z" fill="#145347" />
+        <path d="M 32 45 C 32 25 68 25 68 45 C 68 35 60 32 50 32 C 40 32 32 35 32 45 Z" fill="#8D4A3C" />
+      </svg>
+      <svg class="hdt-social-proof__avatar" viewBox="0 0 100 100" aria-hidden="true" focusable="false" style="background-color: #F3B29B;">
+        <rect x="44" y="45" width="12" height="30" fill="#8C5A48" />
+        <circle cx="50" cy="45" r="18" fill="#8C5A48" />
+        <path d="M 20 100 C 20 80 35 70 50 70 C 65 70 80 80 80 100 Z" fill="#DE6350" />
+        <path d="M 30 42 C 30 22 70 22 70 42 C 70 38 68 30 50 28 C 32 30 30 38 30 42 Z" fill="#1A282D" />
+        <path d="M 30 42 L 34 48 L 36 42 Z" fill="#1A282D" />
+        <path d="M 70 42 L 66 48 L 64 42 Z" fill="#1A282D" />
+      </svg>
+      <svg class="hdt-social-proof__avatar" viewBox="0 0 100 100" aria-hidden="true" focusable="false" style="background-color: #A1ABB5;">
+        <rect x="44" y="45" width="12" height="30" fill="#EFCDBC" />
+        <circle cx="50" cy="45" r="18" fill="#EFCDBC" />
+        <path d="M 20 100 C 20 80 35 70 50 70 C 65 70 80 80 80 100 Z" fill="#8D4A3C" />
+        <path d="M 31 43 C 31 23 69 23 69 43 C 69 50 63 55 63 55 C 63 55 58 48 50 48 C 42 48 37 55 37 55 C 37 55 31 50 31 43 Z" fill="#1A282D" />
+      </svg>
+    {%- endif -%}
+  </div>
+{%- endcapture -%}
+
+{%- capture stars_html -%}
+  <div class="hdt-social-proof__stars-wrap">
+    <div class="hdt-social-proof__stars">
+      {%- for i in (1..5) -%}
+        {%- assign difference = rating_number | minus: i -%}
+        {%- if difference >= 0 -%}
+          <svg viewBox="0 0 23 22" class="hdt-social-proof__star hdt-social-proof__star--full" aria-hidden="true" focusable="false">
+            <path d="M11.4127 0L14.1069 8.2918H22.8254L15.772 13.4164L18.4661 21.7082L11.4127 16.5836L4.3593 21.7082L7.05346 13.4164L4.19617e-05 8.2918H8.71855L11.4127 0Z" fill="currentColor" />
+          </svg>
+        {%- elsif difference > -1 and difference < 0 -%}
+          <svg viewBox="0 0 23 22" class="hdt-social-proof__star hdt-social-proof__star--half" aria-hidden="true" focusable="false">
+            <path d="M13.7506 8.40723L13.8346 8.66699H21.6705L15.5514 13.1133L15.3307 13.2734L15.4156 13.5322L17.7526 20.7266L11.6334 16.2803L11.4127 16.1201L11.192 16.2803L5.0719 20.7266L7.40979 13.5322L7.49475 13.2734L7.27405 13.1133L1.15491 8.66699H8.99084L9.07483 8.40723L11.4127 1.21289L13.7506 8.40723Z" fill="url(#paint0_linear_7170_5040_{{ block.id }}_{{ i }})" stroke="currentColor" stroke-width="0.75"/>
+            <defs>
+              <linearGradient id="paint0_linear_7170_5040_{{ block.id }}_{{ i }}" x1="-0.58728" y1="12" x2="23.4127" y2="12" gradientUnits="userSpaceOnUse">
+                <stop stop-color="currentColor"/>
+                <stop offset="0.5" stop-color="currentColor"/>
+                <stop offset="0.51" stop-color="currentColor" stop-opacity="0"/>
+                <stop offset="1" stop-color="currentColor" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        {%- else -%}
+          <svg viewBox="0 0 23 22" class="hdt-social-proof__star hdt-social-proof__star--empty" aria-hidden="true" focusable="false">
+            <path d="M13.7506 8.40723L13.8346 8.66699H21.6705L15.5514 13.1133L15.3307 13.2734L15.4156 13.5322L17.7526 20.7266L11.6334 16.2803L11.4127 16.1201L11.192 16.2803L5.0719 20.7266L7.40979 13.5322L7.49475 13.2734L7.27405 13.1133L1.15491 8.66699H8.99084L9.07483 8.40723L11.4127 1.21289L13.7506 8.40723Z" fill="none" stroke="currentColor" stroke-width="0.75"/>
+          </svg>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+    {%- if layout_style != 'style_2' and block.settings.show_rating_number and rating_number > 0 -%}
+      <span class="hdt-social-proof__rating-num">{{ rating }}</span>
+    {%- endif -%}
+  </div>
+{%- endcapture -%}
+
+<div {{ effect }} id="hdt-social-proof-{{ block.id }}" class="hdt-social-proof-rating hdt-social-proof-rating--{{ layout_style }}" {{ block.shopify_attributes }}>
+  <style>
+    {{ block_styles }}
+  </style>
+  {%- if layout_style == 'style_1' -%}
+    <div class="hdt-social-proof__row">
+      {{ avatars_html }}
+      {{ stars_html }}
+    </div>
+
+    {%- if block.settings.subtext != blank -%}
+      <p class="hdt-social-proof__subtext">{{ block.settings.subtext }}</p>
+    {%- endif -%}
+    
+  {%- elsif layout_style == 'style_2' -%}
+    {{ avatars_html }}
+    
+    <div class="hdt-social-proof__content-right">
+      {{ stars_html }}
+      
+      {%- if block.settings.subtext != blank -%}
+        <p class="hdt-social-proof__subtext">{{ block.settings.subtext }}</p>
+      {%- endif -%}
+    </div>
+  {%- else -%}
+    {{ avatars_html }}
+    <div class="hdt-social-proof__info-wrap">
+      {{ stars_html }}
+      {%- if block.settings.show_rating_number and rating_number > 0 and block.settings.subtext != blank -%}
+        <span class="hdt-social-proof__separator">|</span>
+      {%- endif -%}
+      {%- if block.settings.subtext != blank -%}
+        <p class="hdt-social-proof__subtext">{{ block.settings.subtext }}</p>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Social Proof - Rating",
+  "tag": null,
+  "settings": [
+    {
+      "type": "select",
+      "id": "layout_style",
+      "label": "Layout Style",
+      "options": [
+        {
+          "value": "style_1",
+          "label": "Style 1 (Vertical Stack)"
+        },
+        {
+          "value": "style_2",
+          "label": "Style 2 (Horizontal Split)"
+        },
+        {
+          "value": "style_3",
+          "label": "Style 3 (Inline Row)"
+        }
+      ],
+      "default": "style_1"
+    },
+    {
+      "type": "header",
+      "content": "Avatars"
+    },
+    {
+      "type": "image_picker",
+      "id": "avatar_1",
+      "label": "Avatar 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "avatar_2",
+      "label": "Avatar 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "avatar_3",
+      "label": "Avatar 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "avatar_4",
+      "label": "Avatar 4"
+    },
+    {
+      "type": "image_picker",
+      "id": "avatar_5",
+      "label": "Avatar 5"
+    },
+    {
+      "type": "range",
+      "id": "avatar_size",
+      "min": 24,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "label": "Avatar Size",
+      "default": 40
+    },
+    {
+      "type": "color",
+      "id": "avatar_border_color",
+      "label": "Avatar Border Color",
+      "default": "#1a2530",
+      "alpha": true
+    },
+    {
+      "type": "header",
+      "content": "Rating"
+    },
+    {
+      "type": "range",
+      "id": "rating",
+      "min": 1,
+      "max": 5,
+      "step": 0.5,
+      "label": "Rating Score",
+      "default": 4.5
+    },
+    {
+      "type": "color",
+      "id": "rating_color",
+      "label": "Star Color",
+      "default": "#1a2530"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating_number",
+      "label": "Show Rating Score text",
+      "default": true,
+      "visible_if": "{{ block.settings.layout_style != 'style_2' }}"
+    },
+    {
+      "type": "range",
+      "id": "rating_number_size",
+      "min": 12,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "label": "Rating Score Font Size",
+      "default": 18,
+      "visible_if": "{{ block.settings.layout_style != 'style_2' and block.settings.show_rating_number == true }}"
+    },
+    {
+      "type": "color",
+      "id": "rating_number_color",
+      "label": "Rating Score Text Color",
+      "default": "#1a2530",
+      "visible_if": "{{ block.settings.layout_style != 'style_2' and block.settings.show_rating_number == true }}"
+    },
+    {
+      "type": "header",
+      "content": "Subtext"
+    },
+    {
+      "type": "text",
+      "id": "subtext",
+      "label": "Subtext",
+      "default": "based on 300+ reviews from our customers"
+    },
+    {
+      "type": "color",
+      "id": "subtext_color",
+      "label": "Subtext Color",
+      "default": "#4b5563"
+    },
+    {
+      "type": "range",
+      "id": "subtext_font_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Subtext Font Size",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Alignment"
+    },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "t:settings_schema.product_card.settings.product_info.pr_card_alignment.label",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Social Proof - Rating"
+    }
+  ]
+}
+{% endschema %}

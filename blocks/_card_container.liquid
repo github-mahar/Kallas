@@ -1,0 +1,203 @@
+<!-- blocks/_card_container.liquid -->
+{{ 'hdt-card-item.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign col_dk = block.settings.col_dk | default: '3'
+  assign col_tb = block.settings.col_tb | default: '3'
+  assign col_mb = block.settings.col_mb | default: '1'
+-%}
+
+{%- style -%}
+  #card-container-{{ block.id }} {
+    --spacing-x-dk: {{ block.settings.spacing_x_dk | default: 20 }}px;
+    --spacing-y-dk: {{ block.settings.spacing_y_dk | default: 20 }}px;
+    --spacing-x-mb: {{ block.settings.spacing_x_mb | default: 15 }}px;
+    --spacing-y-mb: {{ block.settings.spacing_y_mb | default: 15 }}px;
+  }
+  #card-container-{{ block.id }} .hdt-card-grid {
+    display: grid;
+    column-gap: var(--spacing-x-mb);
+    row-gap: var(--spacing-y-mb);
+    width: 100%;
+  }
+  @media (min-width: 768px) {
+    #card-container-{{ block.id }} .hdt-card-grid {
+      column-gap: var(--spacing-x-dk);
+      row-gap: var(--spacing-y-dk);
+    }
+  }
+{%- endstyle -%}
+
+<div id="card-container-{{ block.id }}" class="hdt-card-container hdt-w-full hdt-relative{% if block.settings.colors_by_block %} hdt-s-gradient{% endif %}" {% if block.settings.colors_by_block %}color-scheme="{{ block.settings.color_scheme }}"{% endif %} {{ block.shopify_attributes }}>
+  <div class="hdt-card-grid hdt-row-grid lg:hdt-grid-cols-{{ col_dk }} md:hdt-grid-cols-{{ col_tb }} hdt-grid-cols-{{ col_mb }} hdt-justify-center">
+    {% content_for "blocks" %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Card Grid",
+  "tag": null,
+  "class": "hdt-card-container-block",
+  "blocks": [
+    {
+      "type": "_card_item"
+    }
+  ],
+  "settings": [
+    {
+      "type": "header",
+      "content": "1. Layout Settings"
+    },
+    {
+      "type": "select",
+      "id": "col_dk",
+      "label": "t:sections.all.items_row.desktop",
+      "default": "3",
+      "options": [
+        {
+          "label": "1",
+          "value": "1"
+        },
+        {
+          "label": "2",
+          "value": "2"
+        },
+        {
+          "label": "3",
+          "value": "3"
+        },
+        {
+          "label": "4",
+          "value": "4"
+        },
+        {
+          "label": "5",
+          "value": "5"
+        },
+        {
+          "label": "6",
+          "value": "6"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "col_tb",
+      "label": "t:sections.all.items_row.tablet",
+      "default": "3",
+      "options": [
+        {
+          "label": "1",
+          "value": "1"
+        },
+        {
+          "label": "2",
+          "value": "2"
+        },
+        {
+          "label": "3",
+          "value": "3"
+        },
+        {
+          "label": "4",
+          "value": "4"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "col_mb",
+      "label": "t:sections.all.items_row.mobile",
+      "default": "1",
+      "options": [
+        {
+          "label": "1",
+          "value": "1"
+        },
+        {
+          "label": "2",
+          "value": "2"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "2. Spacing Settings"
+    },
+    {
+      "type": "range",
+      "id": "spacing_x_dk",
+      "min": 0,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Horizontal Gap (Desktop)",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "spacing_y_dk",
+      "min": 0,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Vertical Gap (Desktop)",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "spacing_x_mb",
+      "min": 0,
+      "max": 40,
+      "step": 5,
+      "unit": "px",
+      "label": "Horizontal Gap (Mobile)",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "spacing_y_mb",
+      "min": 0,
+      "max": 40,
+      "step": 5,
+      "unit": "px",
+      "label": "Vertical Gap (Mobile)",
+      "default": 15
+    },
+    {
+      "type": "header",
+      "content": "3. Color Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "colors_by_block",
+      "label": "Display color by blocks",
+      "default": false
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:settings_schema.colors.settings.general.color_scheme",
+      "default": "scheme-1",
+      "visible_if": "{{ block.settings.colors_by_block }}"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Card Grid",
+      "blocks": [
+        {
+          "type": "_card_item"
+        },
+        {
+          "type": "_card_item"
+        },
+        {
+          "type": "_card_item"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

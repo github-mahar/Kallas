@@ -1,0 +1,186 @@
+{% doc %}
+  Renders cart disclosure information for a product in a hover popover and dialog.
+
+  @param {product} product - The product object to display disclosures for
+  @param {string} unique_id - Unique identifier to append to popover ID
+  @param {string} [variant_anchor_name] - Optional CSS anchor name for aligning the popover to the variant row.
+  @param {string} [mode] - Optional render mode. Use 'trigger' for the trigger/popover only, 'dialog' for the modal dialog only, or omit for both.
+
+  @example
+  {% render 'cart-disclosure-tooltip',
+    product: item.product,
+    unique_id: item.index
+  %}
+{% enddoc %}
+
+{%- liquid
+  assign product = product | default: empty
+  assign unique_id = unique_id | default: product.id
+  assign variant_anchor_name = variant_anchor_name | default: blank
+  assign mode = mode | default: 'all'
+-%}
+
+{%- unless product == empty -%}
+  {%- liquid
+    assign disclosures = product.metafields.shopify.disclosure.value
+    assign cart_disclosure_symbol_aspect_ratio = 1
+  -%}
+
+  {%- capture disclosure_rows -%}
+    {%- for disclosure in disclosures -%}
+      {%- liquid
+        assign surfaces = disclosure.display_preferences.value.surfaces
+        unless surfaces contains 'cart'
+          continue
+        endunless
+
+        assign disclosure_title  = disclosure.title.value | default: disclosure.title
+        assign disclosure_message = disclosure.message.value | default: disclosure.message
+        assign disclosure_symbol = disclosure.symbol.value
+
+        assign row_heading = disclosure_title
+        if row_heading == blank
+          assign row_heading = disclosure_message
+        endif
+
+        if disclosure_symbol != blank
+          assign symbol_ar = disclosure_symbol.aspect_ratio | default: 1
+          if symbol_ar > cart_disclosure_symbol_aspect_ratio
+            assign cart_disclosure_symbol_aspect_ratio = symbol_ar
+          endif
+        endif
+      -%}
+      {%- if row_heading != blank -%}
+        <li class="hdt-disclosure-tooltip__row">
+          {%- if disclosure_symbol != blank -%}
+            {{
+              disclosure_symbol
+              | image_url: width: 40
+              | image_tag:
+                class: 'hdt-disclosure-tooltip__symbol',
+                loading: 'lazy',
+                alt: '',
+                width: disclosure_symbol.width,
+                height: disclosure_symbol.height
+            }}
+          {%- endif -%}
+          <p class="hdt-disclosure-tooltip__title">{{ disclosure_title | escape }}</p>
+        </li>
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+
+  {%- capture disclosure_modal_items -%}
+    {%- for disclosure in disclosures -%}
+      {%- liquid
+        assign surfaces = disclosure.display_preferences.value.surfaces
+        unless surfaces contains 'cart'
+          continue
+        endunless
+
+        assign disclosure_title   = disclosure.title.value | default: disclosure.title
+        assign disclosure_message = disclosure.message.value | default: disclosure.message
+        assign disclosure_symbol  = disclosure.symbol.value
+        assign disclosure_content = disclosure.content
+
+        assign item_heading = disclosure_title
+        assign message_used_as_heading = false
+        if item_heading == blank
+          assign item_heading = disclosure_message
+          assign message_used_as_heading = true
+        endif
+
+        assign render_message = false
+        if disclosure_content != blank
+          assign render_message = true
+        elsif disclosure_message != blank and message_used_as_heading == false
+          assign render_message = true
+        endif
+      -%}
+      {%- if item_heading != blank -%}
+        <li class="hdt-disclosure-modal__item">
+          <div class="hdt-disclosure-modal__item-heading-wrapper">
+            {%- if disclosure_symbol != blank -%}
+              {{
+                disclosure_symbol
+                | image_url: width: 48
+                | image_tag:
+                  class: 'hdt-disclosure-modal__symbol',
+                  loading: 'lazy',
+                  alt: '',
+                  width: disclosure_symbol.width,
+                  height: disclosure_symbol.height
+              }}
+            {%- endif -%}
+            <h3 class="hdt-disclosure-modal__item-heading">{{ item_heading | escape }}</h3>
+          </div>
+          {%- if render_message -%}
+            <div class="hdt-disclosure-modal__body">
+              {%- if disclosure_content != blank -%}
+                {{ disclosure_content | metafield_tag }}
+              {%- else -%}
+                {{ disclosure_message | escape | newline_to_br }}
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        </li>
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+
+  {%- if disclosure_rows != blank -%}
+    {%- liquid
+      assign render_trigger = false
+      assign render_dialog = false
+      assign render_popover = false
+
+      if mode == 'trigger'
+        assign render_trigger = true
+      endif
+      if mode == 'dialog'
+        assign render_dialog = true
+      endif
+      if mode == 'popover'
+        assign render_popover = true
+      endif
+    -%}
+    {%- if render_trigger -%}
+      <div class="hdt-disclosure-tooltip">
+        <button type="button" aria-controls="modal-{{ unique_id }}-disclosure__{{ product.id }}" hover-trigger="popover-{{ unique_id }}-disclosure__{{ product.id }}">
+          {{- 'icon-warning.svg' | inline_asset_content -}}
+        </button>
+      </div>
+    {%- endif -%}
+
+    {%- if render_popover -%}
+      <hdt-popover placement="{% if unique_id contains 'drawer' %}left{% else %}top{% endif %}" color-scheme="{{ settings.color_scheme_dialog }}" action="hover">
+        <dialog id="popover-{{ unique_id }}-disclosure__{{ product.id }}" class="hdt-popover" scroll-lock>
+          <div class="hdt-popover__arrow"></div>
+          <div class="hdt-popover__body">
+            <ul class="hdt-disclosure-tooltip__list">
+              {{- disclosure_rows -}}
+            </ul>
+          </div>
+        </dialog>
+      </hdt-popover>
+    {%- endif -%}
+
+    {%- if render_dialog -%}
+      <hdt-modal class="hdt-modal hdt-contents" color-scheme="{{ settings.color_scheme_dialog }}">
+        <dialog id="modal-{{ unique_id }}-disclosure__{{ product.id }}" class="hdt-dialog hdt-dialog-modal hdt-modal-disclosure" scroll-lock>
+          <button ref="closeButton" class="hdt-s-text hdt-dialog-btn__close" aria-controls="modal-{{ unique_id }}-disclosure__{{ product.id }}" aria-label="{{ 'accessibility.close' | t | escape }}">{%- render 'icon' with 'close' -%}</button>
+
+          <div class="hdt-disclosure-modal__content">
+            <h2 class="hdt-disclosure-modal__heading">
+              {{ 'products.product.product_disclosures' | t }}
+            </h2>
+            <p class="hdt-disclosure-modal__sub-heading">{{ 'products.product.product_disclosures_info' | t }}</p>
+            <ul class="hdt-disclosure-modal__list">
+              {{- disclosure_modal_items -}}
+            </ul>
+          </div>
+        </dialog>
+      </hdt-modal>
+    {%- endif -%}
+  {%- endif -%}
+{%- endunless -%}

@@ -1,0 +1,7 @@
+{%- doc -%}
+@param {string} url
+@example
+{% render 'safe-preload-link', url: link.url %}
+{%- enddoc -%}
+
+{%- unless url contains 'preview_theme_id=' %}href="{{ url }}"{% else %}href="{{ routes.root_url }}" onclick="window.location.href = `{{ url }}`; return false;"{% endunless -%}

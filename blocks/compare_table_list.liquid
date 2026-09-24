@@ -1,0 +1,43 @@
+<!-- blocks/compare_table_list.liquid -->
+{{ block.settings.title }} ||| {{ block.settings.key_brand }} ||| {{ block.settings.checks | newline_to_br | replace: '<br />', '||' }} ||| {{ block.settings.title_icon }}
+{% schema %}
+  {
+    "name": "List",
+    "tag": null,
+    "settings": [
+      {
+        "type": "inline_richtext",
+        "id": "title",
+        "label": "Title Brand",
+        "default": "ROARBUDDY™"
+      },
+      {
+        "type": "checkbox",
+        "id": "key_brand",
+        "label": "Key brand",
+        "info": "This brand will be highlighted with a different background color."
+      },/*
+      {
+        "type": "text",
+        "id": "title_icon",
+        "label": "Title sticky",
+        "default": "R™",
+        "visible_if": "{{ block.settings.key_brand }}"
+      },*/
+      {
+        "type": "textarea",
+        "id": "checks",
+        "label": "Checks",
+        "default": "[1]\n[1]\n[1]\n[1]",
+        "info": "Enter [1] for Checked (✔) and [0] for Unchecked (✖). Blank values will be treated as Unchecked. One line per row."
+      }
+    ],
+    "blocks": [
+    ],
+    "presets": [
+      {
+        "name": "List"
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,238 @@
+{%- comment -%}
+  Renders badges
+
+  Accepts:
+  - product: {Object} Product Liquid object (required)
+  - use_variant: {Boolean} Renders selected or first variant price instead of overall product pricing (optional)
+  - class: {String} a list class.
+  - form_id: {String}
+  - update_hidden: {Boolean}
+
+  - only_show_sale: {Boolean}
+  - use_onsale_badge: {Boolean}
+  - label_onsale_style: {String} text or percentage
+  - sale_text_t: {String}
+  - sale_percent_t: {String}
+
+  Usage:
+  {%- render 'badges', product: product -%}
+{%- endcomment -%}
+
+{%- liquid
+  assign has_pre_order = false
+  assign is_pre_order = false
+  assign has_sold_out = false
+  if settings.pick_mode == 'first' and settings.hide_sold_out == false
+    assign selected_variant = product.selected_variant | default: product.variants.first
+  else
+    assign selected_variant = product.selected_or_first_available_variant
+  endif
+  if use_variant
+    assign target = selected_variant
+    if target.inventory_management == 'shopify' and target.inventory_quantity <= 0 and target.available
+      assign is_pre_order = true
+    endif
+  else
+    assign target = product.variants | where: 'available', true | first
+    if target == null
+      assign target = product.variants | first
+    endif
+  endif
+  assign available = target.available | default: false
+  if product.available
+    assign variants_available = product.variants | where: 'available'
+    assign variants_inventory_shopify = variants_available | where: 'inventory_management', 'shopify'
+    if variants_inventory_shopify.size > 0 and variants_available.size == variants_inventory_shopify.size
+      assign variants_inventory_quantity = variants_inventory_shopify | map: 'inventory_quantity'
+      assign variants_inventory_quantity_str = variants_inventory_quantity | join: ' '
+      if variants_inventory_quantity_str contains '-' or variants_inventory_quantity contains 0
+        assign has_pre_order = true
+      endif
+    endif
+    #if product.variants.size > variants_available.size
+    #  assign has_sold_out = true
+    #endif
+  endif
+  if target.available == false
+    assign has_sold_out = true
+  else
+    assign has_sold_out = true
+  endif
+  if target.compare_at_price > target.price
+    assign on_sale = true
+  else
+    assign on_sale = false
+  endif
+  assign new_badge = false
+  for tag in product.tags
+    assign tag_down = tag | downcase | strip
+    if tag_down == 'tag__new_' or tag_down == 'tag__new'
+      assign new_badge = true
+      break
+    endif
+  endfor
+  assign style_hidden = true
+  if update_hidden
+    assign update_hidden_attr = 'update-hidden'
+  endif
+  unless sale_text_t
+    assign sale_text_t = 'products.product.on_sale' | t
+  endunless
+  unless sale_percent_t
+    assign sale_percent_t = 'products.product.save_percent' | t: percent: 'save_1904' | replace_first: 'save_1904', '<span percent>save_1904</span>'
+  endunless
+  if use_onsale_badge == blank and use_onsale_badge != false
+    assign use_onsale_badge = settings.use_onsale_badge
+  endif
+  unless label_onsale_style
+    assign label_onsale_style = settings.label_onsale_style
+  endunless
+-%}
+
+{%- if only_show_sale -%}
+  {%- if use_variant and use_onsale_badge and product.has_only_default_variant == false %}
+    <hdt-badge {{ update_hidden_attr }} is="on_sale" type="{{ label_onsale_style }}" {% if form_id %} form="{{ form_id }}"{% endif %} class="hdt-badge hdt-badge__on-sale"{% unless on_sale %} hidden{% endunless %}>
+      {%- liquid
+        if label_onsale_style == 'text'
+          echo sale_text_t
+        else
+          if on_sale
+            if label_onsale_style == 'percentage'
+              assign save_percent = target.compare_at_price | minus: target.price | times: 100.0 | divided_by: target.compare_at_price | round | at_least: 1
+            else
+              if settings.currency_code_enabled 
+                assign save_percent = target.compare_at_price | minus: target.price | money_with_currency
+              else 
+                assign save_percent = target.compare_at_price | minus: target.price | money
+              endif 
+            endif
+          endif
+          echo sale_percent_t | replace_first: 'save_1904', save_percent
+        endif -%}
+      </hdt-badge>
+  {%- elsif on_sale and use_onsale_badge -%}
+    <hdt-badge {{ update_hidden_attr }} is="on_sale" class="hdt-badge hdt-badge__on-sale">
+      {%- liquid
+      if label_onsale_style == 'text'
+        echo sale_text_t
+      else
+        if on_sale
+          if label_onsale_style == 'percentage'
+            assign save_percent = target.compare_at_price | minus: target.price | times: 100.0 | divided_by: target.compare_at_price | round | at_least: 1
+          else
+            if settings.currency_code_enabled 
+              assign save_percent = target.compare_at_price | minus: target.price | money_with_currency
+            else 
+              assign save_percent = target.compare_at_price | minus: target.price | money
+            endif 
+          endif
+        endif
+        echo sale_percent_t | replace_first: 'save_1904', save_percent
+      endif -%}
+    </hdt-badge>
+  {%- endif -%}
+{%- else -%}
+  <div class="hdt-badge__wrapp hdt-pe-none {{ class }}">
+    {%- if use_variant and use_onsale_badge and product.has_only_default_variant == false -%}
+      <hdt-badge {{ update_hidden_attr }} is="on_sale" type="{{ label_onsale_style }}" {% if form_id %} form="{{ form_id }}"{% endif %} class="hdt-badge hdt-badge__on-sale"{% unless on_sale %} hidden{% else %}{% assign style_hidden = false %}{% endunless %}>
+        {%- liquid
+          if label_onsale_style == 'text'
+            echo sale_text_t
+          else
+            if on_sale
+              if label_onsale_style == 'percentage'
+                assign save_percent = target.compare_at_price | minus: target.price | times: 100.0 | divided_by: target.compare_at_price | round | at_least: 1
+              else
+                if settings.currency_code_enabled 
+                  assign save_percent = target.compare_at_price | minus: target.price | money_with_currency
+                else 
+                  assign save_percent = target.compare_at_price | minus: target.price | money
+                endif 
+              endif
+            endif
+            echo sale_percent_t | replace_first: 'save_1904', save_percent
+          endif -%}
+        </hdt-badge>
+    {%- elsif on_sale and use_onsale_badge -%}
+      <hdt-badge {{ update_hidden_attr }} is="on_sale" class="hdt-badge hdt-badge__on-sale">
+        {%- liquid
+        if label_onsale_style == 'text'
+          echo sale_text_t
+        else
+          if on_sale
+            if label_onsale_style == 'percentage'
+              assign save_percent = target.compare_at_price | minus: target.price | times: 100.0 | divided_by: target.compare_at_price | round | at_least: 1
+            else
+              if settings.currency_code_enabled 
+                assign save_percent = target.compare_at_price | minus: target.price | money_with_currency
+              else 
+                assign save_percent = target.compare_at_price | minus: target.price | money
+              endif 
+            endif
+          endif
+          echo sale_percent_t | replace_first: 'save_1904', save_percent
+        endif -%}
+      </hdt-badge>
+    {%- endif -%}
+    {%- assign use_preorder_badge = settings.use_preorder_badge -%}
+    {%- if use_preorder_badge == nil %}{% assign use_preorder_badge = true %}{% endif -%}
+    {%- assign use_soldout_badge = settings.use_soldout_badge -%}
+    {%- if use_soldout_badge == nil %}{% assign use_soldout_badge = true %}{% endif -%}
+    {%- if use_variant -%}
+      {%- if use_preorder_badge and has_pre_order %}{% assign style_hidden = false %}<hdt-badge {{ update_hidden_attr }} is="pre_order"{% if form_id %} form="{{ form_id }}"{% endif %} class="hdt-badge hdt-badge__pre_order"{% unless is_pre_order %} hidden{% endunless %}>{{ 'products.product.pre_order' | t }}</hdt-badge>{% endif -%}
+      {%- if use_soldout_badge and has_sold_out %}{% assign style_hidden = false %}<hdt-badge {{ update_hidden_attr }} is="sold_out"{% if form_id and product.available %} form="{{ form_id }}"{% endif %} class="hdt-badge hdt-badge__sold_out"{% if available %} hidden{% endif %}>{{ 'products.product.badge_sold_out' | t }}</hdt-badge>{% endif -%}
+    {%- else -%}
+      {%- if use_preorder_badge and has_pre_order %}{% assign style_hidden = false %}<hdt-badge {{ update_hidden_attr }} is="pre_order" class="hdt-badge hdt-badge__pre_order">{{ 'products.product.pre_order' | t }}</hdt-badge>{% endif -%}
+      {%- if use_soldout_badge and available == false %}{% assign style_hidden = false %}<hdt-badge {{ update_hidden_attr }} is="sold_out" class="hdt-badge hdt-badge__sold_out">{{ 'products.product.badge_sold_out' | t }}</hdt-badge>{% endif -%}
+    {%- endif -%}
+    {%- if new_badge %}{% assign style_hidden = false %}<span class="hdt-badge hdt-badge__new">{{ 'products.product.badge_new' | t }}</span>{% endif -%}
+    {%- assign use_custom_badge = settings.use_custom_badge -%}
+    {%- if use_custom_badge == nil %}{% assign use_custom_badge = true %}{% endif -%}
+    {%- if use_custom_badge -%}
+      {%- if product.metafields.theme.custom_badges.value != blank -%}
+        {%- for badge in product.metafields.theme.custom_badges.value limit: 5 -%}{%- assign style_hidden = false -%}
+          <span class="hdt-badge hdt-badge__custom hdt-badge__{{ badge | handle }}">{{ badge | escape }}</span>
+        {%- endfor -%}
+      {%- endif -%}
+      {%- if product.metafields.theme.custom_badge.value != blank -%}
+        {%- for badge in product.metafields.theme.custom_badge.value limit: 5 -%}{%- assign style_hidden = false -%}
+          <span class="hdt-badge hdt-badge__custom hdt-badge__{{ badge | handle }}">{{ badge | escape }}</span>
+        {%- endfor -%}
+      {%- endif -%}
+      {%- for tag in product.tags -%}
+        {%- assign tag_lower = tag | downcase | strip -%}
+        {%- assign badge_prefix_under = tag_lower | slice: 0, 6 -%}
+        {%- assign badge_prefix_colon = tag_lower | slice: 0, 7 -%}
+        {%- assign prefix_5 = tag_lower | slice: 0, 5 -%}
+        {%- if prefix_5 == 'tag__' -%}
+          {%- assign clean_tag = tag | slice: 5, tag.size | strip -%}
+          {%- assign last_char_idx = clean_tag.size | minus: 1 -%}
+          {%- assign last_char = clean_tag | slice: last_char_idx, 1 -%}
+          {%- if last_char == '_' -%}
+            {%- assign clean_tag = clean_tag | slice: 0, last_char_idx | strip -%}
+          {%- endif -%}
+          {%- assign clean_tag_lower = clean_tag | downcase -%}
+          {%- if clean_tag_lower != 'new' -%}
+            {%- assign style_hidden = false -%}
+            <span class="hdt-badge hdt-badge__custom hdt-badge__{{ clean_tag | handle }}">{{ clean_tag }}</span>
+          {%- endif -%}
+        {%- elsif badge_prefix_under == 'badge_' and tag_lower != 'badge_new' and tag_lower != 'badge_sale' and tag_lower != 'badge_soldout' and tag_lower != 'badge_preorder' -%}
+          {%- assign badge_name = tag | slice: 6, tag.size | strip -%}
+          {%- assign style_hidden = false -%}
+          <span class="hdt-badge hdt-badge__custom hdt-badge__{{ badge_name | handle }}">{{ badge_name }}</span>
+        {%- elsif badge_prefix_colon == 'badge: ' -%}
+          {%- assign badge_name = tag | slice: 7, tag.size | strip -%}
+          {%- assign badge_name_lower = badge_name | downcase -%}
+          {%- if badge_name_lower != 'new' and badge_name_lower != 'sale' and badge_name_lower != 'sold out' and badge_name_lower != 'pre order' -%}
+            {%- assign style_hidden = false -%}
+            <span class="hdt-badge hdt-badge__custom hdt-badge__{{ badge_name | handle }}">{{ badge_name }}</span>
+          {%- endif -%}
+        {%- elsif tag_lower == 'restocked' or tag_lower == 'back in stock' or tag_lower == 'coming soon' or tag_lower == 'best seller' or tag_lower == 'bestseller' or tag_lower == 'limited edition' -%}
+          {%- assign style_hidden = false -%}
+          <span class="hdt-badge hdt-badge__custom hdt-badge__{{ tag | handle }}">{{ tag }}</span>
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endif -%}
+  </div>
+{%- endif -%}
+{%- if style_hidden and id_hidden %}<style>#{{ id_hidden }} .hdt-badge__wrapp:not(.js-intent) { display:none !important}</style>{% endif -%}

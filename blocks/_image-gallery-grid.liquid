@@ -1,0 +1,158 @@
+{% style %}
+  #shopify-block-{{ block.id }} .hdt-image-gallery-wrap {
+    position: relative;
+  }
+  #shopify-block-{{ block.id }} .hdt-image-gallery-grid {
+    position: relative;
+  }
+  #shopify-block-{{ block.id }} .hdt-image-gallery-wrap .hdt-image-gallery-bg-content {
+    position: absolute;
+    z-index: 4;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    text-align: center;
+  }
+  #shopify-block-{{ block.id }} .hdt-image-gallery-wrap .hdt-image-gallery-bg-content a,
+  #shopify-block-{{ block.id }} .hdt-image-gallery-wrap .hdt-image-gallery-bg-content button {
+    pointer-events: auto;
+  }
+{% endstyle %}
+
+<div class="hdt-image-gallery-wrap">
+  {% content_for 'block', type: '_background-content', id: 'image-gallery-grid-background-content' %}
+  <hdt-reval-items reveal-on-scroll="true" class="hdt-image-gallery-grid hdt-row-grid hdt-row-grid--modify hdt-justify-center hdt-spacing-{{ block.settings.space_items }} lg:hdt-grid-cols-{{ block.settings.hdt_number_images__desktop }} md:hdt-grid-cols-{{ block.settings.hdt_number_images__tablet }} hdt-grid-cols-{{ block.settings.hdt_number_images__mobile }}">
+    {% content_for 'blocks' %}
+  </hdt-reval-items>
+</div>
+
+{% schema %}
+{
+  "name": "Image gallery grid",
+  "settings": [
+    {
+      "type": "select",
+      "id": "hdt_number_images__desktop",
+      "label": "Items per row (Desktop)",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        },
+        {
+          "value": "3",
+          "label": "3"
+        },
+        {
+          "value": "4",
+          "label": "4"
+        },
+        {
+          "value": "5",
+          "label": "5"
+        },
+        {
+          "value": "6",
+          "label": "6"
+        }
+      ],
+      "default": "6"
+    },
+    {
+      "type": "select",
+      "id": "hdt_number_images__tablet",
+      "label": "Items per row (Tablet)",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        },
+        {
+          "value": "3",
+          "label": "3"
+        },
+        {
+          "value": "4",
+          "label": "4"
+        },
+        {
+          "value": "5",
+          "label": "5"
+        },
+        {
+          "value": "6",
+          "label": "6"
+        }
+      ],
+      "default": "3"
+    },
+    {
+      "type": "select",
+      "id": "hdt_number_images__mobile",
+      "label": "Items per row (Mobile)",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        },
+        {
+          "value": "3",
+          "label": "3"
+        }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "select",
+      "id": "space_items",
+      "label": "t:sections.all.space_items.label",
+      "default": "x",
+      "options": [
+        {
+          "label": "Default",
+          "value": "x"
+        },
+        {
+          "label": "0",
+          "value": "0"
+        },
+        {
+          "label": "5px",
+          "value": "5"
+        },
+        {
+          "label": "10px",
+          "value": "10"
+        },
+        {
+          "label": "20px",
+          "value": "20"
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "_gallery-item"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image gallery grid"
+    }
+  ]
+}
+{% endschema %}

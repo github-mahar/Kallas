@@ -1,0 +1,345 @@
+{%- liquid
+  assign target = product
+  assign product = section.settings.product | default: target
+  unless product.available 
+    continue
+  endunless
+
+  if settings.pick_mode == 'no' and product.variants.size > 1
+  assign selected_variant = product.selected_variant
+  elsif settings.pick_mode == 'first' and settings.hide_sold_out == false
+    assign selected_variant = product.selected_variant | default: product.variants.first
+  else
+    assign selected_variant = product.selected_or_first_available_variant
+  endif
+  assign product_form_id = 'product-form-'| append: section.id | append: product.id
+
+  # checking variant initial
+  assign selected_variant = product.selected_or_first_available_variant
+  assign inventory_quantity = selected_variant.inventory_quantity
+  assign inventory_management = selected_variant.inventory_management
+  assign inventory_policy = selected_variant.inventory_policy
+  assign stock_validate = block.settings.item_default | plus: 0
+  assign isPreorder = false 
+  assign is_hide = false
+  if inventory_quantity <= 0  and inventory_management == 'shopify' and selected_variant.available
+    assign isPreorder = true
+    assign is_hide = true
+  elsif inventory_management == null
+    assign is_hide = true
+  endif
+  if inventory_quantity > stock_validate
+    assign is_hide = true
+  endif
+-%}
+{% stylesheet %}
+hdt-inventory-stock{
+  .hdt-pr-invetory-mess{
+    font-size: clamp(var(--fs-mb), 3vw, var(--fs));
+    line-height: 1;
+    font-weight: var(--font-medium);
+  }
+  [data-stock-number]{
+    color: rgb(var(--process-color));
+  }
+  .hdt-inventory-icon{
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .hdt-inventory-icon :where(img,svg){
+    max-width: 25px;
+    margin-inline-end: 5px;
+  }
+  .hdt-progress{
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, .1);
+    background:  rgb(var(--bg-color));
+    border: none;
+    height: 11px;
+    overflow: hidden;
+    margin-top: 20px;
+    margin-bottom: 15px;
+    div {
+      background-color: rgb(var(--process-color));
+      transition: 0.9s linear;
+      transition-property: width, background-color;
+      background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, rgba(0, 0, 0, 0) 25%, rgba(0, 0, 0, 0) 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, rgba(0, 0, 0, 0) 75%, rgba(0, 0, 0, 0));
+      background-size: 40px 40px;
+      animation: 2s linear 0s normal none infinite running progress-bar-stripes;
+      height: 11px;
+      &.hdt-progress-bar-low{
+        background-color: rgb(var(--color-error-text) / .8);
+      }
+    }
+  }
+}
+@keyframes progress-bar-stripes {
+  0% {
+    background-position: 40px 0;
+  }
+  100% {
+      background-position: 0 0;
+  }
+}
+{% endstylesheet %} 
+{%- capture css -%}
+  --fs: {{ block.settings.label_font_size }}px;--fs-mb: {{ block.settings.label_font_size_mb }}px;--process-color: {{ block.settings.process_color.rgb }};--low-stock-color: {{ block.settings.low_stock_color.rgb }};--bg-color: {{ block.settings.bg_color.rgb }};
+{%- endcapture -%}
+{% capture icon_svg %}
+  <hdt-atc-animation class="hdt-contents" config='{ "ani": "{{ block.settings.ani }}", "time": "{{ block.settings.time }}" }'>
+    <div data-animation class="hdt-inventory-icon">
+      {% case block.settings.icon_img %}
+        {% when '1' %}
+          {% if block.settings.svg_code != blank %}
+            {{ block.settings.svg_code }}
+          {% endif %}
+        {% when '2' %}
+          {% if block.settings.image_code != blank %}
+            {% assign img = block.settings.image_code %}
+            {{ img | image_url: width: img.width, height: img.height | image_tag: width: img.width, height: img.height, loading: 'lazy', widths:'10,20,25,30,35,40,45,50', sizes: 'auto', alt: '' }}
+          {% endif %}
+      {% endcase %}
+    </div>
+  </hdt-atc-animation>
+{% endcapture %}
+<div id="block-{{ block.id }}" class="hdt-product-info__item hdt-pr-inventory {% if is_hide and block.settings.mode == '1' %}hdt-hidden{% endif %}" {{ block.shopify_attributes }} style="{{ css }}">
+  {% if block.settings.stock_message != blank %}
+    <hdt-inventory-stock form="{{ product_form_id }}" class="hdt-contents" config='{ "min": {{ block.settings.stock_from }}, "max": {{ block.settings.stock_to }}, "total_items": {{ block.settings.total_items }}, "item_default": {{ block.settings.item_default }}, "mode": "{{ block.settings.mode }}", "is_admin": {{ request.design_mode }}, "inventory_quantity": {{ inventory_quantity | default: 0 }}, "inventory_management": "{{ inventory_management | default: null }}" }'>
+      <div class="hdt-pr-invetory-mess hdt-s-text hdt-text-{{ block.settings.text_alignment }}">
+        {{ icon_svg }}
+        {{ block.settings.stock_message | replace: '[stock_number]', '<span data-stock-number>0</span>' }}
+      </div>
+      <div class="hdt-progress hdt-radius-full hdt-oh">
+        <div style="width: 100%;" data-progress-bar></div>
+      </div>
+    </hdt-inventory-stock>
+  {% endif %}
+</div>
+{% schema %}
+{
+  "name": "Inventory status 2",
+  "tag": null,
+  "settings": [
+    {
+      "type": "select",
+      "id": "icon_img",
+      "label": "Type",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "1",
+          "label": "Icon"
+        },
+        {
+          "value": "2",
+          "label": "Image"
+        }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "liquid",
+      "id": "svg_code",
+      "label": "Svg code",
+      "visible_if": "{{ block.settings.icon_img == '1' }}"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_code",
+      "label": "Image icon",
+      "visible_if": "{{ block.settings.icon_img == '2' }}"
+    },
+    {
+      "type": "select",
+      "id": "ani",
+      "options": [
+        {
+          "value": "none",
+          "label": "t:none"
+        },
+        {
+          "value": "hdt-ani-bounce is--infinite",
+          "label": "t:sections.main-product.blocks.ani.settings.options__1.label"
+        },
+        {
+          "value": "hdt-ani-tada is--infinite",
+          "label": "t:sections.main-product.blocks.ani.settings.options__2.label"
+        },
+        {
+          "value": "hdt-ani-swing is--infinite",
+          "label": "t:sections.main-product.blocks.ani.settings.options__3.label"
+        },
+        {
+          "value": "hdt-ani-flash is--infinite",
+          "label": "t:sections.main-product.blocks.ani.settings.options__4.label"
+        },
+        {
+          "value": "hdt-ani-fadeIn is--infinite",
+          "label": "t:sections.main-product.blocks.ani.settings.options__5.label"
+        },
+        {
+          "value": "hdt-ani-heartBeat is--infinite",
+          "label": "t:sections.main-product.blocks.ani.settings.options__6.label"
+        },
+        {
+          "value": "hdt-ani-shake is--infinite",
+          "label": "t:sections.main-product.blocks.ani.settings.options__7.label"
+        }
+      ],
+      "label": "t:sections.main-product.blocks.ani.label_atc"
+    },
+     {
+      "type": "range",
+      "id": "time",
+      "min": 2,
+      "max": 40,
+      "step": 1,
+      "label": "t:sections.main-product.blocks.buy_buttons.settings.time.label",
+      "info": "t:sections.main-product.blocks.buy_buttons.settings.time.info",
+      "unit": "s",
+      "default": 6
+    },
+    {
+      "type": "select",
+      "id": "mode",
+      "label": "Type",
+      "options": [
+        {
+          "value": "1",
+          "label": "Default"
+        },
+        {
+          "value": "2",
+          "label": "Random"
+        },
+        {
+          "value": "3",
+          "label": "Default + Random"
+        }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "header",
+      "content": "Total"
+    },
+    {
+      "type": "range",
+      "id": "total_items",
+      "min": 10,
+      "max": 100,
+      "step": 1,
+      "unit": "qty",
+      "label": "Total items",
+      "default": 100
+    },
+    {
+      "type": "header",
+      "content": "Default"
+    },
+    {
+      "type": "range",
+      "id": "item_default",
+      "min": 1,
+      "max": 100,
+      "step": 1,
+      "unit": "Qty",
+      "label": "(X) items",
+      "info": "Show when less than (X) items are in stock",
+      "default": 100
+    },
+    {
+      "type": "header",
+      "content": "Random stock"
+    },
+    {
+      "type": "range",
+      "id": "stock_from",
+      "min": 1,
+      "max": 19,
+      "step": 1,
+      "unit": "qty",
+      "label": "From",
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "stock_to",
+      "min": 20,
+      "max": 70,
+      "step": 1,
+      "unit": "qty",
+      "label": "To",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Label"
+    },
+    {
+      "type": "text_alignment",
+      "id": "text_alignment",
+      "label": "Text align"
+    },
+    {
+      "type": "textarea",
+      "id": "stock_message",
+      "label": "Message (You can leave it blank)",
+      "info": "Hurry! Only [stock_number] left in stock.",
+      "default": "Hurry! Only [stock_number] left in stock."
+    },
+    {
+      "type": "range",
+      "id": "label_font_size",
+      "min": 10,
+      "max": 35,
+      "step": 1,
+      "unit": "px",
+      "label": "Font size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "label_font_size_mb",
+      "min": 10,
+      "max": 35,
+      "step": 1,
+      "unit": "px",
+      "label": "Font size(mobile)",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Progress"
+    },
+    {
+      "type": "color",
+      "id": "process_color",
+      "label": "Process color",
+      "default": "#f76b6a",
+      "alpha": true
+    },
+    {
+      "type": "color",
+      "id": "low_stock_color",
+      "label": "Low stock color",
+      "default": "#ec0101",
+      "alpha": true
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#ffe8e8",
+      "alpha": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Inventory status 2"
+    }
+  ]
+}
+{% endschema %}

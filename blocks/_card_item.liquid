@@ -1,0 +1,249 @@
+<!-- blocks/_card_item.liquid -->
+{{ 'hdt-card-item.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  #card-item-{{ block.id }} {
+    --card-bg-color: {{ block.settings.background_color }};
+    --card-border-color: {{ block.settings.border_color }};
+    --card-border-width: {{ block.settings.border_width }}px;
+    --card-border-radius: {{ block.settings.border_radius }}px;
+    --card-padding: {{ block.settings.padding }}px;
+    {%- if block.settings.height_mode == 'custom' -%}
+      height: {{ block.settings.custom_height_mb }}px;
+    {%- elsif block.settings.height_mode == 'auto' -%}
+      height: auto;
+    {%- else -%}
+      height: 100%;
+    {%- endif -%}
+    {%- if block.settings.enable_blur -%}
+      backdrop-filter: blur({{ block.settings.blur_amount }}px);
+      -webkit-backdrop-filter: blur({{ block.settings.blur_amount }}px);
+    {%- endif -%}
+  }
+  @media (min-width: 768px) {
+    #card-item-{{ block.id }} {
+      {%- if block.settings.height_mode == 'custom' -%}
+        height: {{ block.settings.custom_height }}px;
+      {%- endif -%}
+    }
+  }
+{%- endstyle -%}
+
+{%- liquid
+  case block.settings.content_alignment
+    when 'left'
+      assign align_class = 'hdt-align-start hdt-text-left'
+    when 'right'
+      assign align_class = 'hdt-align-end hdt-text-right'
+    else
+      assign align_class = 'hdt-align-center hdt-text-center'
+  endcase
+
+  case block.settings.content_position
+    when 'start'
+      assign position_class = 'hdt-justify-start'
+    when 'end'
+      assign position_class = 'hdt-justify-end'
+    when 'between'
+      assign position_class = 'hdt-justify-between'
+    else
+      assign position_class = 'hdt-justify-center'
+  endcase
+-%}
+
+<div id="card-item-{{ block.id }}" class="hdt-card-item hdt-relative hdt-oh{% if block.settings.enable_hover_effect %} hdt-card-item--hover{% endif %}" {{ block.shopify_attributes }}>
+  <div class="hdt-card-item__inner hdt-flex hdt-flex-col {{ position_class }} {{ align_class }}">
+    {% content_for "blocks" %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Card item",
+  "class": "hdt-slider__slide",
+  "blocks": [
+    {
+      "type": "image"
+    },
+    {
+      "type": "heading"
+    },
+    {
+      "type": "text"
+    },
+    {
+      "type": "spacer"
+    },
+    {
+      "type": "button"
+    },
+    {
+      "type": "_card_tags"
+    }
+  ],
+  "settings": [
+    {
+      "type": "header",
+      "content": "Card Styling"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_hover_effect",
+      "label": "Enable hover effect",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#ffffff",
+      "alpha": true
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border Color",
+      "default": "#eef2f6",
+      "alpha": true
+    },
+    {
+      "type": "range",
+      "id": "border_width",
+      "label": "Border Width",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "default": 1
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_blur",
+      "label": "Enable background blur",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "blur_amount",
+      "label": "Blur amount",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 30,
+      "visible_if": "{{ block.settings.enable_blur == true }}"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Border Radius",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding",
+      "label": "t:blocks.column.settings.padding.label",
+      "min": 0,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "Content Alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "content_position",
+      "label": "Content Position",
+      "options": [
+        {
+          "value": "start",
+          "label": "Top"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "end",
+          "label": "Bottom"
+        },
+        {
+          "value": "between",
+          "label": "Space Between"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "height_mode",
+      "label": "Card Height Mode",
+      "options": [
+        {
+          "value": "default",
+          "label": "Full Height"
+        },
+        {
+          "value": "auto",
+          "label": "Auto Height"
+        },
+        {
+          "value": "custom",
+          "label": "Custom Height"
+        }
+      ],
+      "default": "default"
+    },
+    {
+      "type": "range",
+      "id": "custom_height",
+      "label": "Custom height (Desktop)",
+      "min": 100,
+      "max": 800,
+      "step": 10,
+      "unit": "px",
+      "default": 300,
+      "visible_if": "{{ block.settings.height_mode == 'custom' }}"
+    },
+    {
+      "type": "range",
+      "id": "custom_height_mb",
+      "label": "Custom height (Mobile)",
+      "min": 100,
+      "max": 600,
+      "step": 10,
+      "unit": "px",
+      "default": 250,
+      "visible_if": "{{ block.settings.height_mode == 'custom' }}"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Card item"
+    }
+  ]
+}
+{% endschema %}
