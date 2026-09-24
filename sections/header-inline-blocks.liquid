@@ -178,7 +178,7 @@
 {%- endcapture -%}
 <hdt-sticky-header sticky-type="{{ section.settings.sticky_type }}" prefix="header" class="hdt-main-header hdt-header-{{ section.settings.header_layout }} hdt-header-fullwidth-{{ section.settings.header_fullwidth }} hdt-header-tranparent-{{ section.settings.header_transparent }} hdt-menu-{{ section.settings.menu_type }} hdt-header-sticky-{{ section.settings.sticky_type }}{% if section.settings.sticky_glass %} hdt-header-sticky--glass{% endif %} is-sticky" color-scheme="{{ section.settings.header_colors }}">
   <div class="hdt-container{% if section.settings.header_fullwidth %}-full hdt-px-15{% endif %}">
-    <div data-header-height class="hdt-flex hdt-align-center hdt-spacing-15 md:hdt-px-15 hdt-px-10"{% if section.settings.header_layout == "logo_left_flex" %} style="flex-wrap: nowrap !important;"{% endif %}>
+    <div data-header-height class="{% if section.settings.header_layout != 'logo_left_flex' %}hdt-row {% endif %}hdt-flex hdt-align-center {% if section.settings.header_layout == 'logo_center' %} hdt-justify-center{% endif %}{% if section.settings.header_layout == 'logo_left_center' %} hdt-justify-between{% endif %}{% if section.settings.header_layout == 'logo_left_flex' %} hdt-spacing-15 md:hdt-px-15 hdt-px-10{% endif %}"{% if section.settings.header_layout == "logo_left_flex" %} style="flex-wrap: nowrap !important;"{% endif %}>
       {%- if section.settings.header_layout == "logo_left" or section.settings.header_layout == "logo_left_flex" -%}
         <div class="lg:hdt-hidden md:hdt-custom-col-4 hdt-custom-col-3">
           <button aria-controls="menu_mobile" class="hdt-push-menu-btn hdt-menu-bar hdt-flex hdt-justify-center hdt-align-center" aria-label="push-menu">
